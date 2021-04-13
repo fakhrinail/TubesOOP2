@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Engimon{
+public class Engimon implements Move{
   private String species; private String name;
   private String interaction;
   private ArrayList<String> parentNames;
@@ -54,6 +54,11 @@ public class Engimon{
     return this.level;
   }
 
+  public void getPos(){
+    System.out.println(this.posX);
+    System.out.println(this.posY);
+  }
+
   public void setName(String name){
     this.name = name;
   }
@@ -105,4 +110,19 @@ public class Engimon{
     System.out.println("Cumulative Experience "+this.cumulativeExperience+"/5000");
   }
 
+  public void moveX(int x){
+    if (x == 1){
+      this.posX++;
+    } else if(x == -1){
+      this.posX--;
+    }
+  }
+
+  public void moveY(int y){
+    if (y == 1){
+      this.posY++;
+    } else if(y == -1){
+      this.posY--;
+    }
+  }
 }
