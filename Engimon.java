@@ -63,6 +63,16 @@ public class Engimon implements Move{
     this.name = name;
   }
 
+  public void setParents(String parent1Species, 
+  String parent1Name, String parent2Species, String parent2Name){
+    this.parentNames.set(0, parent1Name); this.parentNames.set(1, parent2Name);
+    this.parentSpecies.set(0, parent1Species); this.parentSpecies.set(1, parent2Species);
+  }
+
+  public void setLife(int l){
+    this.life = l;
+  }
+
   public void setPos(int x, int y){
     this.posX = x; this.posY = y;
   }
