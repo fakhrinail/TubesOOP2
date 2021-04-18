@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Engimon implements Move{
   private String species; private String name;
@@ -133,6 +134,53 @@ public class Engimon implements Move{
       this.posY++;
     } else if(y == -1){
       this.posY--;
+    }
+  }
+
+  public Engimon breed(Engimon other) {
+    try {
+      this.level -= 3;
+      other.level -= 3;
+      if (this.countElement == other.countElement && this.countElement == 1) {
+        if (this.elements.equals(other.elements)) {
+          ArrayList<Skill> inherSkills = this.skill.addAll(other.skill);
+          ArrayList<Skill> tempSkills = new ArrayList<Skill>();
+          for (Skill skill : inherSkills) {
+            for (Skill skill2 : other.skill) {
+              if (skill.getName().equals(skill2.getName())) {
+                if (skill.getMastery() == skill2.getMastery()) {
+                  if (skill.getMastery() != 3) {
+                    skill.setMastery(skill.getMastery() + 1);
+                  }
+                }
+                else if (skill.getMastery() < skill2.getMastery()) {
+                  skill.setMastery(skill2.getMastery());
+                }
+              }
+              else {
+                tempSkills.add(skill2);
+              }
+            }
+          }
+          inherSkills.addAll(tempSkills);
+          Collection.sort(inherSkills);
+          if (inherSkills.size() > 3) {
+            for (int i = 4; i < inherSkills.size(); i++) {
+              inherSkills.remove(i);
+            }
+          }
+          Engimon child = Engimon(); //construct dengan skill diatas
+          return child;
+        }
+        else{
+          //kayak atas dengan sedikit perubahan
+        }
+      }
+    } catch (Exception e) {
+      //TODO: handle exception
+    } finally {
+      this.level += 3;
+      other.level += 3;
     }
   }
 }
