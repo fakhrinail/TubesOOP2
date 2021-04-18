@@ -14,7 +14,7 @@ public class Inventory <T extends InventoryItem> {
 
     public void put(T toPut){
         if(totalItem == maxItem){
-            System.out.println("Inventory penuh");
+            System.out.println("Inventory full");
         }else{
             this.totalItem++;
             int idx = this.items.size();
@@ -49,11 +49,14 @@ public class Inventory <T extends InventoryItem> {
         }
     }
 
+    public T get(int idx){
+        return this.items.get(idx);
+    }
+
     public void printAll(boolean withAmount){
         for(int i=0; i<this.items.size(); i++){
             System.out.print(i+1);
-            System.out.print(". ");
-            this.items.get(i).printDetail();
+            System.out.print(". " + this.items.get(i).getName() + ";");
             if(withAmount){
                 System.out.print(" You have: ");
                 System.out.print(this.amounts.get(i));
