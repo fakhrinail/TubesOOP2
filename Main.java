@@ -13,5 +13,6 @@ class Main {
         IS.put(tes1);
         IS.put(tes2);
         IS.printAll(true);
+        IS.printAll(false);
     }
 }

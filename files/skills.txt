@@ -1,0 +1,8 @@
+Fireball 100 Fire
+Waterbom 100 Water
+Chidori 100 Electric
+Pakubumi 100 Ground
+Freeze 100 Ice
+Izanami 100 Fire Electric
+Drunk 100 Water Ice
+Rasengan 100 Water Ground

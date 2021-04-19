@@ -6,8 +6,7 @@ public class Elemental {
     private static double[][] elementalAdv;
     private String name;
     public static void loadElementals(){
-        elementalID = new HashMap<String, Integer>();
-        
+        elementalID = new HashMap<String, Integer>();      
         try{
             //use buffer to make input more efficient, instead plain filereader
             Scanner file = new Scanner(new BufferedReader(new FileReader("files/elementals.txt")));
@@ -32,7 +31,6 @@ public class Elemental {
         } catch(FileNotFoundException ex){
             System.out.println("Nama file yang anda masukkan salah");
         }
-        
     }
     public Elemental(String name){
         this.name = name;
@@ -47,6 +45,11 @@ public class Elemental {
             return 0;
         }
     }
+
+    public boolean equals(Elemental other){
+        return this.getID() == other.getID();
+    }
+
     public double getAdv(Elemental other){
         return this.elementalAdv[this.getID()][other.getID()];
     }
