@@ -9,65 +9,107 @@ public class Player {
     public Player(){
         this.playerX = 0;
         this.playerY = 0;
-        this.activeEngimon = new Engimon("Wildcard", "startermon", "dewa", "zeus", "dewi", "athena", "lets roll cuk", 100, 10);
-        this.activeEngimon.setPos(0, 1);
+        this.activeEngimon = null;
+        //new Engimon("Wildcard", "startermon", "dewa", "zeus", "dewi", "athena", "lets roll cuk", 100, 10);
+        //this.activeEngimon.setPos(0, 1);
         this.InventoryE = new Inventory<Engimon>();
         this.InventoryS = new Inventory<Skill>();
     }
 
     public void w(){
-        this.activeEngimon.setPos(this.playerX, this.playerY);
+        if (this.activeEngimon != null){
+            this.activeEngimon.setPos(this.playerX, this.playerY);
+        }
         this.playerX--;
     }
     public void a(){
-        this.activeEngimon.setPos(this.playerX, this.playerY);
+        if (this.activeEngimon != null){
+            this.activeEngimon.setPos(this.playerX, this.playerY);
+        }
         this.playerY--;
     }
     public void s(){
+        if (this.activeEngimon != null){
+            this.activeEngimon.setPos(this.playerX, this.playerY);
+        }
         this.activeEngimon.setPos(this.playerX, this.playerY);
         this.playerX++;
     }
     public void d(){
-        this.activeEngimon.setPos(this.playerX, this.playerY);
+        if (this.activeEngimon != null){
+            this.activeEngimon.setPos(this.playerX, this.playerY);
+        }
         this.playerY--;
+    }
+
+    public void removeActiveEngimon(){
+        this.InventoryE = null;
     }
 
     public void setActiveEngimon(int idx){
         Engimon choosen = this.InventoryE.remove(idx);
-        choosen.setPos(this.activeEngimon.getX(), this.activeEngimon.getY());
-        this.activeEngimon.setPos(-1, -1);
-        this.InventoryE.put(this.activeEngimon);
+        if (this.activeEngimon != null){
+            choosen.setPos(this.activeEngimon.getX(), this.activeEngimon.getY());
+            this.activeEngimon.setPos(-1, -1);
+            this.InventoryE.put(this.activeEngimon);
+        }
+        this.activeEngimon.setPos(this.playerX, this.playerY); // masih blm aman
         this.activeEngimon = choosen;
+        System.out.println("Active engimon has been changed successfully");
     }
 
     public void manageActiveEngimon(){
-        System.out.println("Active engimon :");
-        this.activeEngimon.printDetail();
         int entry;
         Scanner sc = new Scanner(System.in);
-        while (true) {
+        System.out.println("Active engimon :");
+        if (this.activeEngimon == null){
+            System.out.println("No active engimon");
             System.out.println("What are you going to do?");
-            System.out.println("1. Change Engimon");
-            System.out.println("2. Interact");
-            System.out.println("3. Back");
-            System.out.println("(choose the number)");
-            System.out.print("input : ");
+            System.out.println("1. Set an active engimon");
+            System.out.println("2. Back");
+            System.out.print("Choose the number : ");
             entry = sc.nextInt();
-            if (entry == 1) {
-                this.InventoryE.printAll(false);
-                System.out.print("Select the number : ");
-                int selected = System.in.read();
-                setActiveEngimon(selected-1);
-                break;
+            while (true) {
+                if (entry == 1) {
+                    this.InventoryE.printAll(false);
+                    System.out.print("Select the number : ");
+                    int selected = sc.nextInt();
+                    setActiveEngimon(selected-1);
+                    break;
+                }
+                else if (entry == 2) {
+                    break;
+                }
+                else {
+                    System.out.println("Invalid action");
+                }
             }
-		    else if (entry == 2) {
-                this.activeEngimon.interact();
-		    }
-            else if (entry == 3) {
-                break;
-            }
-            else {
-                System.out.println("Invalid action");
+        } 
+        else {
+            this.activeEngimon.printDetail();
+            while (true) {
+                System.out.println("What are you going to do?");
+                System.out.println("1. Change Engimon");
+                System.out.println("2. Interact");
+                System.out.println("3. Back");
+                System.out.print("Choose the number : ");
+                entry = sc.nextInt();
+                if (entry == 1) {
+                    this.InventoryE.printAll(false);
+                    System.out.print("Select the number : ");
+                    int selected = System.in.read();
+                    setActiveEngimon(selected-1);
+                    break;
+                }
+                else if (entry == 2) {
+                    this.activeEngimon.interact();
+                }
+                else if (entry == 3) {
+                    break;
+                }
+                else {
+                    System.out.println("Invalid action");
+                }
             }
         }
     }
@@ -102,7 +144,7 @@ public class Player {
                 int input = sc.nextInt();
                 if (input == 1){
                     Skill choosen = this.InventoryS.remove(idx);
-                    choosen.useSkill();
+                    this.activeEngimon.learnSkill(choosen);
                 } else if (input == 2){
                     return;
                 } else {
@@ -145,6 +187,18 @@ public class Player {
                 System.out.println("Invalid action");
             }
         }
+    }
+    
+    public void addEngimon(Engimon e) {
+        this.InventoryE.put(e);
+    }
+
+    public void addSkillItem(Skill e) {
+        this.InventoryE.put(e);
+    }
+
+    public Engimon getActiveEngimon(){
+        return this.activeEngimon;
     }
 }
 
