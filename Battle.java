@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Battle {
     private Player self;
     private Engimon opponent;
@@ -25,16 +27,23 @@ public class Battle {
         }
     }
 
-    private float calculateElementalAdvantage(Engimon myEngimon, Engimon opponet){
+    private float calculateElementalAdvantage(Engimon myEngimon, Engimon opponent){
+        float advantage;
+        myEngimon.getElement; 
 
-    }
+        return advantage;
+    }   
 
     private float calculateSkillPower(Engimon engimon){
+        float skillPower;
 
+        return skillPower;
     }
 
     private float calculateTotalPower(Engimon engimon){
+        float totalPower;
 
+        return totalPower;
     }
 
     public void battle(){
@@ -49,22 +58,33 @@ public class Battle {
             System.out.println("Your Engimon total power is" + myEngimonPower.toString());
             System.out.println("Your opponent total power is" + opponentPower.toString());
             // kasih opsi lanjut/ga
-            System.out.println("Do you want to continue?");
-            // case kalah
-            if (myEngimonPower < opponentPower) {
-                int engimonLife = myEngimon.getLife();
-                myEngimon.setLife(engimonLife-1); // tiap set life cek 0 atau ga
-                // nanti throw exception mungkin?
+            System.out.println("Do you want to continue? input 1 if yes, 0 if no");
+            Scanner sc = new Scanner(System.in);
+            int input = sc.nextInt();
+            if (input == 1) {
+                // case kalah
+                if (myEngimonPower < opponentPower) {
+                    int engimonLife = myEngimon.getLife();
+                    myEngimon.setLife(engimonLife-1); // tiap set life cek 0 atau ga
+                    if (myEngimon.getLife() == 0) {
+                        myEngimon.death();
+                        self.removeActiveEngimon();
+                    } 
+                    // nanti throw exception mungkin?
+                    // hilang 1 life
+                    // life 0 = mati, lanjut command
+                }
+                // case menang
+                else {
+                    // dapet engimon kalo cukup
+                    // dapet exp
+                    int exp = ;
+                    myEngimon.addExperience(exp);
+                    // dapet skill di slot pertama
+                }
+            } else {
+                System.out.println("Battle is cancelled!");
             }
-            else {
-                self
-            }
-                // hilang 1 life
-                // life 0 = mati, lanjut command
-            // case menang
-                // dapet engimon kalo cukup
-                // dapet exp
-                // dapet skill di slot pertama
         } else {
             System.out.println("No active Engimon detected! Battle is cancelled");
         }
