@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 public class Player {
     private Inventory<Engimon> InventoryE;
     private Inventory<Skill> InventoryS;

@@ -9,7 +9,7 @@ public class Battle {
         this.opponent = null;
     }
 
-    private boolean isEngimonAdjacent(Engimon myEngimon, Map map){ // nunggu isi map
+    private boolean isEngimonAdjacent(Engimon myEngimon, Peta map){ // nunggu isi map
         for (iterable_type iterable_element : iterable) {
             
         }

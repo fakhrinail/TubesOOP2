@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.cobaguitubes;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author abida
  */
-public abstract class Map {
+public abstract class Peta {
     public static char Tundra='1';
     public static char Sea='2';
     public static char Grassland='3';
@@ -22,7 +22,7 @@ public abstract class Map {
     private final String filename;
     ArrayList<ArrayList<Integer>> mapLayout; 
     
-    public Map(String filename){
+    public Peta(String filename){
         this.filename = filename;
         this.loadMap();
     }
