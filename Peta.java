@@ -14,15 +14,17 @@ import java.util.ArrayList;
  *
  * @author abida
  */
-public abstract class Peta {
+public class Peta {
     public static char Tundra='1';
     public static char Sea='2';
     public static char Grassland='3';
     public static char Mountain='4';
     private final String filename;
-    ArrayList<ArrayList<Integer>> mapLayout; 
-    
+    ArrayList<Cell> mapLayout;
+    Arra
+
     public Peta(String filename){
+        this.mapLayout = new ArrayList<>();
         this.filename = filename;
         this.loadMap();
     }
@@ -36,23 +38,45 @@ public abstract class Peta {
     
     private Boolean loadMap(){
         Boolean stats = true;
+        //System.out.println("welcome");
         try{
             File file = new File(filename);
             BufferedReader buff = new BufferedReader(new FileReader(file));
             String temp = buff.readLine();
+            int i =0 ;
             while(temp != null){
-                System.out.println(temp);
+                //int j;
+                CellType ctype;
+                for(int j=0;j<temp.length();j++){
+                    if(temp.charAt(j)==Tundra){
+                        ctype = CellType.TUNDRA;
+                    }else if(temp.charAt(j)==Mountain){
+                        ctype = CellType.MOUNTAIN;
+                    }else if(temp.charAt(j)==Sea){
+                        ctype = CellType.SEA;
+                    }else if(temp.charAt(j)==Tundra){
+                        ctype = CellType.TUNDRA;
+                    }else{
+                        throw  new PetaException();
+                    }
+                    mapLayout.add(new Cell(ctype,i,j));
+                }
+
+                i++;
                 temp = buff.readLine();
             }
         }catch(Exception e){
+            e.printStackTrace();
             stats = false;
         }finally{
+            //System.out.println("fin");
             return stats;
         }
     }
-    
-    
-    
+
+    private void generateEngimon(){
+
+    }
     
     
 }

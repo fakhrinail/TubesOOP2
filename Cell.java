@@ -5,6 +5,14 @@ public class Cell {
     private Engimon engimon;
     private Boolean player;
 
+    public Cell(CellType cellType, Integer x, Integer y){
+        this.cellType = cellType;
+        this.xLoc = x;
+        this.yLoc = y;
+        this.engimon = null;
+        this.player = false;
+    }
+
     public CellType getCellType() {
         return cellType;
     }
@@ -36,17 +44,12 @@ public class Cell {
     }
 
     public Boolean setPlayer(Player player){
-        return true
+        return true;
     }
 
+    public Boolean generateEngimon(){
+        if(this.engimon!=null || this.player = true) return false;
 
-    public Cell(CellType cellType, Integer x, Integer y){
-        this.cellType = cellType;
-        this.xLoc = x;
-        this.yLoc = y;
-        this.engimon = null;
-        this.player = false;
+        return true;
     }
-
-
 }
