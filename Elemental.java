@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Elemental {
-    private static Peta<String, Integer> elementalID;
+    private static Map<String, Integer> elementalID;
     private static double[][] elementalAdv;
     private String name;
     public static void loadElementals(){

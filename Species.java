@@ -50,11 +50,23 @@ public class Species {
     }
 
     public ArrayList<Skill> getSkills(){
-        return this.skills;
+        ArrayList<Skill> toReturn = new ArrayList<Skill>();
+        for (Skill skill : this.skills){
+            Skill toAdd = new Skill(skill);
+            toReturn.add(toAdd);
+        }
+
+        return toReturn;
     }
 
     public ArrayList<Elemental> getElementals(){
-        return this.elementals;
+        ArrayList<Elemental> toReturn = new ArrayList<Elemental>();
+        for (Elemental elemental : this.elementals){
+            Elemental toAdd = new Elemental(elemental.getName());
+            toReturn.add(toAdd);
+        }
+
+        return toReturn;
     }
 
     public String getInteraction(){
@@ -62,7 +74,8 @@ public class Species {
     }
 
     public void addSkill(Skill skill){
-        this.skills.add(skill);
+        Skill newSkill = new Skill(skill);
+        this.skills.add(newSkill);
     }
 
     public void addElemental(Elemental elemental){
