@@ -2,40 +2,57 @@ import java.util.*;
 
 public class Battle {
     private Player self;
+    private Engimon myEngimon;
     private Engimon opponent;
+    private Peta map;
 
     public Battle(Player self){
         this.self = self;
+        this.myEngimon = self.getActiveEngimon();
         this.opponent = null;
-    }
-
-    private boolean isEngimonAdjacent(Engimon myEngimon, Peta map){ // nunggu isi map
-        for (iterable_type iterable_element : iterable) {
-            
-        }
     }
 
     private boolean isEngimonActive(){
         return self.getActiveEngimon() != null;
     }
 
-    private Engimon getAdjacentEngimon(){
+    private ArrayList<Engimon> getAdjacentEngimons(){
         // nunggu map
         // kalo > 1 pilih yg mana
-        for (iterable_type iterable_element : iterable) { 
-            
+        ArrayList<Engimon> adjacentEngimons;
+        for (Engimon wildEngimon : map.listOfWildEngimon) { 
+            int wildX = wildEngimon.getEngimonX();
+            int wildY = wildEngimon.getEngimonY();
+            if (abs(wildX-self.getX()) + abs(wildEngimonY-self.getY()) <= 1) {
+                adjacentEngimons.add(wildEngimon);
+            }
         }
+
+        return adjacentEngimons;
     }
 
-    private float calculateElementalAdvantage(Engimon myEngimon, Engimon opponent){
-        float advantage;
-        myEngimon.getElement; 
+    private float calculateElementalAdvantage(){
+        float advantage = 0.0;
+        Elemental e1, e2;
+        int myElementCount = myEngimon.getElementals().size();
+        int oppElementCount = opponent.getElementals().size();
+        for (int i = 0; i < myElementCount; i++) {
+            for (int j = 0; j < oppElementCount; j++) {
+                e1 = myEngimon.getElementals().get(i);
+                e2 = opponent.getElementals().get(i);
+                advantage = max(advantage, e1.getAdv(e2));
+            }
+        }
 
         return advantage;
     }   
 
     private float calculateSkillPower(Engimon engimon){
-        float skillPower;
+        float skillPower = 0.0;
+        ArrayList<Skill> engimonSkills = engimon.getSkills();
+        for (Skill skill : engimonSkills) {
+            skillPower += skill.getMastery()*skill.getBasePower();
+        }
 
         return skillPower;
     }
@@ -48,10 +65,10 @@ public class Battle {
 
     public void battle(){
         if (isEngimonActive()) {
-            Engimon myEngimon = Player.getActiveEngimon();
+            Engimon myEngimon = self.getActiveEngimon();
             this.opponent = getAdjacentEngimon();
             // tampilkan status lawan
-            this.opponent.showDetail();
+            this.opponent.printDetail();
             Float opponentPower = calculateTotalPower(this.opponent);
             Float myEngimonPower = calculateTotalPower(myEngimon);
             // tampilkan total power
