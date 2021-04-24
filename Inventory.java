@@ -1,3 +1,4 @@
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Inventory <T extends InventoryItem> {
@@ -32,7 +33,7 @@ public class Inventory <T extends InventoryItem> {
         }
     }
 
-    public T remove(int idx){
+    public T remove(int idx) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
         if(0<=idx && idx<this.items.size()){
             this.totalItem--;
             if(this.amounts.get(idx) == 1){
@@ -41,7 +42,10 @@ public class Inventory <T extends InventoryItem> {
             }else{
                 Integer old = this.amounts.get(idx);
                 this.amounts.set(idx, old-1);
-                return this.items.get(idx);
+                T origin = this.items.get(idx);
+                Class<? extends InventoryItem> c = origin.getClass();
+                T copied = (T) c.getDeclaredConstructor().newInstance(origin);
+                return copied;
             }
         }else{
             System.out.println("Index out of range");

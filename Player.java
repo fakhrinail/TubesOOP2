@@ -122,7 +122,8 @@ public class Player {
                 System.out.println("Action available : ");
                 System.out.println("1. Set to active");
                 System.out.println("2. Interact");
-                System.out.println("3. Cancel");
+                System.out.println("3. Discard");
+                System.out.println("4. Cancel");
                 System.out.print("Choose number : ");
                 int input = sc.nextInt();
                 if (input == 1){
@@ -130,6 +131,18 @@ public class Player {
                 } else if (input == 2){
                     this.InventoryE.get(idx).interact();
                 } else if (input == 3){
+                    String name = this.InventoryE.get(idx).getName();
+                    System.out.print("Discard " + name + "? (Y/N) : ");
+                    String confirm = sc.nextLine();
+                    if (confirm.equals("Y") || confirm.equals("y")){
+                        Engimon dump = this.InventoryE.remove(idx);
+                        System.out.println("Successfully remove " + name + " from inventory");
+                    } else if (confirm.equals("N") || confirm.equals("n")){
+                        System.out.println("Discard canceled");
+                    } else {
+                        System.out.println("Invalid input. Discard canceled");
+                    }
+                } else if (input == 4){
                     return;
                 } else {
                     System.out.println("Invalid action");
@@ -139,13 +152,26 @@ public class Player {
                 this.InventoryS.get(idx).printDetail();
                 System.out.println("Action available : ");
                 System.out.println("1. Use Skill");
-                System.out.println("2. Cancel");
+                System.out.println("2. Discard");
+                System.out.println("3. Cancel");
                 System.out.print("Choose the number : ");
                 int input = sc.nextInt();
                 if (input == 1){
                     Skill choosen = this.InventoryS.remove(idx);
                     this.activeEngimon.learnSkill(choosen);
                 } else if (input == 2){
+                    String name = this.InventoryS.get(idx).getName();
+                    System.out.print("Discard " + name + "? (Y/N) : ");
+                    String confirm = sc.nextLine();
+                    if (confirm.equals("Y") || confirm.equals("y")){
+                        Skill dump = this.InventoryS.remove(idx);
+                        System.out.println("Successfully remove " + name + " from inventory");
+                    } else if (confirm.equals("N") || confirm.equals("n")){
+                        System.out.println("Discard canceled");
+                    } else {
+                        System.out.println("Invalid input. Discard canceled");
+                    }
+                } else if (input == 3){
                     return;
                 } else {
                     System.out.println("Invalid action");
@@ -193,8 +219,21 @@ public class Player {
         this.InventoryE.put(e);
     }
 
-    public void addSkillItem(Skill e) {
-        this.InventoryE.put(e);
+    public void addSkillItem(Skill s) {
+        this.InventoryS.put(s);
+    }
+
+    public void showCommands(){
+        System.out.println("Commands available :");
+        System.out.println("1. W");
+        System.out.println("2. A");
+        System.out.println("4. S");
+        System.out.println("5. D");
+        System.out.println("6. Inventory");
+        System.out.println("7. Manage Active Engimon");
+        System.out.println("8. Battle");
+        System.out.println("9. Breeding");
+        System.out.println("10. Exit");
     }
 
     public Engimon getActiveEngimon(){
