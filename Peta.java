@@ -112,12 +112,13 @@ public class Peta {
             Cell c = this.searchMap(nextX, nextY);
             Integer attemp = 0;
             //FIXME : tambahkan cek untuk Celltype sesuai degnan elemen engimoon
-            while(c==null && attemp<5 && (nextX!=0||nextY!=0) ){
+            while((c==null || (nextX==0&&nextY==0) || c.checkPlace(nextX, nextY,i.getSpecies()))&& attemp<5){
                 nextX = i.getEngimonX()+r.nextInt()%3-1;
                 nextY = i.getEngimonY()+r.nextInt()%3-1;
                 c = this.searchMap(nextX, nextY);
                 attemp++;
             }
+            editCellInMap(c);
             if(attemp<5){
                 i.setPos(nextX, nextY);
             }
@@ -167,5 +168,31 @@ public class Peta {
 
     public ArrayList<Engimon> getWildEngimons(){return this.wildEngimons;}
     
-    
+    public void editCellInMap(Cell c){
+        this.mapLayout.forEach(i -> {
+            if(i.checkPlace(c.getX(), c.getY())){
+                i.setEngimon(c.getEngimon());
+                if(!c.isEmpty() && c.getEngimon()==null){
+                    i.setPlayer();
+                }
+            }
+        });
+    }
+
+    public void editCellInMap(Integer x,Integer y, Engimon engimon){
+        this.mapLayout.forEach(i -> {
+            if(i.checkPlace(x,y)){
+                i.setEngimon(engimon);
+            }
+        });
+    }
+
+    public void editCellInMap(Integer x,Integer y, Boolean setPlayer){
+        this.mapLayout.forEach(i -> {
+            if(i.checkPlace(x,y)){
+                i.setEmpty();
+                i.setPlayer();
+            }
+        });
+    }
 }
