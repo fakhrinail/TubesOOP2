@@ -50,7 +50,7 @@ public class Player {
     public void setActiveEngimon(int idx){
         Engimon choosen = this.InventoryE.remove(idx);
         if (this.activeEngimon != null){
-            choosen.setPos(this.activeEngimon.getX(), this.activeEngimon.getY());
+            choosen.setPos(this.activeEngimon.getEngimonX(), this.activeEngimon.getEngimonY());
             this.activeEngimon.setPos(-1, -1);
             this.InventoryE.put(this.activeEngimon);
         }

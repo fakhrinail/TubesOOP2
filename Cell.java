@@ -58,11 +58,11 @@ public class Cell {
     }
 
     public Boolean checkPlace(int x,int y){
-        return this.getX()==x && this.getY==y;
+        return this.getX()==x && this.getY()==y;
     }
 
     public Boolean checkPlace(int x,int y, String Species){
-        Boolean a = this.getX()==x && this.getY==y;
+        Boolean a = this.getX()==x && this.getY()==y;
         
         return a;
     }
