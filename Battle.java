@@ -77,8 +77,10 @@ public class Battle {
             int input = scanner.nextInt();
             if (input < 1 || input > adjacentEngimons.size()) {
                 System.out.println("Invalid input");
+                scanner.close();
                 return null;
             } else {
+                scanner.close();
                 return adjacentEngimons.get(input-1);
             }
         }
