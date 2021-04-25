@@ -112,7 +112,7 @@ public class Peta {
             Cell c = this.searchMap(nextX, nextY);
             Integer attemp = 0;
             //FIXME : tambahkan cek untuk Celltype sesuai degnan elemen engimoon
-            while(c==null && attemp<5 && (nextX!=0||nextY!=0)){
+            while(c==null && attemp<5 && (nextX!=0||nextY!=0) ){
                 nextX = i.getEngimonX()+r.nextInt()%3-1;
                 nextY = i.getEngimonY()+r.nextInt()%3-1;
                 c = this.searchMap(nextX, nextY);
@@ -158,7 +158,7 @@ public class Peta {
         this.playerY = p.getPlayerY();
     }
 
-    private Cell searchMap(int x, int y){
+    public Cell searchMap(int x, int y){
         for(Cell c:mapLayout){
             if(c.checkPlace(x, y)){return c;}
         }
