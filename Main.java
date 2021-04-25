@@ -1,7 +1,8 @@
-import javax.lang.model.element.Element;
+import javax.swing.*;
 
 class Main {
     public static void main(String[] args){
-        Peta pet = new Peta("files/peta.txt");
+        GamePage frame = new GamePage();
+        frame.initComponent();
     }
 }
