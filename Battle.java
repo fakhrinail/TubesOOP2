@@ -17,17 +17,17 @@ public class Battle {
     }
 
     private ArrayList<Engimon> getAdjacentEngimons(){
-        // nunggu map
-        // kalo > 1 pilih yg mana
-        ArrayList<Engimon> wildEngimons = map.
-        ArrayList<Engimon> adjacentEngimons = null;
-        // for (Engimon wildEngimon : map.listOfWildEngimon) { 
-        //     int wildX = wildEngimon.getEngimonX();
-        //     int wildY = wildEngimon.getEngimonY();
-        //     if (abs(wildX-self.getX()) + abs(wildEngimonY-self.getY()) <= 1) {
-        //         adjacentEngimons.add(wildEngimon);
-        //     }
-        // }
+        ArrayList<Engimon> wildEngimons = map.getWildEngimons();
+        ArrayList<Engimon> adjacentEngimons = new ArrayList<Engimon>();
+        int playerX = self.getPlayerX();
+        int playerY = self.getPlayerY();
+        for (Engimon wildEngimon : wildEngimons) { 
+            int wildX = wildEngimon.getEngimonX();
+            int wildY = wildEngimon.getEngimonY();
+            if (Math.abs(wildX-playerX) + Math.abs(wildY-playerY) <= 1) {
+                adjacentEngimons.add(wildEngimon);
+            }
+        }
 
         return adjacentEngimons;
     }
@@ -52,16 +52,36 @@ public class Battle {
         double skillPower = 0.0;
         ArrayList<Skill> engimonSkills = engimon.getSkills();
         for (Skill skill : engimonSkills) {
-            // skillPower += skill.getMastery()*skill.getBasePower();
+            skillPower += skill.getMastery()*skill.getBasePower();
         }
 
         return skillPower;
     }
 
     private Engimon chooseOpponent(ArrayList<Engimon> adjacentEngimons) {
-        Engimon opponent = adjacentEngimons.get(0);
+        if (adjacentEngimons.size() == 0) {
+            System.out.println("No adjacent Engimon");
+            return null;
+        }
+        else if (adjacentEngimons.size() == 1) {
+            return adjacentEngimons.get(0);
+        }
+        else {
+            System.out.println("There are multiple Engimons near you");
+            System.out.print("Choose one you want to battle with");
+            for (int i = 0; i < adjacentEngimons.size(); i++) {
+                System.out.println((i+1) + adjacentEngimons.get(i).getName());
+            }
 
-        return opponent;
+            Scanner scanner = new Scanner(System.in);
+            int input = scanner.nextInt();
+            if (input < 1 || input > adjacentEngimons.size()) {
+                System.out.println("Invalid input");
+                return null;
+            } else {
+                return adjacentEngimons.get(input-1);
+            }
+        }
     }
 
     public void battle(){
@@ -95,13 +115,12 @@ public class Battle {
                 }
                 // case menang
                 else {
-                    // dapet engimon kalo cukup
-                    // dapet exp
                     int exp = opponent.getLevel()*100/myEngimon.getLevel();
                     myEngimon.addExperience(exp);
-                    // dapet skill di slot pertama
                     Skill rewardSkill = opponent.getSkills().get(0);
                     self.addSkillItem(rewardSkill);
+                    self.addEngimon(opponent);
+                    map.deleteEngimon(opponent);
                 }
             } else {
                 System.out.println("Battle is cancelled!");
