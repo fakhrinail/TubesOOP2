@@ -20,10 +20,9 @@ public class Engimon extends Species implements Move, InventoryItem{
     this.engimonX = -1; this.engimonY = -1;
   }
   
-  public Engimon(String[] SpeciesInfo, String interaction, KoleksiSkill allSkill,
-  String name, String parent1Species, String parent1Name, String parent2Species, 
-  String parent2Name, int life, int level){
-    super(SpeciesInfo, interaction, allSkill);
+  public Engimon(Species other, String name, String parent1Species, String parent1Name, 
+  String parent2Species, String parent2Name, int life, int level){
+    super(other);
     this.name = name;
     this.parentNames = new ArrayList<String>(2);
     this.parentNames.add(parent1Name); this.parentNames.add(parent2Name);
@@ -36,13 +35,12 @@ public class Engimon extends Species implements Move, InventoryItem{
 
   //Copy
   public Engimon(Engimon other){
-    super(other.getSpecies(), other.getSkills(), other.getElementals(), other.getInteraction()); // ini gimana ya supernya
+    super(other.getSpecies(), other.getSkills(), other.getElementals(), other.getInteraction());
     this.name = other.getName();
     this.parentNames = new ArrayList<String>(2);
-    ArrayList<String> parents = getParents();
-    this.parentNames.add(parents.get(0)); this.parentNames.add(parents.get(2));
+    this.parentNames.addAll(other.getParentNames());
     this.parentSpecies = new ArrayList<String>(2);
-    this.parentSpecies.add(parents.get(1)); this.parentSpecies.add(parents.get(3));
+    this.parentSpecies.addAll(other.getParentSpecies());
     this.life = other.getLife(); this.level = other.getLevel();
     this.experience = other.getExperience(); this.cumulativeExperience = other.getCumulativeExperience();
     this.engimonX = other.getEngimonX(); this.engimonY = other.getEngimonY();
@@ -53,10 +51,16 @@ public class Engimon extends Species implements Move, InventoryItem{
     return this.name;
   }
 
-  public ArrayList<String> getParents(){
+  public ArrayList<String> getParentNames(){
     ArrayList<String> toReturn = new ArrayList<String>();
-    toReturn.add(parentNames.get(0)); toReturn.add(parentSpecies.get(0));
-    toReturn.add(parentNames.get(1)); toReturn.add(parentSpecies.get(1));
+    toReturn.addAll(this.parentNames);
+
+    return toReturn;
+  }
+
+  public ArrayList<String> getParentSpecies(){
+    ArrayList<String> toReturn = new ArrayList<String>();
+    toReturn.addAll(this.parentSpecies);
 
     return toReturn;
   }
@@ -209,6 +213,13 @@ public class Engimon extends Species implements Move, InventoryItem{
       System.out.println("Parent "+(i+1));
       System.out.println("Nama: "+this.parentNames.get(i));
       System.out.println("Species "+this.parentSpecies.get(i));
+    }
+    int j=0;
+    for (Skill a : this.getSkills()){
+      System.out.print("Skill "+j+" ");
+      a.printDetail();
+      System.out.println();
+      j++;
     }
     System.out.println("Level "+this.level);
     System.out.println("Experience "+this.experience+"/100");

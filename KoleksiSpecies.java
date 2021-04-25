@@ -28,4 +28,8 @@ public class KoleksiSpecies {
             System.out.println();
         });
     }
+
+    public ArrayList<Species> getAllSpecies(){
+        return this.allSpecies;
+    }
 }

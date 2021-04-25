@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.module": "php",
+        "chrono": "cpp",
+        "complex": "cpp"
+    }
+}

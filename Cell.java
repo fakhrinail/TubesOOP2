@@ -5,23 +5,31 @@ public class Cell {
     private Engimon engimon;
     private Boolean player;
 
+    public Cell(CellType cellType, Integer x, Integer y){
+        this.cellType = cellType;
+        this.xLoc = x;
+        this.yLoc = y;
+        this.engimon = null;
+        this.player = false;
+    }
+
     public CellType getCellType() {
         return cellType;
     }
 
-    public Integer getxLoc() {
+    public Integer getX() {
         return xLoc;
     }
 
-    public void setx(Integer xLoc) {
+    public void setX(Integer xLoc) {
         this.xLoc = xLoc;
     }
 
-    public Integer gety() {
+    public Integer getY() {
         return yLoc;
     }
 
-    public void sety(Integer yLoc) {
+    public void setY(Integer yLoc) {
         this.yLoc = yLoc;
     }
 
@@ -35,17 +43,32 @@ public class Cell {
         return true;
     }
 
-    public Boolean setPlayer(Player player){
-        return true
+    public Boolean setPlayer(){
+        if(this.engimon!=null){
+            this.player = true;
+            return this.player;
+        }
+
+        return false;
     }
 
-
-    public Cell(CellType cellType, Integer x, Integer y){
-        this.cellType = cellType;
-        this.xLoc = x;
-        this.yLoc = y;
+    public void setEmpty(){
         this.engimon = null;
         this.player = false;
+    }
+
+    public Boolean checkPlace(int x,int y){
+        return this.getX()==x && this.getY()==y;
+    }
+
+    public Boolean checkPlace(int x,int y, String Species){
+        Boolean a = this.getX()==x && this.getY()==y;
+        
+        return a;
+    }
+
+    public Boolean isEmpty(){
+        return this.engimon==null&& this.player==false;
     }
 
 
