@@ -32,6 +32,9 @@ public class Skill implements InventoryItem {
     public String getName(){
         return this.name;
     }
+    public int getBasePower(){
+        return this.basePower;
+    }
     public int getMastery() {
         return this.mastery;
     }

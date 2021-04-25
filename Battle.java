@@ -19,6 +19,7 @@ public class Battle {
     private ArrayList<Engimon> getAdjacentEngimons(){
         // nunggu map
         // kalo > 1 pilih yg mana
+        ArrayList<Engimon> wildEngimons = map.
         ArrayList<Engimon> adjacentEngimons = null;
         // for (Engimon wildEngimon : map.listOfWildEngimon) { 
         //     int wildX = wildEngimon.getEngimonX();
