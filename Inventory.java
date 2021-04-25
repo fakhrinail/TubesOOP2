@@ -3,20 +3,20 @@ import java.util.*;
 public class Inventory <T extends InventoryItem> {
     private static int totalItem;
     private static int maxItem = 30;
-    private List<T> items;
-    private List<Integer> amounts;
+    private ArrayList<T> items;
+    private ArrayList<Integer> amounts;
     
     public Inventory(){
         this.items = new ArrayList<T>();
         this.amounts = new ArrayList<Integer>();
-        this.totalItem = 0;
+        totalItem = 0;
     }
 
     public void put(T toPut){
         if(totalItem == maxItem){
             System.out.println("Inventory full");
         }else{
-            this.totalItem++;
+            totalItem++;
             int idx = this.items.size();
             while(idx>0 && toPut.compareTo(this.items.get(idx-1)) == 0 && !toPut.equals(this.items.get(idx-1))){
                 idx--;
@@ -33,11 +33,11 @@ public class Inventory <T extends InventoryItem> {
 
     public T remove(int idx) throws IndexOutOfBoundsException {
         if(this.amounts.get(idx) == 1){
-            this.totalItem--;
+            totalItem--;
             this.amounts.remove(idx);
             return this.items.remove(idx);
         }else{
-            this.totalItem--;
+            totalItem--;
             int old = this.amounts.get(idx);
             this.amounts.set(idx, old - 1);
             return this.items.get(idx);
@@ -57,7 +57,7 @@ public class Inventory <T extends InventoryItem> {
             int old = this.amounts.get(idx);
             this.amounts.set(idx, old - amount);
         }
-        this.totalItem -= amount;
+        totalItem -= amount;
         System.out.println("Successfully remove " + amount + " " + name + " from inventory\n");
     }
 

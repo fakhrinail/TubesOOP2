@@ -4,6 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GamePage extends JFrame implements ActionListener{
+    //UI Components
     private JLabel[][] peta;
     private JButton wButton;
     private JButton aButton;
@@ -13,8 +14,29 @@ public class GamePage extends JFrame implements ActionListener{
     private JLabel player;
     private JButton engimons;
     private JButton skills;
-
     private JLayeredPane layeredPane;
+
+    private static final int maxInventoryItem = 10;
+    private JLabel popUp;
+    private JLabel popUpTitle;
+    private int whichPopUp;
+    private JLabel[] inventoryInfos;
+    private JButton[] inventoryActions;
+
+    //Game Components
+    private KoleksiSpecies allSpecies;
+    private Player gamePlayer;
+
+    public void initGamestate(String filePath){
+        Elemental.loadElementals("files/elementals.txt");
+        this.allSpecies = new KoleksiSpecies("files/species.txt");
+        if(filePath.equals("")){//New Game
+            Engimon starter = new Engimon(this.allSpecies.getSpeciesbyName("Narutomon"), "starterMon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 1);
+            this.gamePlayer = new Player(starter);
+        }else{//Load Game
+            
+        }
+    }
 
     public void initComponent(){
 
@@ -40,7 +62,7 @@ public class GamePage extends JFrame implements ActionListener{
             }
         }
 
-        ImageIcon playerIcon = new ImageIcon("player.png");
+        ImageIcon playerIcon = new ImageIcon("/player.png");
 
         this.player = new JLabel();
         this.player.setIcon(playerIcon);
@@ -85,19 +107,53 @@ public class GamePage extends JFrame implements ActionListener{
         this.engimons = new JButton();
         this.engimons.setBounds(25, 100, 150, 50);
         this.engimons.setText("Engimons");
+        this.engimons.addActionListener(this);
         this.engimons.setFocusable(false);
         this.layeredPane.add(this.engimons);
 
         this.skills = new JButton();
         this.skills.setBounds(25, 175, 150, 50);
         this.skills.setText("Skills");
+        this.skills.addActionListener(this);
         this.skills.setFocusable(false);
         this.layeredPane.add(this.skills);
+
+
+        //Popup Items
+        this.whichPopUp = 0;
+        this.popUp = new JLabel();
+        this.popUp.setBounds(200, 0, 500, 700);
+        this.popUp.setBackground(Color.GRAY);
+        this.popUp.setOpaque(true);
+        this.layeredPane.add(this.popUp, Integer.valueOf(2));
+
+        this.popUpTitle = new JLabel();
+        this.popUpTitle.setBounds(200, 0, 500, 100);
+        this.popUpTitle.setBackground(Color.GRAY);
+        this.popUpTitle.setOpaque(true);
+        this.popUpTitle.setText(this.gamePlayer.getActiveEngimon().printDetail());
+        this.layeredPane.add(this.popUpTitle, Integer.valueOf(3));
+
+        this.inventoryInfos = new JLabel[maxInventoryItem];
+        this.inventoryActions = new JButton[maxInventoryItem];
+        for(int i=0; i<maxInventoryItem; i++){
+            this.inventoryInfos[i] = new JLabel();
+            this.inventoryInfos[i].setBounds(200, 100+50*i, 350, 50);
+            this.inventoryInfos[i].setOpaque(true);
+            this.inventoryInfos[i].setBackground(Color.GRAY);
+            this.layeredPane.add(this.inventoryInfos[i], Integer.valueOf(3));
+
+            this.inventoryActions[i] = new JButton();
+            this.inventoryActions[i].setBounds(600, 100+50*i, 100, 50);
+            this.inventoryActions[i].addActionListener(this);
+            this.inventoryActions[i].setFocusable(false);
+            this.layeredPane.add(this.inventoryActions[i], Integer.valueOf(3));
+        }
+        this.setPopUp(0);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(750,550);
+        this.setSize(750,750);
         this.add(this.layeredPane);
-        
         this.setVisible(true);
     }
 
@@ -122,6 +178,39 @@ public class GamePage extends JFrame implements ActionListener{
             for(int i=0; i<50; i++){
                 this.player.setLocation(this.player.getX()+1, this.player.getY());
             }
+        }
+        if(e.getSource() == this.engimons){
+            if(this.whichPopUp == 1){
+                this.setPopUp(0);
+            }else{
+                this.setPopUp(1);
+            }
+            System.out.println(this.whichPopUp);
+        }
+        if(e.getSource() == this.skills){
+            if(this.whichPopUp == 2){
+                this.setPopUp(0);
+                System.out.println("tutup inventory");
+            }else{
+                this.setPopUp(2);
+                System.out.println("Buka inventory");
+            }
+        }
+        
+    }
+    private void setPopUp(int ID){
+        this.whichPopUp = ID;
+        this.popUp.setVisible(ID>0);
+        this.popUpTitle.setVisible(ID>0);
+        for(int i=0; i<maxInventoryItem; i++){
+            this.inventoryInfos[i].setVisible(ID>0);
+            this.inventoryActions[i].setVisible(ID>0);
+        }
+        if(ID == 1){
+            
+        }
+        if(ID == 2){
+            
         }
     }
 }

@@ -2,14 +2,14 @@ import java.util.*;
 import java.io.*;
 
 public class Elemental {
-    private static Map<String, Integer> elementalID;
+    private static HashMap<String, Integer> elementalID;
     private static double[][] elementalAdv;
     private String name;
-    public static void loadElementals(){
+    public static void loadElementals(String filepath){
         elementalID = new HashMap<String, Integer>();      
         try{
             //use buffer to make input more efficient, instead plain filereader
-            Scanner file = new Scanner(new BufferedReader(new FileReader("files/elementals.txt")));
+            Scanner file = new Scanner(new BufferedReader(new FileReader(filepath)));
             Integer nbElementals = Integer.parseInt(file.nextLine());
             String[] elementalNames = file.nextLine().trim().split(" ");
             for(int i=0; i<nbElementals; i++){
@@ -32,6 +32,14 @@ public class Elemental {
             System.out.println("Nama file yang anda masukkan salah");
         }
     }
+
+    //For debugging
+    public static void printAll(){
+        for(String s : elementalID.keySet()){
+            System.out.println(s);
+        }
+    }
+
     public Elemental(String name){
         this.name = name;
     }

@@ -5,6 +5,7 @@ import javax.lang.model.element.Element;
 class Main {
     public static void main(String[] args){
         GamePage frame = new GamePage();
+        frame.initGamestate("");
         frame.initComponent();
         /*
         Elemental.loadElementals();

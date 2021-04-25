@@ -7,12 +7,11 @@ public class Player {
     private int playerX, playerY;
     private Engimon activeEngimon;
 
-    public Player(){
+    public Player(Engimon active){
         this.playerX = 0;
         this.playerY = 0;
-        this.activeEngimon = null;
-        //new Engimon("Wildcard", "startermon", "dewa", "zeus", "dewi", "athena", "lets roll cuk", 100, 10);
-        //this.activeEngimon.setPos(0, 1);
+        this.activeEngimon = active;
+        this.activeEngimon.setPos(0, 1);
         this.InventoryE = new Inventory<Engimon>();
         this.InventoryS = new Inventory<Skill>();
     }

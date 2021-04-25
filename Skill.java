@@ -4,15 +4,16 @@ public class Skill implements InventoryItem {
     private String name;
     private int mastery;
     private int basePower;
-    private List<Elemental> compatibles;
+    private ArrayList<Elemental> compatibles;
     
-    public Skill(String[] SkillInfo){
-        this.name = SkillInfo[0];
+    public Skill(String info){
+        String[] skillInfo = info.trim().split(",");
+        this.name = skillInfo[0];
         this.mastery = 1;
-        this.basePower = Integer.parseInt(SkillInfo[1]);
+        this.basePower = Integer.parseInt(skillInfo[1]);
         this.compatibles = new ArrayList<Elemental>();
-        for(int i=2; i<SkillInfo.length; i++){
-            Elemental toAdd = new Elemental(SkillInfo[i]);
+        for(int i=2; i<skillInfo.length; i++){
+            Elemental toAdd = new Elemental(skillInfo[i]);
             this.compatibles.add(toAdd);
         }
     }
@@ -52,11 +53,14 @@ public class Skill implements InventoryItem {
     }
 
     //Realisasi InventoryItem
-    public void printDetail(){
-        System.out.print(basePower);
-        System.out.print("/");
-        System.out.print(mastery);
-        System.out.print("/" + name);
+    public String printDetail(){
+        String toReturn = "";
+        toReturn += Integer.toString(this.basePower);
+        toReturn += "/";
+        toReturn += Integer.toString(this.mastery);
+        toReturn += "/";
+        toReturn += this.name;
+        return toReturn;
     }
     public int getComparator1(){
         return this.basePower;

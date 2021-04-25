@@ -1,10 +1,10 @@
 import java.util.*;
 
 public class Species {
-    private String species;
-    private ArrayList<Skill> skills;
-    private ArrayList<Elemental> elementals; 
-    private String interaction;
+    public String species;
+    public ArrayList<Skill> skills;
+    public ArrayList<Elemental> elementals; 
+    public String interaction;
 
     public Species(){
         this.species = "Default";
@@ -13,15 +13,17 @@ public class Species {
         this.interaction = "Default";
     }
     
-    public Species(String[] SpeciesInfo, String interaction, KoleksiSkill allSkill){
-        this.species = SpeciesInfo[0];
+    public Species(String info){
+        String[] speciesInfo = info.trim().split(";");
+        this.species = speciesInfo[0];
         this.skills = new ArrayList<Skill>();
-        this.skills.add(allSkill.getSkill(SpeciesInfo[1]));
+        this.skills.add(new Skill(speciesInfo[1]));
+        this.interaction = speciesInfo[2];
+        String[] skillInfo = speciesInfo[1].split(",");
         this.elementals = new ArrayList<Elemental>();
-        for(int i=2; i<SpeciesInfo.length; i++){
-            this.elementals.add(new Elemental(SpeciesInfo[i]));
+        for(int i=2; i<skillInfo.length; i++){
+            this.elementals.add(new Elemental(skillInfo[i]));
         }
-        this.interaction = interaction;
     }
 
     public Species(String species, ArrayList<Skill> skills, ArrayList<Elemental> elementals, String interaction){
