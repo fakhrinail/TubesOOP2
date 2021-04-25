@@ -68,7 +68,7 @@ public class Cell {
             b = true;
         }else if(this.cellType.equals(CellType.SEA) && species.equalsIgnoreCase("sea")){
             b = true;
-        }else if(this.cellType.equals(CellType.WATER) && species.equalsIgnoreCase("grassland")){
+        }else if(this.cellType.equals(CellType.GRASSLAND) && species.equalsIgnoreCase("grassland")){
             b = true;
         }else if(this.cellType.equals(CellType.TUNDRA) && species.equalsIgnoreCase("tundra")){
             b = true;
