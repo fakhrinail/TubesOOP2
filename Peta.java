@@ -39,7 +39,12 @@ public class Peta {
     }
 
     public Peta(String filename,Integer maxWildEngimon, ArrayList<Species> listSpesies){
-        Peta(filename,wildEngimons);
+        this.mapLayout = new ArrayList<>();
+        this.filename = filename;
+        this.loadMap();
+        this.wildEngimons = new ArrayList<>();
+        this.playerX = 0; this.playerY=0;
+        this.maxWildEngimon = maxWildEngimon;
         this.listSpesies = listSpesies;
     }
     
