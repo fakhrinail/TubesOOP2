@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -26,6 +27,7 @@ public class Peta {
     private ArrayList<Engimon> wildEngimons;
     private Integer playerX, playerY;
     private Integer maxWildEngimon;
+    private ArrayList<Species> listSpesies = new ArrayList<>();
 
     public Peta(String filename,Integer maxWildEngimon){
         this.mapLayout = new ArrayList<>();
@@ -34,6 +36,11 @@ public class Peta {
         this.wildEngimons = new ArrayList<>();
         this.playerX = 0; this.playerY=0;
         this.maxWildEngimon = maxWildEngimon;
+    }
+
+    public Peta(String filename,Integer maxWildEngimon, ArrayList<Species> listSpesies){
+        Peta(filename,wildEngimons);
+        this.listSpesies = listSpesies;
     }
     
     public static final void setMapIcon(char tundra, char sea, char grassLand, char mountain){
@@ -96,7 +103,19 @@ public class Peta {
             if(attemp<5){
                 CellType ct = cl.getCellType();
                 //tambah random engimon sesuai dengan tipe cell
-                Engimon eng = new Engimon();
+                Species spc = new Species();
+                if(ct.equals(CellType.GRASSLAND)){
+                    spc= this.listSpesies.stream()
+                    .filter(i-> i.getSpecies().equalsIgnoreCase("Groundmon") || i.getSpecies().equalsIgnoreCase("Electricmon"))
+                    .findFirst().get();
+                }else  if(ct.equals(CellType.MOUNTAIN)){
+                    spc= this.listSpesies.stream().filter(i-> i.getSpecies().equalsIgnoreCase("Firemon")).findFirst().get();
+                }else if(ct.equals(CellType.SEA)){  
+                    spc= this.listSpesies.stream().filter(i-> i.getSpecies().equalsIgnoreCase("Watermon")).findFirst().get();
+                }else if(ct.equals(CellType.TUNDRA)){
+                    spc= this.listSpesies.stream().filter(i-> i.getSpecies().equalsIgnoreCase("Icemon")).findFirst().get();
+                }
+                Engimon eng = new Engimon(spc, "Randommon","","","","",3,1+(maxWildEngimon/3)%10);
                 eng.setPos(cl.getX(), cl.getY());
                 this.wildEngimons.add(eng);
             }
@@ -112,6 +131,7 @@ public class Peta {
             Cell c = this.searchMap(nextX, nextY);
             Integer attemp = 0;
             //FIXME : tambahkan cek untuk Celltype sesuai degnan elemen engimoon
+            //FIXME DONE
             while((c==null || (nextX==0&&nextY==0) || c.checkPlace(nextX, nextY,i.getSpecies()))&& attemp<5){
                 nextX = i.getEngimonX()+r.nextInt()%3-1;
                 nextY = i.getEngimonY()+r.nextInt()%3-1;
