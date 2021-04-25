@@ -6,6 +6,7 @@ class Main {
     public static void main(String[] args){
         GamePage frame = new GamePage();
         frame.initComponent();
+        /*
         Elemental.loadElementals();
         KoleksiSkill listSkill = new KoleksiSkill();
         Skill tes1 = listSkill.getSkill("Fireball");
@@ -27,4 +28,6 @@ class Main {
         me.manageActiveEngimon(sc);
         me.openInventory(sc);
         me.manageActiveEngimon(sc);
+        */
+    }
 }
