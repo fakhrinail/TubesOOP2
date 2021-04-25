@@ -17,19 +17,19 @@ public class Cell {
         return cellType;
     }
 
-    public Integer getxLoc() {
+    public Integer getX() {
         return xLoc;
     }
 
-    public void setx(Integer xLoc) {
+    public void setX(Integer xLoc) {
         this.xLoc = xLoc;
     }
 
-    public Integer gety() {
+    public Integer getY() {
         return yLoc;
     }
 
-    public void sety(Integer yLoc) {
+    public void setY(Integer yLoc) {
         this.yLoc = yLoc;
     }
 
@@ -47,9 +47,20 @@ public class Cell {
         return true;
     }
 
-    public Boolean generateEngimon(){
-        if(this.engimon!=null || this.player = true) return false;
-
-        return true;
+    public void setEmpty(){
+        this.engimon = null;
+        this.player = false;
     }
+
+    public Boolean checkPlace(int x,int y){
+        return this.getX()==x && this.getY==y;
+    }
+
+    public Boolean checkPlace(int x,int y, String Species){
+        Boolean a = this.getX()==x && this.getY==y;
+        
+        return a;
+    }
+
+
 }

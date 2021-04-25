@@ -201,6 +201,9 @@ public class Player {
     public Engimon getActiveEngimon(){
         return this.activeEngimon;
     }
+
+    public int getPlayerX(){return this.playerX;}
+    public int getPlayerY(){return this.playerY;}
 }
 
 

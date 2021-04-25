@@ -4,11 +4,12 @@
  * and open the template in the editor.
  */
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+
+import jdk.nashorn.api.tree.Tree;
 
 /**
  *
@@ -20,13 +21,16 @@ public class Peta {
     public static char Grassland='3';
     public static char Mountain='4';
     private final String filename;
-    ArrayList<Cell> mapLayout;
-    Arra
+    private ArrayList<Cell> mapLayout;
+    private ArrayList<Engimon> wildEngimons;
+    Integer playerX, playerY;
 
     public Peta(String filename){
         this.mapLayout = new ArrayList<>();
         this.filename = filename;
         this.loadMap();
+        this.wildEngimons = new ArrayList<>();
+        this.playerX = 0; this.playerY=0;
     }
     
     public static final void setMapIcon(char tundra, char sea, char grassLand, char mountain){
@@ -74,9 +78,44 @@ public class Peta {
         }
     }
 
-    private void generateEngimon(){
+    public void generateEngimon(){
 
     }
+
+    public void randomEngimon(){
+
+    }
+
+    public void deleteEngimon(Engimon engimon){
+        if (this.wildEngimons.contains(engimon)){
+            
+        }
+    }
+
+    private void rebuildMap(){
+        this.mapLayout.forEach(i -> {
+            if(!i.checkPlace(playerX, playerY)){
+                i.setEmpty();
+            }
+        });
+        this.wildEngimons.forEach(i->{
+            int j =0;
+            boolean flag = false;
+            while(!flag && j<this.mapLayout.size()){
+                if(mapLayout.get(j).checkPlace(i.getEngimonX(), i.getEngimonY())){
+                    mapLayout.get(j).setEngimon(i); flag = true;
+                }
+                j++;
+            }
+        });
+
+    }
+
+    public void setPlayerPos(Player p){
+        this.playerX = p.getPlayerX();
+        this.playerY = p.getPlayerY();
+    }
+
     
     
 }
