@@ -167,6 +167,7 @@ public class Peta {
         return null;
     }
 
+    public ArrayList<Engimon> getWildEngimons(){return this.wildEngimons;}
     
     
 }
