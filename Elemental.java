@@ -4,13 +4,14 @@ import java.io.*;
 public class Elemental {
     private static HashMap<String, Integer> elementalID;
     private static double[][] elementalAdv;
+    public static int nbElementals;
     private String name;
     public static void loadElementals(String filepath){
         elementalID = new HashMap<String, Integer>();      
         try{
             //use buffer to make input more efficient, instead plain filereader
             Scanner file = new Scanner(new BufferedReader(new FileReader(filepath)));
-            Integer nbElementals = Integer.parseInt(file.nextLine());
+            nbElementals = Integer.parseInt(file.nextLine());
             String[] elementalNames = file.nextLine().trim().split(" ");
             for(int i=0; i<nbElementals; i++){
                 elementalID.put(elementalNames[i], i+1);

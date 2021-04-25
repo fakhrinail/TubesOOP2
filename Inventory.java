@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Inventory <T extends InventoryItem> {
     private static int totalItem;
-    private static int maxItem = 30;
+    private static int maxItem = 20;
     private ArrayList<T> items;
     private ArrayList<Integer> amounts;
     
@@ -18,7 +18,7 @@ public class Inventory <T extends InventoryItem> {
         }else{
             totalItem++;
             int idx = this.items.size();
-            while(idx>0 && toPut.compareTo(this.items.get(idx-1)) == 0 && !toPut.equals(this.items.get(idx-1))){
+            while(idx>0 && toPut.compareTo(this.items.get(idx-1)) > 0 && !toPut.equals(this.items.get(idx-1))){
                 idx--;
             }
             if(idx > 0 && toPut.equals(this.items.get(idx-1))){
@@ -69,15 +69,16 @@ public class Inventory <T extends InventoryItem> {
         return this.amounts.get(idx);
     }
 
-    public void printAll(boolean withAmount){
+    public ArrayList<String> printAll(boolean withAmount){
+        ArrayList<String> toReturn = new ArrayList<String>();
         for(int i=0; i<this.items.size(); i++){
-            System.out.print(i+1);
-            System.out.print(". " + this.items.get(i).getName());
+            String toAdd = this.items.get(i).printDetail();
             if(withAmount){
-                System.out.print(" -- You have : ");
-                System.out.print(this.amounts.get(i));
+                toAdd += " -- You have : ";
+                toAdd += Integer.toString(this.amounts.get(i));
             }
-            System.out.println();
+            toReturn.add(toAdd);
         }
+        return toReturn;
     }
 }

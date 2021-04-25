@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.event.*;
+import java.util.*;
 
 import javax.swing.*;
 
@@ -16,7 +17,7 @@ public class GamePage extends JFrame implements ActionListener{
     private JButton skills;
     private JLayeredPane layeredPane;
 
-    private static final int maxInventoryItem = 10;
+    private static final int maxInventoryItem = 20;
     private JLabel popUp;
     private JLabel popUpTitle;
     private int whichPopUp;
@@ -33,6 +34,20 @@ public class GamePage extends JFrame implements ActionListener{
         if(filePath.equals("")){//New Game
             Engimon starter = new Engimon(this.allSpecies.getSpeciesbyName("Narutomon"), "starterMon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 1);
             this.gamePlayer = new Player(starter);
+            //Testing inventory dlu
+            starter = new Engimon(this.allSpecies.getSpeciesbyName("Firemon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 15);
+            this.gamePlayer.addEngimon(starter);
+            this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
+            starter = new Engimon(this.allSpecies.getSpeciesbyName("Watermon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 15);
+            this.gamePlayer.addEngimon(starter);
+            this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
+            starter = new Engimon(this.allSpecies.getSpeciesbyName("Watermon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 5);
+            this.gamePlayer.addEngimon(starter);
+            this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
+            starter = new Engimon(this.allSpecies.getSpeciesbyName("Firemon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 25);
+            this.gamePlayer.addEngimon(starter);
+            this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
+            
         }else{//Load Game
             
         }
@@ -131,20 +146,19 @@ public class GamePage extends JFrame implements ActionListener{
         this.popUpTitle.setBounds(200, 0, 500, 100);
         this.popUpTitle.setBackground(Color.GRAY);
         this.popUpTitle.setOpaque(true);
-        this.popUpTitle.setText(this.gamePlayer.getActiveEngimon().printDetail());
         this.layeredPane.add(this.popUpTitle, Integer.valueOf(3));
 
         this.inventoryInfos = new JLabel[maxInventoryItem];
         this.inventoryActions = new JButton[maxInventoryItem];
         for(int i=0; i<maxInventoryItem; i++){
             this.inventoryInfos[i] = new JLabel();
-            this.inventoryInfos[i].setBounds(200, 100+50*i, 350, 50);
+            this.inventoryInfos[i].setBounds(200, 100+25*i, 350, 25);
             this.inventoryInfos[i].setOpaque(true);
             this.inventoryInfos[i].setBackground(Color.GRAY);
             this.layeredPane.add(this.inventoryInfos[i], Integer.valueOf(3));
 
             this.inventoryActions[i] = new JButton();
-            this.inventoryActions[i].setBounds(600, 100+50*i, 100, 50);
+            this.inventoryActions[i].setBounds(600, 100+25*i, 100, 25);
             this.inventoryActions[i].addActionListener(this);
             this.inventoryActions[i].setFocusable(false);
             this.layeredPane.add(this.inventoryActions[i], Integer.valueOf(3));
@@ -185,32 +199,65 @@ public class GamePage extends JFrame implements ActionListener{
             }else{
                 this.setPopUp(1);
             }
-            System.out.println(this.whichPopUp);
         }
         if(e.getSource() == this.skills){
             if(this.whichPopUp == 2){
                 this.setPopUp(0);
-                System.out.println("tutup inventory");
             }else{
                 this.setPopUp(2);
-                System.out.println("Buka inventory");
             }
         }
         
+        for(int i=0; i<maxInventoryItem; i++){
+            if(e.getSource() == this.inventoryActions[i]){
+                System.out.print("Dipencet button ");
+                System.out.println(i);
+                if(this.whichPopUp == 1){
+                    this.gamePlayer.setActiveEngimon(i);
+                }else if(this.whichPopUp == 2){
+
+                }
+                this.setPopUp(this.whichPopUp);
+            }
+        }
+
     }
     private void setPopUp(int ID){
         this.whichPopUp = ID;
         this.popUp.setVisible(ID>0);
         this.popUpTitle.setVisible(ID>0);
+        this.popUpTitle.setText(this.gamePlayer.getActiveEngimon().printDetail());
+        this.wButton.setEnabled(ID==0);
+        this.aButton.setEnabled(ID==0);
+        this.sButton.setEnabled(ID==0);
+        this.dButton.setEnabled(ID==0);
         for(int i=0; i<maxInventoryItem; i++){
-            this.inventoryInfos[i].setVisible(ID>0);
-            this.inventoryActions[i].setVisible(ID>0);
+            this.inventoryInfos[i].setVisible(false);
+            this.inventoryActions[i].setVisible(false);
         }
-        if(ID == 1){
-            
+        if(ID == 1 || ID == 3){
+            ArrayList<String> inventoryList = this.gamePlayer.getInventory(false);
+            for(int i=0; i<inventoryList.size(); i++){
+                this.inventoryInfos[i].setVisible(true);
+                this.inventoryInfos[i].setText(inventoryList.get(i));
+                this.inventoryActions[i].setVisible(true);
+                if(ID == 1){
+                    this.inventoryActions[i].setText("Switch");
+                }else{
+                    this.inventoryActions[i].setText("Breed");
+                }
+            }
         }
         if(ID == 2){
-            
+            ArrayList<String> inventoryList = this.gamePlayer.getInventory(true);
+            System.out.print("Tes");
+            System.out.println(inventoryList.size());
+            for(int i=0; i<inventoryList.size(); i++){
+                this.inventoryInfos[i].setVisible(true);
+                this.inventoryInfos[i].setText(inventoryList.get(i));
+                this.inventoryActions[i].setVisible(true);
+                this.inventoryActions[i].setText("Use");
+            }
         }
     }
 }

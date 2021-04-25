@@ -63,7 +63,7 @@ public class Player {
             System.out.println("Invalid selection (Index out of range)\n");
         }
     }
-
+    /*
     public void manageActiveEngimon(Scanner sc){
         String entry;
         System.out.println("Active engimon :");
@@ -120,6 +120,7 @@ public class Player {
             }
         }
     }
+    */
 
     public void select(String section, int idx, Scanner sc){
         try {
@@ -249,6 +250,13 @@ public class Player {
 
     public Engimon getActiveEngimon(){
         return this.activeEngimon;
+    }
+    public ArrayList<String> getInventory(boolean withAmount){
+        if(withAmount){
+            return this.InventoryS.printAll(withAmount);
+        }else{
+            return this.InventoryE.printAll(withAmount);
+        }
     }
 
     public int getPlayerX(){

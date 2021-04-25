@@ -141,7 +141,7 @@ public class Engimon extends Species implements Move, InventoryItem{
     // harusnya gui
     System.out.println("Engimon "+this.name+" mati.");
   }
-
+  /*
   public Engimon breed(Engimon other) {
     try {
       if (this.level < 4 || other.level < 4) {
@@ -184,7 +184,7 @@ public class Engimon extends Species implements Move, InventoryItem{
                                 ther.getSpecies(), other.name, 3, 1);
         return child;
       }
-      else /*if (!this.getElementals().equals(other.getElementals()) && this.getElementals().size() == 1) */{
+      else if (!this.getElementals().equals(other.getElementals()) && this.getElementals().size() == 1) {
         //Kasus breed 2 elemen
         int numElmt1; //pakai random
         int numElmt2; //pakai random
@@ -241,6 +241,7 @@ public class Engimon extends Species implements Move, InventoryItem{
       System.out.println(e.getMessage());
     }
   }
+  */
   
   // Realisasi Move
   public void moveX(int x){
@@ -288,16 +289,22 @@ public class Engimon extends Species implements Move, InventoryItem{
       toReturn += this.elementals.get(i).getName();
     }
     toReturn += "/";
-    toReturn += this.name;
+    toReturn += Integer.toString(this.level);
     return toReturn;
   }
 
   // masih belom bener
   public int getComparator1(){
-    return this.level;
+    int toReturn = 0;
+    int mul = 1;
+    for(int i=0; i<this.elementals.size(); i++){
+      toReturn += mul*(this.elementals.get(i).getID()-1);
+      mul *= Elemental.nbElementals;
+    }
+    return toReturn;
   }
   public int getComparator2(){
-    return 0;
+    return this.level;
   }
   public int compareTo(InventoryItem other){
     if(this.getComparator1() == other.getComparator1()){
@@ -307,6 +314,6 @@ public class Engimon extends Species implements Move, InventoryItem{
     }
   }
   public boolean equals(InventoryItem other){
-    return this.getName() == other.getName();
+    return false;
   }
 }

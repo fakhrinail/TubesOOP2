@@ -4,6 +4,7 @@ import javax.lang.model.element.Element;
 
 class Main {
     public static void main(String[] args){
+        System.out.println("Halo\nHalo");
         GamePage frame = new GamePage();
         frame.initGamestate("");
         frame.initComponent();
