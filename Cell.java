@@ -43,8 +43,13 @@ public class Cell {
         return true;
     }
 
-    public Boolean setPlayer(Player player){
-        return true;
+    public Boolean setPlayer(){
+        if(this.engimon!=null){
+            this.player = true;
+            return this.player;
+        }
+
+        return false;
     }
 
     public void setEmpty(){
@@ -60,6 +65,10 @@ public class Cell {
         Boolean a = this.getX()==x && this.getY==y;
         
         return a;
+    }
+
+    public Boolean isEmpty(){
+        return this.engimon==null&& this.player==false;
     }
 
 
