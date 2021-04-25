@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 public class Player {
     private Inventory<Engimon> InventoryE;
     private Inventory<Skill> InventoryS;
@@ -43,24 +44,29 @@ public class Player {
     }
 
     public void removeActiveEngimon(){
-        this.InventoryE = null;
+        this.activeEngimon = null;
     }
 
     public void setActiveEngimon(int idx){
-        Engimon choosen = this.InventoryE.remove(idx);
-        if (this.activeEngimon != null){
-            choosen.setPos(this.activeEngimon.getX(), this.activeEngimon.getY());
-            this.activeEngimon.setPos(-1, -1);
-            this.InventoryE.put(this.activeEngimon);
+        try {
+            Engimon choosen = this.InventoryE.remove(idx);
+            if (this.activeEngimon != null){
+                choosen.setPos(this.activeEngimon.getEngimonX(), this.activeEngimon.getEngimonY());
+                this.activeEngimon.setPos(-1, -1);
+                this.InventoryE.put(this.activeEngimon);
+            } else {
+                choosen.setPos(this.playerX, this.playerY); // blm fix
+            }
+            this.activeEngimon = choosen;
+            System.out.println("Active engimon has been changed successfully\n");
         }
-        this.activeEngimon.setPos(this.playerX, this.playerY); // masih blm aman
-        this.activeEngimon = choosen;
-        System.out.println("Active engimon has been changed successfully");
+        catch(IndexOutOfBoundsException e) {
+            System.out.println("Invalid selection (Index out of range)\n");
+        }
     }
 
-    public void manageActiveEngimon(){
-        int entry;
-        Scanner sc = new Scanner(System.in);
+    public void manageActiveEngimon(Scanner sc){
+        String entry;
         System.out.println("Active engimon :");
         if (this.activeEngimon == null){
             System.out.println("No active engimon");
@@ -68,20 +74,21 @@ public class Player {
             System.out.println("1. Set an active engimon");
             System.out.println("2. Back");
             System.out.print("Choose the number : ");
-            entry = sc.nextInt();
+            entry = sc.nextLine();
             while (true) {
-                if (entry == 1) {
+                if (entry.equals("1")) {
                     this.InventoryE.printAll(false);
                     System.out.print("Select the number : ");
                     int selected = sc.nextInt();
+                    sc.nextLine();
                     setActiveEngimon(selected-1);
                     break;
                 }
-                else if (entry == 2) {
+                else if (entry.equals("2")) {
                     break;
                 }
                 else {
-                    System.out.println("Invalid action");
+                    System.out.println("Invalid action\n");
                 }
             }
         } 
@@ -93,59 +100,59 @@ public class Player {
                 System.out.println("2. Interact");
                 System.out.println("3. Back");
                 System.out.print("Choose the number : ");
-                entry = sc.nextInt();
-                if (entry == 1) {
+                entry = sc.nextLine();
+                if (entry.equals("1")) {
                     this.InventoryE.printAll(false);
                     System.out.print("Select the number : ");
-                    int selected = System.in.read();
+                    int selected = sc.nextInt();
+                    sc.nextLine();
                     setActiveEngimon(selected-1);
                     break;
                 }
-                else if (entry == 2) {
+                else if (entry.equals("2")) {
                     this.activeEngimon.interact();
                 }
-                else if (entry == 3) {
+                else if (entry.equals("3")) {
                     break;
                 }
                 else {
-                    System.out.println("Invalid action");
+                    System.out.println("Invalid action\n");
                 }
             }
         }
     }
 
-    public void select(String section, int idx){
-        Scanner sc = new Scanner(System.in);
+    public void select(String section, int idx, Scanner sc){
         try {
             if (section.equals("E")){
-                this.InventoryE.get(idx).printDetail();
+                //this.InventoryE.get(idx).printDetail();
+                System.out.println(this.InventoryE.getAmount(idx));
                 System.out.println("Action available : ");
                 System.out.println("1. Set to active");
                 System.out.println("2. Interact");
                 System.out.println("3. Discard");
                 System.out.println("4. Cancel");
                 System.out.print("Choose number : ");
-                int input = sc.nextInt();
-                if (input == 1){
+                String input = sc.nextLine();
+                if (input.equals("1")){
                     setActiveEngimon(idx);
-                } else if (input == 2){
+                } else if (input.equals("2")){
                     this.InventoryE.get(idx).interact();
-                } else if (input == 3){
+                } else if (input.equals("3")){
                     String name = this.InventoryE.get(idx).getName();
                     System.out.print("Discard " + name + "? (Y/N) : ");
                     String confirm = sc.nextLine();
                     if (confirm.equals("Y") || confirm.equals("y")){
-                        Engimon dump = this.InventoryE.remove(idx);
-                        System.out.println("Successfully remove " + name + " from inventory");
+                        this.InventoryE.discard(idx, 1);
                     } else if (confirm.equals("N") || confirm.equals("n")){
-                        System.out.println("Discard canceled");
+                        System.out.println("Discard canceled\n");
                     } else {
-                        System.out.println("Invalid input. Discard canceled");
+                        System.out.println("Invalid input. Discard canceled\n");
                     }
-                } else if (input == 4){
+                } else if (input.equals("4")){
                     return;
                 } else {
-                    System.out.println("Invalid action");
+                    System.out.println("Invalid action\n");
                 }
             }
             else if (section.equals("S")){
@@ -155,37 +162,39 @@ public class Player {
                 System.out.println("2. Discard");
                 System.out.println("3. Cancel");
                 System.out.print("Choose the number : ");
-                int input = sc.nextInt();
-                if (input == 1){
+                String input = sc.nextLine();
+                if (input.equals("1")){
                     Skill choosen = this.InventoryS.remove(idx);
-                    this.activeEngimon.learnSkill(choosen);
-                } else if (input == 2){
+                    this.activeEngimon.addSkill(choosen);
+                } else if (input.equals("2")){
                     String name = this.InventoryS.get(idx).getName();
                     System.out.print("Discard " + name + "? (Y/N) : ");
                     String confirm = sc.nextLine();
                     if (confirm.equals("Y") || confirm.equals("y")){
-                        Skill dump = this.InventoryS.remove(idx);
-                        System.out.println("Successfully remove " + name + " from inventory");
+                        int amountLeft = this.InventoryS.getAmount(idx);
+                        System.out.print("Amount to discard (up to " + amountLeft + ") : ");
+                        int discardAmount = sc.nextInt();
+                        sc.nextLine();
+                        this.InventoryS.discard(idx, discardAmount);
                     } else if (confirm.equals("N") || confirm.equals("n")){
-                        System.out.println("Discard canceled");
+                        System.out.println("Discard canceled\n");
                     } else {
-                        System.out.println("Invalid input. Discard canceled");
+                        System.out.println("Invalid input. Discard canceled\n");
                     }
-                } else if (input == 3){
+                } else if (input.equals("3")){
                     return;
                 } else {
-                    System.out.println("Invalid action");
+                    System.out.println("Invalid action\n");
                 }
             }
             else {
-                System.out.println("Invalid selection");
+                System.out.println("Invalid selection\n");
             }
-        } catch(IndexOutOfBoundsException e) {System.out.println("Index out of range");}
+        } catch(IndexOutOfBoundsException e) {System.out.println("Invalid selection (Index out of range)\n");}
     }
 
-    public void openInventory(){
-        int input;
-        Scanner sc = new Scanner(System.in);
+    public void openInventory(Scanner sc){
+        String input;
         while(true) {
             System.out.println("Engimon list :");
             this.InventoryE.printAll(false);
@@ -197,20 +206,22 @@ public class Player {
             System.out.println("1. Select item");
             System.out.println("2. Back");
             System.out.print("Choose the number : ");
-            input = sc.nextInt();
-            if (input == 1) {
+            input = sc.nextLine();
+            if (input.equals("1")) {
                 System.out.println("Select with format E/S + number (ex : E3 / S1)");
                 System.out.print("input : ");
                 String selected = sc.nextLine();
-                if (selected.length() != 2) {
-                    System.out.println("Invalid selection");
+                if (selected.length() == 2) {
+                    select(selected.substring(0,1), Character.getNumericValue(selected.charAt(1)) - 1, sc);
+                } else if (selected.length() == 3) {
+                    select(selected.substring(0,1), Integer.parseInt(selected.substring(1,3)) - 1, sc);
                 } else {
-                    select(selected.substring(0,0), Character.getNumericValue(selected.charAt(1)));
+                    System.out.println("Invalid selection\n");
                 }
-            } else if (input == 2) {
+            } else if (input.equals("2")) {
                 break;
             } else {
-                System.out.println("Invalid action");
+                System.out.println("Invalid action\n");
             }
         }
     }
@@ -233,11 +244,19 @@ public class Player {
         System.out.println("7. Manage Active Engimon");
         System.out.println("8. Battle");
         System.out.println("9. Breeding");
-        System.out.println("10. Exit");
+        System.out.println("10. Save Game");
+        System.out.println("11. Exit");
     }
 
     public Engimon getActiveEngimon(){
         return this.activeEngimon;
+    }
+
+    public int getPlayerX(){
+        return this.playerX;
+    }
+    public int getPlayerY(){
+        return this.playerY;
     }
 }
 
