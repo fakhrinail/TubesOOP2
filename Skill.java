@@ -1,13 +1,13 @@
 import java.util.*;
 
-public class Skill implements InventoryItem {
+public class Skill implements InventoryItem, Comparable<Skill> {
     private String name;
     private int mastery;
     private int basePower;
     private ArrayList<Elemental> compatibles;
     
     public Skill(String info){
-        String[] skillInfo = info.trim().split(",");
+        String[] skillInfo = info.trim().split(" ");
         this.name = skillInfo[0];
         this.mastery = Integer.parseInt(skillInfo[1]);
         this.basePower = Integer.parseInt(skillInfo[2]);
@@ -80,13 +80,13 @@ public class Skill implements InventoryItem {
         return this.getName() == other.getName();
     }
 
-    /*Realisasi Comparable
+    //Realisasi Comparable
     @Override
     public int compareTo(Skill s) {
         int compareLevel = ((Skill)s).mastery;
         return this.mastery-compareLevel;
     }
-    */
+
     public String skillToString(){
         String output = this.name;
         output.concat("," + Integer.toString(this.mastery));

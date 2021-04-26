@@ -9,7 +9,7 @@ public class KoleksiSkill {
             //use buffer to make input more efficient, instead plain filereader
             Scanner file = new Scanner(new BufferedReader(new FileReader("files/skills.txt")));
             while(file.hasNext()){
-                String[] SkillInfo = file.nextLine().trim().split(" ");
+                String SkillInfo = file.nextLine();
                 Skill toAdd = new Skill(SkillInfo);
                 this.allSkill.add(toAdd);
             }
