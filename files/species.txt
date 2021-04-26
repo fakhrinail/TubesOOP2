@@ -1,8 +1,8 @@
-Firemon;Fireball,1,150,Fire;Ready to burn down the forest, bos?
-Watermon;Waterbom,1,120,Water;Even the atlantis drowned.
-Electricmon;Chidori,1,120,Electric;I'm the core of everything.
-Groundmon;Pakubumi,1,130,Ground;Rule no.1: you make mistake, you grounded.
-Icemon;Freeze,1,100,Ice;Icy bitsy spider.
-Itachimon;Izanami,1,110,Fire,Electric;A nameless engimon Who protects peace within its shadows, that is a true engimon.
-Telermon;Drunk,1,150,Water,Ice;buuurrrrppppp....
-Narutomon;Rasengan,1,140,Water,Ground;datebayoo
+Firemon;1;Fireball,1,150,Fire;Fire;Ready to burn down the forest, bos?
+Watermon;1;Waterbom,1,120,Water;Water;Even the atlantis drowned.
+Electricmon;1;Chidori,1,120,Electric;Electric;I'm the core of everything.
+Groundmon;1;Pakubumi,1,130,Ground;Ground;Rule no.1: you make mistake, you grounded.
+Icemon;1;Freeze,1,100,Ice;Ice;Icy bitsy spider.
+Itachimon;1;Izanami,1,110,Fire,Electric;Fire,Electric;A nameless engimon Who protects peace within its shadows, that is a true engimon.
+Telermon;1;Drunk,1,150,Water,Ice;Water,Ice;buuurrrrppppp....
+Narutomon;1;Rasengan,1,140,Water,Ground;Water,Ground;datebayoo

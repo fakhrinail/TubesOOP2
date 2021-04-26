@@ -7,7 +7,7 @@ public class Skill implements InventoryItem, Comparable<Skill> {
     private ArrayList<Elemental> compatibles;
     
     public Skill(String info){
-        String[] skillInfo = info.trim().split(" ");
+        String[] skillInfo = info.trim().split(",");
         this.name = skillInfo[0];
         this.mastery = Integer.parseInt(skillInfo[1]);
         this.basePower = Integer.parseInt(skillInfo[2]);
