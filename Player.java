@@ -328,6 +328,9 @@ public class Player {
             return this.InventoryE.printAll(withAmount);
         }
     }
+    public boolean kalah(){
+        return this.activeEngimon == null && this.InventoryE.getSize() == 0;
+    }
     public void discard(boolean isEngimon, int idx){
         if(isEngimon){
             this.InventoryE.discard(idx,1);

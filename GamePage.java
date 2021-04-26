@@ -299,6 +299,9 @@ public class GamePage extends JFrame implements ActionListener{
                 this.toBattle.battle(i);
                 this.refreshMap();
                 this.setPopUp(this.whichPopUp);
+                if(this.gamePlayer.kalah()){
+                    this.dispose();
+                }
             }
         }
     }
@@ -470,6 +473,12 @@ public class GamePage extends JFrame implements ActionListener{
             }
             this.peta[e.getEngimonX()][e.getEngimonY()].setIcon(new ImageIcon(image));
         }
+    
+        Engimon e = this.gamePlayer.getActiveEngimon();
+        ImageIcon icon = new ImageIcon(getClass().getResource("files/"+ e.getSpecies() +".png"));
+        Image image = icon.getImage();
+        image = image.getScaledInstance(50, 30, java.awt.Image.SCALE_SMOOTH);
+        this.peta[e.getEngimonX()][e.getEngimonY()].setIcon(new ImageIcon(image));
 
         // //COBA TAMPILIN RANDOM ENGIMON
         // for(int i =0 ;i<gameMap.getMapHeight(); i++){
