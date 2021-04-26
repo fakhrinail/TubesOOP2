@@ -1,7 +1,7 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Cell {
+public class Cell extends AbstractCell {
     private CellType cellType;
     private Integer xLoc;
     private Integer yLoc;
@@ -95,6 +95,4 @@ public class Cell {
     public Boolean isEmpty(){
         return this.engimon==null&& this.player==false;
     }
-
-
 }
