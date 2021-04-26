@@ -36,11 +36,15 @@ public class StartPage extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == this.startButton){
             GamePage frame = new GamePage();
+            frame.initGamestate("");
             frame.initComponent();
             this.dispose();
         }
         if(e.getSource() == this.loadButton){
-
+            GamePage frame = new GamePage();
+            frame.initGamestate("0");
+            frame.initComponent();
+            this.dispose();
         }
     }
 }

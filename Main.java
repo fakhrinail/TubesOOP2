@@ -7,8 +7,7 @@ class Main {
 
     public static void main(String[] args){
         System.out.println("Halo\nHalo");
-        GamePage frame = new GamePage();
-        frame.initGamestate("lala");
+        StartPage frame = new StartPage();
         frame.initComponent();
         /*
         Elemental.loadElementals();

@@ -46,21 +46,21 @@ public class GamePage extends JFrame implements ActionListener{
         gameMap = new Peta("files/peta.txt",10,allSpecies.getAllSpecies());
 
         if(filePath.equals("")){//New Game
-            Engimon starter = new Engimon(this.allSpecies.getSpeciesbyName("Narutomon"), "starterMon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 1);
+            Engimon starter = new Engimon(this.allSpecies.getSpeciesbyName("Narutomon"), "starterMon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 10);
             this.gamePlayer = new Player(starter);
             //Testing inventory dlu
-            starter = new Engimon(this.allSpecies.getSpeciesbyName("Firemon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 1);
-            this.gamePlayer.addEngimon(starter);
-            this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
-            starter = new Engimon(this.allSpecies.getSpeciesbyName("Watermon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 15);
-            this.gamePlayer.addEngimon(starter);
-            this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
-            starter = new Engimon(this.allSpecies.getSpeciesbyName("Watermon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 5);
-            this.gamePlayer.addEngimon(starter);
-            this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
-            starter = new Engimon(this.allSpecies.getSpeciesbyName("Firemon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 25);
-            this.gamePlayer.addEngimon(starter);
-            this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
+            // starter = new Engimon(this.allSpecies.getSpeciesbyName("Firemon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 1);
+            // this.gamePlayer.addEngimon(starter);
+            // this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
+            // starter = new Engimon(this.allSpecies.getSpeciesbyName("Watermon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 15);
+            // this.gamePlayer.addEngimon(starter);
+            // this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
+            // starter = new Engimon(this.allSpecies.getSpeciesbyName("Watermon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 5);
+            // this.gamePlayer.addEngimon(starter);
+            // this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
+            // starter = new Engimon(this.allSpecies.getSpeciesbyName("Firemon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 25);
+            // this.gamePlayer.addEngimon(starter);
+            // this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
             
         }else{//Load Game
             this.gamePlayer = new Player("files/player.txt");
@@ -450,6 +450,23 @@ public class GamePage extends JFrame implements ActionListener{
             this.player.setLocation(205+gamePlayer.getPlayerY()*50, 5+gamePlayer.getPlayerX()*50);
         }
 
+        for(int i=0; i<gameMap.getMapHeight(); i++){
+            for(int j=0; j<gameMap.getMapWidth(); j++){
+                this.peta[i][j].setIcon(null);
+            }
+        }
+        ArrayList<Engimon> wildEngimons = this.gameMap.getWildEngimons();
+        for(Engimon e: wildEngimons){
+            ImageIcon icon = new ImageIcon(getClass().getResource("files/"+e.getSpecies()+".png"));
+            Image image = icon.getImage();
+            if(e.getLevel() < this.gamePlayer.getActiveEngimon().getLevel()){
+                image = image.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            }else{
+                image = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
+            }
+            this.peta[e.getEngimonX()][e.getEngimonY()].setIcon(new ImageIcon(image));
+        }
+
         // //COBA TAMPILIN RANDOM ENGIMON
         // for(int i =0 ;i<gameMap.getMapHeight(); i++){
         //     for(int j=0; j <gameMap.getMapWidth(); j++){
@@ -461,12 +478,12 @@ public class GamePage extends JFrame implements ActionListener{
         //     this.peta[i.getEngimonX()][i.getEngimonY()].setText(i.getSpecies().substring(0, 2));
         // });
 
-        gameMap.getMapLayout().forEach(i -> {
-            this.peta[i.getX()][i.getY()].setText("");
-            if(i.getEngimon()!=null){
-                Engimon e = i.getEngimon();
-                this.peta[e.getEngimonX()][e.getEngimonY()].setText(e.getSpecies().substring(0, 2));
-            }
-        });
+        // gameMap.getMapLayout().forEach(i -> {
+        //     this.peta[i.getX()][i.getY()].setText("");
+        //     if(i.getEngimon()!=null){
+        //         Engimon e = i.getEngimon();
+        //         this.peta[e.getEngimonX()][e.getEngimonY()].setText(e.getSpecies().substring(0, 2));
+        //     }
+        // });
     }
 }
