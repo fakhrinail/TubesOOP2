@@ -285,6 +285,9 @@ public class Peta {
 
     public void deleteEngimon(int engimonAt){
         if(engimonAt<this.wildEngimons.size()){
+            Cell c = searchMap(wildEngimons.get(engimonAt).getEngimonX(), wildEngimons.get(engimonAt).getEngimonY());
+            c.setEmpty();
+            editCellInMap(c);
             wildEngimons.remove(engimonAt);
         }
     }
