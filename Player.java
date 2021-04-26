@@ -1,5 +1,5 @@
 import java.util.*;
-
+import java.io.*;
 
 public class Player {
     private Inventory<Engimon> InventoryE;
@@ -14,6 +14,62 @@ public class Player {
         this.activeEngimon.setPos(0, 1);
         this.InventoryE = new Inventory<Engimon>();
         this.InventoryS = new Inventory<Skill>();
+    }
+
+    public Player(String filepath){  
+        try{
+            Scanner file = new Scanner(new BufferedReader(new FileReader(filepath)));
+            String playerPos[] = file.nextLine().trim().split(",");
+            this.playerX = Integer.parseInt(playerPos[0]);
+            this.playerY = Integer.parseInt(playerPos[1]);
+            String activeEngimonInfo = file.nextLine();
+            if (!activeEngimonInfo.equals("-")){
+                this.activeEngimon = new Engimon(activeEngimonInfo);
+                String engimonPos[] = file.nextLine().trim().split(",");
+                this.activeEngimon.setPos(Integer.parseInt(engimonPos[0]), Integer.parseInt(engimonPos[0]));
+            }
+            this.InventoryE = new Inventory<Engimon>();
+            int IESize = Integer.parseInt(file.nextLine());
+            for (int i = 0; i < IESize; i++){
+                this.addEngimon(new Engimon(file.nextLine()));
+            }
+            this.InventoryS = new Inventory<Skill>();
+            int ISsize = Integer.parseInt(file.nextLine());
+            for (int i = 0; i < ISsize; i++){
+                this.addSkillItem(new Skill(file.nextLine()));
+            }
+        } catch(FileNotFoundException ex){
+            System.out.println("Nama file yang anda masukkan salah");
+        }
+    }
+
+    public void savePlayer(String fileName){
+        try{
+            BufferedWriter fileWriter =  new BufferedWriter(new FileWriter("../files/"+ fileName + ".txt", true));
+            fileWriter.write(Integer.toString(this.playerX) + "," + Integer.toString(this.playerY)); fileWriter.newLine();
+            if (this.activeEngimon != null){
+                fileWriter.write(this.activeEngimon.toString()); fileWriter.newLine();
+                fileWriter.write(Integer.toString(this.activeEngimon.getEngimonX()) + "," + Integer.toString(this.activeEngimon.getEngimonY()));
+                fileWriter.newLine();
+            } else {
+                fileWriter.write("-"); fileWriter.newLine();
+            }
+            fileWriter.write(Integer.toString(this.InventoryE.getSize())); fileWriter.newLine();
+            for (int i = 0; i < this.InventoryE.getSize(); i++){
+                fileWriter.write(this.InventoryE.get(i).engimonToString());
+                fileWriter.newLine();
+            }
+            fileWriter.write(Integer.toString(this.InventoryS.getSize())); fileWriter.newLine();
+            for (int i = 0; i < this.InventoryS.getSize(); i++){
+                fileWriter.write(this.InventoryS.get(i).skillToString());
+                fileWriter.newLine();
+            }
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch(Exception ex){
+            System.out.println("Error");
+        }
     }
 
     public void w(){

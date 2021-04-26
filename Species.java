@@ -17,13 +17,16 @@ public class Species {
         String[] speciesInfo = info.trim().split(";");
         this.species = speciesInfo[0];
         this.skills = new ArrayList<Skill>();
-        this.skills.add(new Skill(speciesInfo[1]));
-        this.interaction = speciesInfo[2];
-        String[] skillInfo = speciesInfo[1].split(",");
-        this.elementals = new ArrayList<Elemental>();
-        for(int i=2; i<skillInfo.length; i++){
-            this.elementals.add(new Elemental(skillInfo[i]));
+        int skillCount = Integer.parseInt(speciesInfo[1]);
+        for (int i = 2; i < skillCount + 2; i++){
+            this.skills.add(new Skill(speciesInfo[i]));
         }
+        String[] elementalInput = speciesInfo[skillCount + 2].split(",");
+        this.elementals = new ArrayList<Elemental>();
+        for(int i=0; i < elementalInput.length; i++){
+            this.elementals.add(new Elemental(elementalInput[i]));
+        }
+        this.interaction = speciesInfo[skillCount + 3];
     }
 
     public Species(String species, ArrayList<Skill> skills, ArrayList<Elemental> elementals, String interaction){
