@@ -1,0 +1,12 @@
+2,9
+Randomon;Bapak;Ibu;Cowok;Cewek;3;15;0;0 Watermon;1;Waterbom,1,120,Water;Water;Even the atlantis drowned.
+2,8
+5
+starterMon;Bapak;Ibu;Cowok;Cewek;3;1;0;0 Narutomon;1;Rasengan,1,140,Water,Ground;Water,Ground;datebayoo
+Randomon;Bapak;Ibu;Cowok;Cewek;3;5;0;0 Watermon;1;Waterbom,1,120,Water;Water;Even the atlantis drowned.
+Randommon;;;;;1;0;0;0 Watermon;1;Waterbom,1,120,Water;Water;Even the atlantis drowned.
+Randomon;Bapak;Ibu;Cowok;Cewek;3;25;0;0 Firemon;1;Fireball,1,90,Fire;Fire;Ready to burn down the forest, bos?
+Randomon;Bapak;Ibu;Cowok;Cewek;3;1;0;0 Firemon;1;Fireball,1,90,Fire;Fire;Ready to burn down the forest, bos?
+2
+3;Waterbom,1,120,Water
+2;Fireball,1,90,Fire

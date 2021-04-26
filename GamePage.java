@@ -13,6 +13,7 @@ public class GamePage extends JFrame implements ActionListener{
     private JButton sButton;
     private JButton dButton;
     private JButton battle;
+    private JButton save;
     private JLabel player;
     private JButton engimons;
     private ArrayList<JLabel> wildEngimons;
@@ -60,7 +61,7 @@ public class GamePage extends JFrame implements ActionListener{
             this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
             
         }else{//Load Game
-            
+            this.gamePlayer = new Player("files/player.txt");
         }
     }
 
@@ -103,7 +104,7 @@ public class GamePage extends JFrame implements ActionListener{
 
         this.player = new JLabel();
         this.player.setIcon(playerIcon);
-        this.player.setBounds(205, 5, 40, 40);
+        this.player.setBounds(205 + 50*this.gamePlayer.getPlayerY(), 5 + 50*this.gamePlayer.getPlayerX(), 40, 40);
         this.player.setOpaque(true);
         this.layeredPane.add(this.player, Integer.valueOf(1));
 
@@ -155,6 +156,13 @@ public class GamePage extends JFrame implements ActionListener{
         this.skills.addActionListener(this);
         this.skills.setFocusable(false);
         this.layeredPane.add(this.skills);
+
+        this.save = new JButton();
+        this.save.setBounds(25, 500, 150, 50);
+        this.save.setText("Save");
+        this.save.addActionListener(this);
+        this.save.setFocusable(false);
+        this.layeredPane.add(this.save);
 
 
         //Popup Items
@@ -242,15 +250,17 @@ public class GamePage extends JFrame implements ActionListener{
                 this.setPopUp(2);
             }
         }
+
+        if(e.getSource() == this.save){
+            this.gamePlayer.savePlayer("player");
+        }
         
         for(int i=0; i<maxInventoryItem; i++){
             if(e.getSource() == this.inventoryActions[i]){
-                System.out.print("Dipencet button ");
-                System.out.println(i);
                 if(this.whichPopUp == 1){
                     this.gamePlayer.setActiveEngimon(i);
                 }else if(this.whichPopUp == 2){
-
+                    this.gamePlayer.useSkill(i);
                 }
                 this.setPopUp(this.whichPopUp);
             }

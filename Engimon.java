@@ -343,7 +343,7 @@ public class Engimon extends Species implements Move, InventoryItem{
       return this.getComparator1() - other.getComparator1();
     }
   }
-  public boolean equals(InventoryItem other){
+  public boolean equalTo(InventoryItem other){
     return false;
   }
 
@@ -362,23 +362,28 @@ public class Engimon extends Species implements Move, InventoryItem{
 
   public String engimonToString(){
     String output = this.name;
-    output.concat(";" + this.parentNames.get(0));
-    output.concat(";" + this.parentNames.get(1));
-    output.concat(";" + this.parentSpecies.get(0));
-    output.concat(";" + this.parentSpecies.get(1));
-    output.concat(";" + Integer.toString(this.life));
-    output.concat(";" + Integer.toString(this.level));
-    output.concat(";" + Integer.toString(this.experience));
-    output.concat(";" + Integer.toString(this.cumulativeExperience));
-    output.concat(" " + this.species);
-    output.concat(";" + Integer.toString(this.skills.size()));
+    output+=(";" + this.parentNames.get(0));
+    output+=(";" + this.parentNames.get(1));
+    output+=(";" + this.parentSpecies.get(0));
+    output+=(";" + this.parentSpecies.get(1));
+    output+=(";" + Integer.toString(this.life));
+    output+=(";" + Integer.toString(this.level));
+    output+=(";" + Integer.toString(this.experience));
+    output+=(";" + Integer.toString(this.cumulativeExperience));
+    output+=(" " + this.species);
+    output+=(";" + Integer.toString(this.skills.size()));
     for (int i = 0; i < this.skills.size(); i++){
-      output.concat(";" + this.skills.get(i).skillToString());
+      output+=(";" + this.skills.get(i).skillToString());
     }
+    output+=";";
     for (int i = 0; i < this.elementals.size(); i++){
-      output.concat(";" + this.elementals.get(i).getName());
+      if(i>0){
+        output += ",";
+      }
+      output+=(this.elementals.get(i).getName());
     }
-    output.concat(";" + this.interaction);
+    output+=(";" + this.interaction);
+    System.out.println(output);
     return output;
   }
 }

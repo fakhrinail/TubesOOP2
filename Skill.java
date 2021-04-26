@@ -23,7 +23,7 @@ public class Skill implements InventoryItem, Comparable<Skill> {
         this.mastery = other.mastery;
         this.basePower = other.basePower;
         this.compatibles = new ArrayList<Elemental>();
-        for(int i=2; i<other.compatibles.size(); i++){
+        for(int i=0; i<other.compatibles.size(); i++){
             Elemental toAdd = other.compatibles.get(i);
             this.compatibles.add(toAdd);
         }
@@ -44,11 +44,19 @@ public class Skill implements InventoryItem, Comparable<Skill> {
     }
 
     //Metode pribadi
-    public boolean isCompatible(Elemental e1, Elemental e2){
+    public boolean isLearnable(Engimon learner){
         boolean toReturn = false;
+        ArrayList<Elemental> elementals = learner.getElementals();
         for(int i=0; i<this.compatibles.size(); i++){
-            toReturn = toReturn || this.compatibles.get(i).equals(e1) || this.compatibles.get(i).equals(e2);
+            for(int j=0; j<elementals.size(); j++){
+                toReturn = toReturn || this.compatibles.get(i).equals(elementals.get(j));
+            }
         }
+        ArrayList<Skill> skills = learner.getSkills();
+        for(Skill s : skills){
+            toReturn = toReturn && !this.equalTo(s);
+        }
+        toReturn = toReturn && skills.size()<4;
         return toReturn;
     }
 
@@ -76,8 +84,8 @@ public class Skill implements InventoryItem, Comparable<Skill> {
         }
     }
     @Override
-    public boolean equals(InventoryItem other){
-        return this.getName() == other.getName();
+    public boolean equalTo(InventoryItem other){
+        return this.getName().equals(other.getName());
     }
 
     //Realisasi Comparable
@@ -89,10 +97,10 @@ public class Skill implements InventoryItem, Comparable<Skill> {
 
     public String skillToString(){
         String output = this.name;
-        output.concat("," + Integer.toString(this.mastery));
-        output.concat("," + Integer.toString(this.basePower));
-        for (int i = 0; i < this.compatibles.size() - 1; i++){
-            output.concat("," + this.compatibles.get(i).getName());
+        output+=("," + Integer.toString(this.mastery));
+        output+=("," + Integer.toString(this.basePower));
+        for (int i = 0; i < this.compatibles.size(); i++){
+            output+=("," + this.compatibles.get(i).getName());
         }
         return output;
     }
