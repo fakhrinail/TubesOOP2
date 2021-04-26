@@ -1,8 +1,8 @@
-Firemon Fireball Fire:Ready to burn down the forest, bos?
-Watermon Waterbom Water:Even the atlantis drowned.
-Electricmon Chidori Electric:I'm the core of everything.
-Groundmon Pakubumi Ground:Rule no.1: you make mistake, you grounded.
-Icemon Freeze Ice:Icy bitsy spider.
-Itachimon Izanami Fire Electric:A nameless engimon Who protects peace within its shadows, that is a true engimon.
-Telermon Drunk Water Ice:buuurrrrppppp....
-Narutomon Rasengan Water Ground:datebayoo
+Firemon;Fireball,150,Fire;Ready to burn down the forest, bos?
+Watermon;Waterbom,120,Water;Even the atlantis drowned.
+Electricmon;Chidori,120,Electric;I'm the core of everything.
+Groundmon;Pakubumi,130,Ground;Rule no.1: you make mistake, you grounded.
+Icemon;Freeze,100,Ice;Icy bitsy spider.
+Itachimon;Izanami,110,Fire,Electric;A nameless engimon Who protects peace within its shadows, that is a true engimon.
+Telermon;Drunk,150,Water,Ice;buuurrrrppppp....
+Narutomon;Rasengan,140,Water,Ground;datebayoo

@@ -61,10 +61,19 @@ public class Cell {
         return this.getX()==x && this.getY()==y;
     }
 
-    public Boolean checkPlace(int x,int y, String Species){
+    public Boolean checkPlace(int x,int y, String species){
         Boolean a = this.getX()==x && this.getY()==y;
-        
-        return a;
+        Boolean b = 1==2;
+        if(this.cellType.equals(CellType.MOUNTAIN) && species.equalsIgnoreCase("mountains")){
+            b = true;
+        }else if(this.cellType.equals(CellType.SEA) && species.equalsIgnoreCase("sea")){
+            b = true;
+        }else if(this.cellType.equals(CellType.GRASSLAND) && species.equalsIgnoreCase("grassland")){
+            b = true;
+        }else if(this.cellType.equals(CellType.TUNDRA) && species.equalsIgnoreCase("tundra")){
+            b = true;
+        }
+        return a&&b;
     }
 
     public Boolean isEmpty(){

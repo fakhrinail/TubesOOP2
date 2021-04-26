@@ -4,8 +4,11 @@ import javax.lang.model.element.Element;
 
 class Main {
     public static void main(String[] args){
+        System.out.println("Halo\nHalo");
         GamePage frame = new GamePage();
+        frame.initGamestate("");
         frame.initComponent();
+        /*
         Elemental.loadElementals();
         KoleksiSkill listSkill = new KoleksiSkill();
         Skill tes1 = listSkill.getSkill("Fireball");
@@ -27,4 +30,6 @@ class Main {
         me.manageActiveEngimon(sc);
         me.openInventory(sc);
         me.manageActiveEngimon(sc);
+        */
+    }
 }

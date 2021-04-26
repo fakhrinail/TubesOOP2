@@ -1,7 +1,7 @@
 interface InventoryItem {
     
     public String getName();
-    public void printDetail();
+    public String printDetail();
     public int compareTo(InventoryItem other);
     public int getComparator1();
     public int getComparator2();

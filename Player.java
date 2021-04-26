@@ -7,12 +7,11 @@ public class Player {
     private int playerX, playerY;
     private Engimon activeEngimon;
 
-    public Player(){
+    public Player(Engimon active){
         this.playerX = 0;
         this.playerY = 0;
-        this.activeEngimon = null;
-        //new Engimon("Wildcard", "startermon", "dewa", "zeus", "dewi", "athena", "lets roll cuk", 100, 10);
-        //this.activeEngimon.setPos(0, 1);
+        this.activeEngimon = active;
+        this.activeEngimon.setPos(0, 1);
         this.InventoryE = new Inventory<Engimon>();
         this.InventoryS = new Inventory<Skill>();
     }
@@ -64,7 +63,7 @@ public class Player {
             System.out.println("Invalid selection (Index out of range)\n");
         }
     }
-
+    /*
     public void manageActiveEngimon(Scanner sc){
         String entry;
         System.out.println("Active engimon :");
@@ -121,6 +120,7 @@ public class Player {
             }
         }
     }
+    */
 
     public void select(String section, int idx, Scanner sc){
         try {
@@ -250,6 +250,13 @@ public class Player {
 
     public Engimon getActiveEngimon(){
         return this.activeEngimon;
+    }
+    public ArrayList<String> getInventory(boolean withAmount){
+        if(withAmount){
+            return this.InventoryS.printAll(withAmount);
+        }else{
+            return this.InventoryE.printAll(withAmount);
+        }
     }
 
     public int getPlayerX(){

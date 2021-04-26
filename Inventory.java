@@ -2,23 +2,23 @@ import java.util.*;
 
 public class Inventory <T extends InventoryItem> {
     private static int totalItem;
-    private static int maxItem = 30;
-    private List<T> items;
-    private List<Integer> amounts;
+    private static int maxItem = 20;
+    private ArrayList<T> items;
+    private ArrayList<Integer> amounts;
     
     public Inventory(){
         this.items = new ArrayList<T>();
         this.amounts = new ArrayList<Integer>();
-        this.totalItem = 0;
+        totalItem = 0;
     }
 
     public void put(T toPut){
         if(totalItem == maxItem){
             System.out.println("Inventory full");
         }else{
-            this.totalItem++;
+            totalItem++;
             int idx = this.items.size();
-            while(idx>0 && toPut.compareTo(this.items.get(idx-1)) == 0 && !toPut.equals(this.items.get(idx-1))){
+            while(idx>0 && toPut.compareTo(this.items.get(idx-1)) > 0 && !toPut.equals(this.items.get(idx-1))){
                 idx--;
             }
             if(idx > 0 && toPut.equals(this.items.get(idx-1))){
@@ -33,11 +33,11 @@ public class Inventory <T extends InventoryItem> {
 
     public T remove(int idx) throws IndexOutOfBoundsException {
         if(this.amounts.get(idx) == 1){
-            this.totalItem--;
+            totalItem--;
             this.amounts.remove(idx);
             return this.items.remove(idx);
         }else{
-            this.totalItem--;
+            totalItem--;
             int old = this.amounts.get(idx);
             this.amounts.set(idx, old - 1);
             return this.items.get(idx);
@@ -57,7 +57,7 @@ public class Inventory <T extends InventoryItem> {
             int old = this.amounts.get(idx);
             this.amounts.set(idx, old - amount);
         }
-        this.totalItem -= amount;
+        totalItem -= amount;
         System.out.println("Successfully remove " + amount + " " + name + " from inventory\n");
     }
 
@@ -69,15 +69,16 @@ public class Inventory <T extends InventoryItem> {
         return this.amounts.get(idx);
     }
 
-    public void printAll(boolean withAmount){
+    public ArrayList<String> printAll(boolean withAmount){
+        ArrayList<String> toReturn = new ArrayList<String>();
         for(int i=0; i<this.items.size(); i++){
-            System.out.print(i+1);
-            System.out.print(". " + this.items.get(i).getName());
+            String toAdd = this.items.get(i).printDetail();
             if(withAmount){
-                System.out.print(" -- You have : ");
-                System.out.print(this.amounts.get(i));
+                toAdd += " -- You have : ";
+                toAdd += Integer.toString(this.amounts.get(i));
             }
-            System.out.println();
+            toReturn.add(toAdd);
         }
+        return toReturn;
     }
 }
