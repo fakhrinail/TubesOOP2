@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.*;
 import java.util.*;
 
@@ -88,8 +89,13 @@ public class GamePage extends JFrame implements ActionListener{
             }
         }
 
-        ImageIcon playerIcon = new ImageIcon("player.png");
+        ImageIcon playerIcon = new ImageIcon(getClass().getResource("files/player.png"));
+        Image image = playerIcon.getImage();
+        image = image.getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH);
+        playerIcon = new ImageIcon(image);
         this.wildEngimons = new ArrayList<>();
+        //BufferedImage img = 
+        
 
         this.player = new JLabel();
         this.player.setIcon(playerIcon);
