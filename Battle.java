@@ -119,7 +119,7 @@ public class Battle {
                 else {
                     int exp = opponent.getLevel()*100/myEngimon.getLevel();
                     myEngimon.addExperience(exp);
-                    Skill rewardSkill = opponent.getSkills().get(0);
+                    Skill rewardSkill = new Skill(opponent.getSkills().get(0));
                     self.addSkillItem(rewardSkill);
                     self.addEngimon(opponent);
                     map.deleteEngimon(opponent);
