@@ -336,6 +336,15 @@ public class Player {
         }
     }
 
+    public void breed(int idx){
+        try{
+            Engimon anak = this.activeEngimon.breed(this.InventoryE.get(idx));
+            this.InventoryE.put(anak);
+        }catch(IllegalArgumentException e){
+            System.out.println("Gabisa breeding");
+        }
+    }
+
     public int getPlayerX(){
         return this.playerX;
     }

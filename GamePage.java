@@ -285,6 +285,10 @@ public class GamePage extends JFrame implements ActionListener{
                 this.gamePlayer.discard(this.whichPopUp == 1,i);
                 this.setPopUp(this.whichPopUp);
             }
+            if(e.getSource() == this.breeding[i]){
+                this.gamePlayer.breed(i);
+                this.setPopUp(this.whichPopUp);
+            }
         }
         for(int i=0; i<4; i++){
             if(e.getSource() == this.battleEngimons[i]){
