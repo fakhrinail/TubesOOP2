@@ -3,6 +3,8 @@ import javax.swing.*;
 import javax.lang.model.element.Element;
 
 class Main {
+    public static Integer jumlahTurns = 0;
+
     public static void main(String[] args){
         System.out.println("Halo\nHalo");
         GamePage frame = new GamePage();

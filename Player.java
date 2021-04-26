@@ -20,26 +20,34 @@ public class Player {
         if (this.activeEngimon != null){
             this.activeEngimon.setPos(this.playerX, this.playerY);
         }
-        this.playerX--;
+        if(this.playerY>0){
+            this.playerY--;
+        }
     }
     public void a(){
         if (this.activeEngimon != null){
             this.activeEngimon.setPos(this.playerX, this.playerY);
         }
-        this.playerY--;
+        if(this.playerX>0){
+            this.playerX--;
+        }
     }
     public void s(){
         if (this.activeEngimon != null){
             this.activeEngimon.setPos(this.playerX, this.playerY);
         }
         this.activeEngimon.setPos(this.playerX, this.playerY);
-        this.playerX++;
+        if(this.playerY>=0){
+            this.playerY++;
+        }
     }
     public void d(){
         if (this.activeEngimon != null){
             this.activeEngimon.setPos(this.playerX, this.playerY);
         }
-        this.playerY--;
+        if(this.playerX>=0){
+            this.playerX++;
+        }
     }
 
     public void removeActiveEngimon(){

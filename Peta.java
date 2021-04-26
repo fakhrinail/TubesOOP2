@@ -21,8 +21,8 @@ public class Peta {
     public static char Grassland='3';
     public static char Mountain='4';
     private final String filename;
-    public Integer mapWidth = 0;
-    public Integer mapHeight = 0;
+    private Integer mapWidth = 0;
+    private Integer mapHeight = 0;
     private ArrayList<Cell> mapLayout;
     private ArrayList<Engimon> wildEngimons;
     private Integer playerX, playerY;
@@ -97,11 +97,12 @@ public class Peta {
     public void generateEngimon(){
         if(this.wildEngimons.size()<maxWildEngimon){
             Random random = new Random();
-            Integer randVar = random.nextInt()%this.mapLayout.size();
+            Integer randVar = Math.abs(random.nextInt()) % this.mapLayout.size();
+            System.out.println(randVar);
             Cell cl = mapLayout.get(randVar);
             Integer attemp = 0; 
             while(!cl.isEmpty() && attemp<5){
-                randVar = random.nextInt()%this.mapLayout.size();
+                randVar = Math.abs(random.nextInt()) % this.mapLayout.size();
                 cl = mapLayout.get(randVar);
                 attemp++;
             }
@@ -194,14 +195,16 @@ public class Peta {
     public ArrayList<Engimon> getWildEngimons(){return this.wildEngimons;}
     
     public void editCellInMap(Cell c){
-        this.mapLayout.forEach(i -> {
-            if(i.checkPlace(c.getX(), c.getY())){
-                i.setEngimon(c.getEngimon());
-                if(!c.isEmpty() && c.getEngimon()==null){
-                    i.setPlayer();
+        if(c!=null){
+            this.mapLayout.forEach(i -> {
+                if(i.checkPlace(c.getX(), c.getY())){
+                    i.setEngimon(c.getEngimon());
+                    if(!c.isEmpty() && c.getEngimon()==null){
+                        i.setPlayer();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void editCellInMap(Integer x,Integer y, Engimon engimon){
@@ -220,4 +223,7 @@ public class Peta {
             }
         });
     }
+
+    public Integer getMapHeight(){return this.mapHeight;}
+    public Integer getMapWidth(){return this.mapWidth;}
 }
