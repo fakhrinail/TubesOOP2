@@ -185,42 +185,10 @@ public class GamePage extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e){
-        if(e.getSource() == this.wButton){
-            // for(int i=0; i<50; i++){
-            //     this.player.setLocation(this.player.getX(), this.player.getY()-1);
-            // }
-            gamePlayer.w();
-            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
-                refreshMap();
-            }else{gamePlayer.s();}
+        if(e.getSource()==this.wButton || e.getSource()==this.aButton  || e.getSource()==this.sButton || e.getSource()==this.dButton){
+            this.moveActionPerformed(e);
         }
-        if(e.getSource() == this.aButton){
-            // for(int i=0; i<50; i++){
-            //     this.player.setLocation(this.player.getX()-1, this.player.getY());
-            // }
-            gamePlayer.a();
-            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
-                refreshMap();
-            }else{gamePlayer.d();}
-        }
-        if(e.getSource() == this.sButton){
-            // for(int i=0; i<50; i++){
-            //     this.player.setLocation(this.player.getX(), this.player.getY()+1);
-            // }
-            gamePlayer.s();
-            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
-                refreshMap();
-            }else{gamePlayer.w();}
-        }
-        if(e.getSource() == this.dButton){
-            // for(int i=0; i<50; i++){
-            //     this.player.setLocation(this.player.getX()+1, this.player.getY());
-            // }
-            gamePlayer.d();
-            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
-                refreshMap();
-            }else{gamePlayer.a();}
-        }
+
         if(e.getSource() == this.engimons){
             if(this.whichPopUp == 1){
                 this.setPopUp(0);
@@ -247,6 +215,61 @@ public class GamePage extends JFrame implements ActionListener{
                 }
                 this.setPopUp(this.whichPopUp);
             }
+        }
+
+    }
+
+    private void moveActionPerformed(ActionEvent e){
+        Boolean validMovement = true;
+        Integer prevX = gamePlayer.getPlayerX();
+        Integer prevY = gamePlayer.getPlayerY();
+        if(e.getSource() == this.wButton){
+            // for(int i=0; i<50; i++){
+            //     this.player.setLocation(this.player.getX(), this.player.getY()-1);
+            // }
+            gamePlayer.w();
+
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
+                gamePlayer.s();
+                validMovement = 1==2;
+            }
+        }
+        if(e.getSource() == this.aButton){
+            // for(int i=0; i<50; i++){
+            //     this.player.setLocation(this.player.getX()-1, this.player.getY());
+            // }
+            gamePlayer.a();
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
+                gamePlayer.d();
+                validMovement = 1==2;
+            }
+        }
+        if(e.getSource() == this.sButton){
+            // for(int i=0; i<50; i++){
+            //     this.player.setLocation(this.player.getX(), this.player.getY()+1);
+            // }
+            gamePlayer.s();
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
+                gamePlayer.w();
+                validMovement = 1==2;
+            }
+        }
+        if(e.getSource() == this.dButton){
+            // for(int i=0; i<50; i++){
+            //     this.player.setLocation(this.player.getX()+1, this.player.getY());
+            // }
+            gamePlayer.d();
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
+                gamePlayer.a();
+                validMovement = 1==2;
+            }
+        }
+        if(validMovement){
+            Main.jumlahTurns++;
+            gameMap.setPlayerPos(gamePlayer);
+            if(Main.jumlahTurns%4==0){gameMap.generateEngimon();}
+            if(Main.jumlahTurns%3==0&&Main.jumlahTurns>3){gameMap.randomEngimon();}
+            refreshMap();
         }
 
     }
@@ -291,9 +314,20 @@ public class GamePage extends JFrame implements ActionListener{
     }
 
     private void refreshMap(){
-        System.out.println(player.getX()+" - "+player.getY());
+        //System.out.println(player.getX()+" - "+player.getY());
         if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
             this.player.setLocation(205+gamePlayer.getPlayerX()*50, 5+gamePlayer.getPlayerY()*50);
         }
+
+        //COBA TAMPILIN RANDOM ENGIMON
+        for(int i =0 ;i<gameMap.getMapWidth(); i++){
+            for(int j=0; j <gameMap.getMapHeight(); j++){
+                this.peta[i][j].setText("");
+            }
+        }
+
+        this.gameMap.getWildEngimons().forEach(i -> {
+            this.peta[i.getEngimonY()][i.getEngimonX()].setText("Eg");
+        });
     }
 }

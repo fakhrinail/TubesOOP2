@@ -34,7 +34,8 @@ public class Cell {
     }
 
     public Engimon getEngimon() {
-        return engimon;
+        if(this.engimon!=null){return engimon;}
+        return null;
     }
 
     public Boolean setEngimon(Engimon engimon) {
