@@ -13,6 +13,7 @@ public class GamePage extends JFrame implements ActionListener{
     private JButton sButton;
     private JButton dButton;
     private JButton battle;
+    private JButton save;
     private JLabel player;
     private JButton engimons;
     private ArrayList<JLabel> wildEngimons;
@@ -25,6 +26,8 @@ public class GamePage extends JFrame implements ActionListener{
     private int whichPopUp;
     private JLabel[] inventoryInfos;
     private JButton[] inventoryActions;
+    private JButton[] discard;
+    private JButton[] breeding;
     private JLabel[][] nearbyEngimons;
     private JButton[] battleEngimons;
 
@@ -61,7 +64,7 @@ public class GamePage extends JFrame implements ActionListener{
             this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
             
         }else{//Load Game
-            
+            this.gamePlayer = new Player("files/player.txt");
         }
     }
 
@@ -104,7 +107,7 @@ public class GamePage extends JFrame implements ActionListener{
 
         this.player = new JLabel();
         this.player.setIcon(playerIcon);
-        this.player.setBounds(205, 5, 40, 40);
+        this.player.setBounds(205 + 50*this.gamePlayer.getPlayerY(), 5 + 50*this.gamePlayer.getPlayerX(), 40, 40);
         this.player.setOpaque(true);
         this.layeredPane.add(this.player, Integer.valueOf(1));
 
@@ -157,11 +160,18 @@ public class GamePage extends JFrame implements ActionListener{
         this.skills.setFocusable(false);
         this.layeredPane.add(this.skills);
 
+        this.save = new JButton();
+        this.save.setBounds(25, 500, 150, 50);
+        this.save.setText("Save");
+        this.save.addActionListener(this);
+        this.save.setFocusable(false);
+        this.layeredPane.add(this.save);
+
 
         //Popup Items
         this.whichPopUp = 0;
         this.popUp = new JLabel();
-        this.popUp.setBounds(200, 0, 500, 700);
+        this.popUp.setBounds(200, 0, 700, 700);
         this.popUp.setBackground(Color.GRAY);
         this.popUp.setOpaque(true);
         this.layeredPane.add(this.popUp, Integer.valueOf(2));
@@ -177,6 +187,8 @@ public class GamePage extends JFrame implements ActionListener{
 
         this.inventoryInfos = new JLabel[maxInventoryItem];
         this.inventoryActions = new JButton[maxInventoryItem];
+        this.discard = new JButton[maxInventoryItem];
+        this.breeding = new JButton[maxInventoryItem];
         for(int i=0; i<maxInventoryItem; i++){
             this.inventoryInfos[i] = new JLabel();
             this.inventoryInfos[i].setBounds(200, 200+25*i, 350, 25);
@@ -189,6 +201,19 @@ public class GamePage extends JFrame implements ActionListener{
             this.inventoryActions[i].addActionListener(this);
             this.inventoryActions[i].setFocusable(false);
             this.layeredPane.add(this.inventoryActions[i], Integer.valueOf(3));
+
+            this.discard[i] = new JButton();
+            this.discard[i].setBounds(700, 200+25*i, 100, 25);
+            this.discard[i].addActionListener(this);
+            this.discard[i].setFocusable(false);
+            this.discard[i].setText("Discard");
+            this.layeredPane.add(this.discard[i], Integer.valueOf(3));
+            this.breeding[i] = new JButton();
+            this.breeding[i].setBounds(800, 200+25*i, 100, 25);
+            this.breeding[i].addActionListener(this);
+            this.breeding[i].setFocusable(false);
+            this.breeding[i].setText("Breed");
+            this.layeredPane.add(this.breeding[i], Integer.valueOf(3));
         }
         this.nearbyEngimons = new JLabel[4][4];
         this.battleEngimons = new JButton[4];
@@ -211,7 +236,7 @@ public class GamePage extends JFrame implements ActionListener{
         this.setPopUp(0);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(750,750);
+        this.setSize(1000,750);
         this.add(this.layeredPane);
         this.setVisible(true);
     }
@@ -244,16 +269,26 @@ public class GamePage extends JFrame implements ActionListener{
                 this.setPopUp(2);
             }
         }
+
+        if(e.getSource() == this.save){
+            this.gamePlayer.savePlayer("player");
+        }
         
         for(int i=0; i<maxInventoryItem; i++){
             if(e.getSource() == this.inventoryActions[i]){
-                System.out.print("Dipencet button ");
-                System.out.println(i);
                 if(this.whichPopUp == 1){
                     this.gamePlayer.setActiveEngimon(i);
                 }else if(this.whichPopUp == 2){
-
+                    this.gamePlayer.useSkill(i);
                 }
+                this.setPopUp(this.whichPopUp);
+            }
+            if(e.getSource() == this.discard[i]){
+                this.gamePlayer.discard(this.whichPopUp == 1,i);
+                this.setPopUp(this.whichPopUp);
+            }
+            if(e.getSource() == this.breeding[i]){
+                this.gamePlayer.breed(i);
                 this.setPopUp(this.whichPopUp);
             }
         }
@@ -361,6 +396,8 @@ public class GamePage extends JFrame implements ActionListener{
         for(int i=0; i<maxInventoryItem; i++){
             this.inventoryInfos[i].setVisible(false);
             this.inventoryActions[i].setVisible(false);
+            this.discard[i].setVisible(false);
+            this.breeding[i].setVisible(false);
         }
         for(int i=0; i<4; i++){
             this.battleEngimons[i].setVisible(false);
@@ -375,6 +412,8 @@ public class GamePage extends JFrame implements ActionListener{
                 this.inventoryInfos[i].setText(inventoryList.get(i));
                 this.inventoryActions[i].setVisible(true);
                 this.inventoryActions[i].setText("Switch");
+                this.discard[i].setVisible(true);
+                this.breeding[i].setVisible(true);
             }
         }
         if(ID == 2){
@@ -386,6 +425,7 @@ public class GamePage extends JFrame implements ActionListener{
                 this.inventoryInfos[i].setText(inventoryList.get(i));
                 this.inventoryActions[i].setVisible(true);
                 this.inventoryActions[i].setText("Use");
+                this.discard[i].setVisible(true);
             }
         }
         if(ID == 3){

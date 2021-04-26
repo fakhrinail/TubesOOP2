@@ -143,141 +143,187 @@ public class Engimon extends Species implements Move, InventoryItem{
     System.out.println("Engimon "+this.name+" mati.");
   }
   
-  public Engimon breed(Engimon other) {
-    try {
-      if (this.level < 4 || other.level < 4) {
-        throw new ArithmeticException("Level tidak mencukupi");
-      }
-      this.level -= 3;
-      other.level -= 3;
-      //belum tau cara dapat skill unik
-      ArrayList<Skill> inherSkills = new ArrayList<Skill>(this.getSkills());
-      ArrayList<Skill> tempSkills = new ArrayList<Skill>(other.getSkills());
-      for (Skill otherSkill : other.getSkills()) {
-        int i = 0;
-        for (Skill thisSkill : inherSkills) {
-          if (thisSkill.getName().equals(otherSkill.getName())) {
-            if (thisSkill.getMastery() == otherSkill.getMastery()) {
-              if (thisSkill.getMastery() != 3) {
-                thisSkill.setMastery(thisSkill.getMastery() + 1);
-              }
-              i = 1;
+  public Engimon breed(Engimon other) throws IllegalArgumentException {
+    if (this.level < 4 || other.level < 4) {
+      throw new IllegalArgumentException("Level Engimon tidak mencukupi");
+    }
+    this.level -= 3;
+    other.level -= 3;
+    KoleksiSpecies listSpecies = new KoleksiSpecies("files/species.txt");
+    ArrayList<Skill> inherSkills = new ArrayList<Skill>(this.getSkills());
+    for (Skill otherSkill : other.getSkills()) {
+      int i = 0;
+      for (Skill thisSkill : inherSkills) {
+        if (thisSkill.getName().equals(otherSkill.getName())) {
+          if (thisSkill.getMastery() == otherSkill.getMastery()) {
+            if (thisSkill.getMastery() != 3) {
+              thisSkill.setMastery(thisSkill.getMastery() + 1);
             }
-            else if (thisSkill.getMastery() < otherSkill.getMastery()) {
-              thisSkill.setMastery(otherSkill.getMastery());
-              i = 1;
-            }
+            i = 1;
           }
-          // if (thisSkill.getName().equals(otherSkill.getName())) {
-          //   if (thisSkill.getMastery() == otherSkill.getMastery()) {
-          //     if (thisSkill.getMastery() != 3) {
-          //       thisSkill.setMastery(thisSkill.getMastery() + 1);
-          //     }
-          //   }
-          //   else if (thisSkill.getMastery() < otherSkill.getMastery()) {
-          //     thisSkill.setMastery(otherSkill.getMastery());
-          //   }
-          // }
-          // else {
-          //   tempSkills.add(otherSkill);
-          // }
-        }
-        if (i == 0) {
-          inherSkills.add(otherSkill);
+          else if (thisSkill.getMastery() < otherSkill.getMastery()) {
+            thisSkill.setMastery(otherSkill.getMastery());
+            i = 1;
+          }
         }
       }
-      //inherSkills.addAll(tempSkills);
-      
-      Collections.sort(inherSkills);
-      
-      if (inherSkills.size() > 4) {
-        int size = inherSkills.size();
-        for (int i = 0; i < (size - 4); i++) {
-          inherSkills.remove(0);
+      if (i == 0) {
+        inherSkills.add(0, otherSkill);
+      }
+    }
+    //inherSkills.addAll(tempSkills);
+    
+    Collections.sort(inherSkills);
+    
+    if (inherSkills.size() > 4) {
+      int size = inherSkills.size();
+      for (int i = 0; i < (size - 4); i++) {
+        inherSkills.remove(0);
+      }
+    }
+    String nama = "Bambank";//BUAT INPUTNYA
+    
+    if (this.getElementals().equals(other.getElementals()) && this.getElementals().size() == 1) {
+      //Species SpeciesChild = new Species(this.getSpecies(), inherSkills, this.getElementals(), this.getInteraction());
+      Species SpeciesChild = listSpecies.getSpeciesbyName(this.getSpecies());
+      int check = 0;
+      for (Skill skill : inherSkills) {
+        if (SpeciesChild.getSkills().get(0).getName().equals(skill.getName())) {
+          check = 1;
         }
       }
-      String nama = "Bambank";//BUAT INPUTNYA
+      if (check == 0) {
+        if (inherSkills.size() < 4) {
+          inherSkills.add(0, SpeciesChild.getSkills().get(0));
+        }
+        else {inherSkills.set(0, SpeciesChild.getSkills().get(0));}
+      }
+      SpeciesChild.setSkills(inherSkills);
+      Engimon child = new Engimon(SpeciesChild, nama ,
+                              this.getSpecies(), this.name,
+                              other.getSpecies(), other.name, 3, 1);
+      return child;
+    }
+    else /*if (!this.getElementals().equals(other.getElementals()) && this.getElementals().size() == 1)*/ {
+      //Kasus breed 2 elemen
+      int numElmt1; //pakai random
+      int numElmt2; //pakai random
       
-      if (this.getElementals().equals(other.getElementals()) && this.getElementals().size() == 1) {
-        Species SpeciesChild = new Species(this.getSpecies(), inherSkills, this.getElementals(), this.getInteraction());
+      if (this.getElementals().size() == 2) {
+        Random rand = new Random(); // import java.util.Random;
+        numElmt1 = rand.nextInt(2);
+      } else {numElmt1 = 0;}
+      if (other.getElementals().size() == 2) {
+        Random rand = new Random(); // import java.util.Random;
+        numElmt2 = rand.nextInt(2);
+      } else {numElmt2 = 0;}
+      Elemental thisElmt = this.getElementals().get(numElmt1);
+      Elemental otherElmt = other.getElementals().get(numElmt2);
+      System.out.println(thisElmt.getAdv(otherElmt)+" "+otherElmt.getAdv(thisElmt));
+      System.out.println(thisElmt.getName()+" "+otherElmt.getName());
+      if (thisElmt.getAdv(otherElmt) > otherElmt.getAdv(thisElmt)) {
+        //ambil this
+        //Species SpeciesChild = new Species(this.getSpecies(), inherSkills, this.getElementals(), this.getInteraction());
+        Species SpeciesChild = listSpecies.getSpeciesbyName(thisElmt.getName()+"mon");
+        int check = 0;
+        for (Skill skill : inherSkills) {
+          if (SpeciesChild.getSkills().get(0).getName().equals(skill.getName())) {
+            check = 1;
+          }
+        }
+        if (check == 0) {
+          if (inherSkills.size() < 4) {
+            inherSkills.add(0, SpeciesChild.getSkills().get(0));
+          }
+          else {inherSkills.set(0, SpeciesChild.getSkills().get(0));}
+        }
+        SpeciesChild.setSkills(inherSkills);
         Engimon child = new Engimon(SpeciesChild, nama ,
+                              this.getSpecies(), this.name,
+                              other.getSpecies(), other.name, 3, 1);
+        return child;
+      }
+      else if (thisElmt.getAdv(otherElmt) < otherElmt.getAdv(thisElmt)) {
+        //ambil other
+        //Species SpeciesChild = new Species(other.getSpecies(), inherSkills, other.getElementals(), other.getInteraction());
+        Species SpeciesChild = listSpecies.getSpeciesbyName(otherElmt.getName()+"mon");
+        int check = 0;
+        for (Skill skill : inherSkills) {
+          if (SpeciesChild.getSkills().get(0).getName().equals(skill.getName())) {
+            check = 1;
+          }
+        }
+        if (check == 0) {
+          if (inherSkills.size() < 4) {
+            inherSkills.add(0, SpeciesChild.getSkills().get(0));
+          }
+          else {inherSkills.set(0, SpeciesChild.getSkills().get(0));}
+        }
+        SpeciesChild.setSkills(inherSkills);
+        Engimon child = new Engimon(SpeciesChild, nama,
                                 this.getSpecies(), this.name,
                                 other.getSpecies(), other.name, 3, 1);
         return child;
       }
-      else /*if (!this.getElementals().equals(other.getElementals()) && this.getElementals().size() == 1)*/ {
-        //Kasus breed 2 elemen
-        int numElmt1; //pakai random
-        int numElmt2; //pakai random
-        for (Elemental elmt : other.getElementals()) {
-          System.out.println(elmt.getName());
+      else if (thisElmt.getName().equals(otherElmt.getName())) {
+        ArrayList<Elemental> elmtChild = new ArrayList<Elemental>();
+        elmtChild.add(thisElmt);
+        //Species SpeciesChild = new Species(this.getSpecies(), inherSkills, elmtChild, this.getInteraction());
+        Species SpeciesChild = listSpecies.getSpeciesbyName(thisElmt.getName()+"mon");
+        int check = 0;
+        for (Skill skill : inherSkills) {
+          if (SpeciesChild.getSkills().get(0).getName().equals(skill.getName())) {
+            check = 1;
+          }
         }
-        if (this.getElementals().size() == 2) {
-          Random rand = new Random(); // import java.util.Random;
-          numElmt1 = rand.nextInt(2);
-        } else {numElmt1 = 0;}
-        if (other.getElementals().size() == 2) {
-          Random rand = new Random(); // import java.util.Random;
-          numElmt2 = rand.nextInt(2);
-        } else {numElmt2 = 0;}
-        Elemental thisElmt = this.getElementals().get(numElmt1);
-        Elemental otherElmt = other.getElementals().get(numElmt2);
-        System.out.println(thisElmt.getAdv(otherElmt)+" "+otherElmt.getAdv(thisElmt));
-        System.out.println(thisElmt.getName()+" "+otherElmt.getName());
-        if (thisElmt.getAdv(otherElmt) > otherElmt.getAdv(thisElmt)) {
-          //ambil this
-          Species SpeciesChild = new Species(this.getSpecies(), inherSkills, this.getElementals(), this.getInteraction());
-          Engimon child = new Engimon(SpeciesChild, nama ,
-                               this.getSpecies(), this.name,
-                               other.getSpecies(), other.name, 3, 1);
-          return child;
+        if (check == 0) {
+          if (inherSkills.size() < 4) {
+            inherSkills.add(0, SpeciesChild.getSkills().get(0));
+          }
+          else {inherSkills.set(0, SpeciesChild.getSkills().get(0));}
         }
-        else if (thisElmt.getAdv(otherElmt) < otherElmt.getAdv(thisElmt)) {
-          //ambil other
-          Species SpeciesChild = new Species(other.getSpecies(), inherSkills, other.getElementals(), other.getInteraction());
-          Engimon child = new Engimon(SpeciesChild, nama,
-                                 this.getSpecies(), this.name,
-                                 other.getSpecies(), other.name, 3, 1);
-          return child;
+        SpeciesChild.setSkills(inherSkills);
+        Engimon child = new Engimon(SpeciesChild, nama ,
+                              this.getSpecies(), this.name,
+                              other.getSpecies(), other.name, 3, 1);
+        return child;
+      }
+      else {
+        // gabungan
+        Species SpeciesChild;
+        if (thisElmt.getName().equals("Fire") || otherElmt.getName().equals("Fire")) {
+          // ArrayList<Elemental> childElmt = new ArrayList<Elemental>(this.getElementals());
+          // childElmt.addAll(other.getElementals());
+          SpeciesChild = listSpecies.getSpeciesbyName("Itachimon");
         }
-        else if (thisElmt.getName().equals(otherElmt.getName())) {
-          ArrayList<Elemental> elmtChild = new ArrayList<Elemental>();
-          elmtChild.add(thisElmt);
-          Species SpeciesChild = new Species(this.getSpecies(), inherSkills, elmtChild, this.getInteraction());
-          Engimon child = new Engimon(SpeciesChild, nama ,
+        else if (thisElmt.getName().equals("Ice") || otherElmt.getName().equals("Ice")) {
+          // ArrayList<Elemental> childElmt = new ArrayList<Elemental>(this.getElementals());
+          // childElmt.addAll(other.getElementals());
+          SpeciesChild = listSpecies.getSpeciesbyName("Telermon");
+        }
+        else /*if (thisElmt.getName().equals("Ground") || otherElmt.getName().equals("Ground")) */{
+          // ArrayList<Elemental> childElmt = new ArrayList<Elemental>(this.getElementals());
+          // childElmt.addAll(other.getElementals());
+          SpeciesChild = listSpecies.getSpeciesbyName("Narutomon");
+        }
+        int check = 0;
+        for (Skill skill : inherSkills) {
+          if (SpeciesChild.getSkills().get(0).getName().equals(skill.getName())) {
+            check = 1;
+          }
+        }
+        if (check == 0) {
+          if (inherSkills.size() < 4) {
+            inherSkills.add(0, SpeciesChild.getSkills().get(0));
+          }
+          else {inherSkills.set(0, SpeciesChild.getSkills().get(0));}
+        }
+        SpeciesChild.setSkills(inherSkills);
+        Engimon child = new Engimon(SpeciesChild, nama,
                                 this.getSpecies(), this.name,
                                 other.getSpecies(), other.name, 3, 1);
-          return child;
-        }
-        else {
-          // gabungan
-          Species SpeciesChild;
-          if (thisElmt.getName().equals("Fire") || otherElmt.getName().equals("Fire")) {
-            ArrayList<Elemental> childElmt = new ArrayList<Elemental>(this.getElementals());
-            childElmt.addAll(other.getElementals());
-            SpeciesChild = new Species("Itachimon", inherSkills, childElmt, "A nameless engimon Who protects peace within its shadows, that is a true engimon.");
-          }
-          else if (thisElmt.getName().equals("Ice") || otherElmt.getName().equals("Ice")) {
-            ArrayList<Elemental> childElmt = new ArrayList<Elemental>(this.getElementals());
-            childElmt.addAll(other.getElementals());
-            SpeciesChild = new Species("Telermon", inherSkills, childElmt, "buuurrrrppppp....");
-          }
-          else /*if (thisElmt.getName().equals("Ground") || otherElmt.getName().equals("Ground")) */{
-            ArrayList<Elemental> childElmt = new ArrayList<Elemental>(this.getElementals());
-            childElmt.addAll(other.getElementals());
-            SpeciesChild = new Species("Narutomon", inherSkills, childElmt, "datebayoo");
-          }
-          Engimon child = new Engimon(SpeciesChild, nama,
-                                 this.getSpecies(), this.name,
-                                 other.getSpecies(), other.name, 3, 1);
-          return child;
-        }
+        return child;
       }
-      //else {
-      //}
-    } catch (ArithmeticException e) {
-      System.out.println(e.getMessage());
-      return new Engimon();
     }
   }
   
@@ -343,7 +389,7 @@ public class Engimon extends Species implements Move, InventoryItem{
       return this.getComparator1() - other.getComparator1();
     }
   }
-  public boolean equals(InventoryItem other){
+  public boolean equalTo(InventoryItem other){
     return false;
   }
 
@@ -362,23 +408,28 @@ public class Engimon extends Species implements Move, InventoryItem{
 
   public String engimonToString(){
     String output = this.name;
-    output.concat(";" + this.parentNames.get(0));
-    output.concat(";" + this.parentNames.get(1));
-    output.concat(";" + this.parentSpecies.get(0));
-    output.concat(";" + this.parentSpecies.get(1));
-    output.concat(";" + Integer.toString(this.life));
-    output.concat(";" + Integer.toString(this.level));
-    output.concat(";" + Integer.toString(this.experience));
-    output.concat(";" + Integer.toString(this.cumulativeExperience));
-    output.concat(" " + this.species);
-    output.concat(";" + Integer.toString(this.skills.size()));
+    output+=(";" + this.parentNames.get(0));
+    output+=(";" + this.parentNames.get(1));
+    output+=(";" + this.parentSpecies.get(0));
+    output+=(";" + this.parentSpecies.get(1));
+    output+=(";" + Integer.toString(this.life));
+    output+=(";" + Integer.toString(this.level));
+    output+=(";" + Integer.toString(this.experience));
+    output+=(";" + Integer.toString(this.cumulativeExperience));
+    output+=(" " + this.species);
+    output+=(";" + Integer.toString(this.skills.size()));
     for (int i = 0; i < this.skills.size(); i++){
-      output.concat(";" + this.skills.get(i).skillToString());
+      output+=(";" + this.skills.get(i).skillToString());
     }
+    output+=";";
     for (int i = 0; i < this.elementals.size(); i++){
-      output.concat(";" + this.elementals.get(i).getName());
+      if(i>0){
+        output += ",";
+      }
+      output+=(this.elementals.get(i).getName());
     }
-    output.concat(";" + this.interaction);
+    output+=(";" + this.interaction);
+    System.out.println(output);
     return output;
   }
 }

@@ -36,7 +36,11 @@ public class Player {
             this.InventoryS = new Inventory<Skill>();
             int ISsize = Integer.parseInt(file.nextLine());
             for (int i = 0; i < ISsize; i++){
-                this.addSkillItem(new Skill(file.nextLine()));
+                String[] skillInfo = file.nextLine().trim().split(";");
+                Skill toAdd = new Skill(skillInfo[1]);
+                for(int j=0; j<Integer.parseInt(skillInfo[0]); j++){
+                    this.addSkillItem(toAdd);
+                }
             }
         } catch(FileNotFoundException ex){
             System.out.println("Nama file yang anda masukkan salah");
@@ -45,10 +49,11 @@ public class Player {
 
     public void savePlayer(String fileName){
         try{
-            BufferedWriter fileWriter =  new BufferedWriter(new FileWriter("../files/"+ fileName + ".txt", true));
+            BufferedWriter fileWriter =  new BufferedWriter(new FileWriter("files/"+ fileName + ".txt"));
             fileWriter.write(Integer.toString(this.playerX) + "," + Integer.toString(this.playerY)); fileWriter.newLine();
             if (this.activeEngimon != null){
-                fileWriter.write(this.activeEngimon.toString()); fileWriter.newLine();
+                fileWriter.write(this.activeEngimon.engimonToString()); 
+                fileWriter.newLine();
                 fileWriter.write(Integer.toString(this.activeEngimon.getEngimonX()) + "," + Integer.toString(this.activeEngimon.getEngimonY()));
                 fileWriter.newLine();
             } else {
@@ -61,6 +66,8 @@ public class Player {
             }
             fileWriter.write(Integer.toString(this.InventoryS.getSize())); fileWriter.newLine();
             for (int i = 0; i < this.InventoryS.getSize(); i++){
+                fileWriter.write(Integer.toString(this.InventoryS.getAmount(i)));
+                fileWriter.write(";");
                 fileWriter.write(this.InventoryS.get(i).skillToString());
                 fileWriter.newLine();
             }
@@ -288,6 +295,14 @@ public class Player {
     public void addSkillItem(Skill s) {
         this.InventoryS.put(s);
     }
+    public void useSkill(int idx){
+        Skill choosen = new Skill(this.InventoryS.remove(idx));
+        if(choosen.isLearnable(this.activeEngimon)){
+            this.activeEngimon.addSkill(choosen);
+        }else{
+            this.InventoryS.put(choosen);
+        }
+    }
 
     public void showCommands(){
         System.out.println("Commands available :");
@@ -311,6 +326,22 @@ public class Player {
             return this.InventoryS.printAll(withAmount);
         }else{
             return this.InventoryE.printAll(withAmount);
+        }
+    }
+    public void discard(boolean isEngimon, int idx){
+        if(isEngimon){
+            this.InventoryE.discard(idx,1);
+        }else{
+            this.InventoryS.discard(idx,1);
+        }
+    }
+
+    public void breed(int idx){
+        try{
+            Engimon anak = this.activeEngimon.breed(this.InventoryE.get(idx));
+            this.InventoryE.put(anak);
+        }catch(IllegalArgumentException e){
+            System.out.println("Gabisa breeding");
         }
     }
 
