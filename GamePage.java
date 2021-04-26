@@ -30,6 +30,7 @@ public class GamePage extends JFrame implements ActionListener{
     private KoleksiSpecies allSpecies;
     private Player gamePlayer;
     private Peta gameMap;
+    
 
     public void initGamestate(String filePath){
         Elemental.loadElementals("files/elementals.txt");
@@ -233,7 +234,7 @@ public class GamePage extends JFrame implements ActionListener{
             // }
             
 
-            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY()-1)==null){
                 //gamePlayer.s();
                 validMovement = false;
             }else{gamePlayer.w();}
@@ -243,7 +244,7 @@ public class GamePage extends JFrame implements ActionListener{
             //     this.player.setLocation(this.player.getX()-1, this.player.getY());
             // }
             
-            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
+            if(gameMap.searchMap(gamePlayer.getPlayerX()-1, gamePlayer.getPlayerY())==null){
                 
                 validMovement = 1==2;
             }else{gamePlayer.a();}
@@ -253,7 +254,7 @@ public class GamePage extends JFrame implements ActionListener{
             //     this.player.setLocation(this.player.getX(), this.player.getY()+1);
             // }
             
-            if(gameMap.searchMap(gamePlayer.getPlayerX()+1, gamePlayer.getPlayerY())==null){    
+            if(gameMap.searchMap(gamePlayer.getPlayerX()+1, gamePlayer.getPlayerY()+1)==null){    
                 validMovement = 1==2;
             }else{gamePlayer.s();}
         }
@@ -262,7 +263,7 @@ public class GamePage extends JFrame implements ActionListener{
             //     this.player.setLocation(this.player.getX()+1, this.player.getY());
             // }
             
-            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
+            if(gameMap.searchMap(gamePlayer.getPlayerX()+1, gamePlayer.getPlayerY())==null){
                 //gamePlayer.a();
                 validMovement = 1==2;
             }else{gamePlayer.d();}
@@ -319,6 +320,9 @@ public class GamePage extends JFrame implements ActionListener{
 
     private void refreshMap(){
         //System.out.println(player.getX()+" - "+player.getY());
+        //testing adjacent engimon
+        
+    
         if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
             this.player.setLocation(205+gamePlayer.getPlayerX()*50, 5+gamePlayer.getPlayerY()*50);
         }
@@ -332,6 +336,14 @@ public class GamePage extends JFrame implements ActionListener{
 
         this.gameMap.getWildEngimons().forEach(i -> {
             this.peta[i.getEngimonY()][i.getEngimonX()].setText(i.getSpecies().substring(0, 2));
+        });
+
+        Battle bat = new Battle(gamePlayer,gameMap);
+        bat.chooseOpponent(gameMap.getWildEngimons());
+        
+        System.out.println("player pos x :" + gamePlayer.getPlayerX() + " pos y: "+gamePlayer.getPlayerY());
+        bat.getAdjacentEngimons().forEach(i->{
+            System.out.println("nearest engimon pos x :" + i.getEngimonX() + " pos y: "+ i.getEngimonY() );
         });
     }
 }

@@ -6,17 +6,18 @@ public class Battle {
     private Engimon opponent;
     private Peta map;
 
-    public Battle(Player self){
+    public Battle(Player self, Peta map){
         this.self = self;
         this.myEngimon = self.getActiveEngimon();
         this.opponent = null;
+        this.map = map;
     }
 
     private boolean isEngimonActive(){
         return self.getActiveEngimon() != null;
     }
 
-    private ArrayList<Engimon> getAdjacentEngimons(){
+    public ArrayList<Engimon> getAdjacentEngimons(){
         ArrayList<Engimon> wildEngimons = map.getWildEngimons();
         ArrayList<Engimon> adjacentEngimons = new ArrayList<Engimon>();
         int playerX = self.getPlayerX();
@@ -58,7 +59,7 @@ public class Battle {
         return skillPower;
     }
 
-    private Engimon chooseOpponent(ArrayList<Engimon> adjacentEngimons) {
+    public Engimon chooseOpponent(ArrayList<Engimon> adjacentEngimons) {
         if (adjacentEngimons.size() == 0) {
             System.out.println("No adjacent Engimon");
             return null;
@@ -122,7 +123,7 @@ public class Battle {
                     Skill rewardSkill = new Skill(opponent.getSkills().get(0));
                     self.addSkillItem(rewardSkill);
                     self.addEngimon(opponent);
-                    map.deleteEngimon(opponent);
+                    //map.deleteEngimon(opponent);
                 }
             } else {
                 System.out.println("Battle is cancelled!");

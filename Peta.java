@@ -65,7 +65,7 @@ public class Peta {
             int i =0 ;
             while(temp != null){
                 //int j;
-                CellType ctype;
+                CellType ctype = null;
                 for(int j=0;j<temp.length();j++){
                     if(temp.charAt(j)==Tundra){
                         ctype = CellType.TUNDRA;
@@ -76,7 +76,7 @@ public class Peta {
                     }else if(temp.charAt(j)==Grassland){
                         ctype = CellType.GRASSLAND;
                     }else{
-                        throw  new PetaException();
+                        //throw  new PetaException();
                     }
                     mapLayout.add(new Cell(ctype,i,j));
                 }
@@ -147,8 +147,8 @@ public class Peta {
             //FIXME : tambahkan cek untuk Celltype sesuai degnan elemen engimoon
             //FIXME DONE
             while((c==null || (nextX==i.getEngimonX()&&nextY==i.getEngimonY()) || !c.isEmpty() || !c.checkPlace(nextX, nextY,i))&& attemp<5){
-                nextX = i.getEngimonX() + Math.abs(r.nextInt())%3-1;
-                nextY = i.getEngimonY() + Math.abs(r.nextInt())%3-1;
+                nextX = i.getEngimonX() + Math.abs(r.nextInt()) % 3-1;
+                nextY = i.getEngimonY() + Math.abs(r.nextInt()) % 3-1;
                 c = this.searchMap(nextX, nextY);
                 attemp++;
             }
@@ -191,7 +191,7 @@ public class Peta {
     public void setPlayerPos(Player p){
         this.playerX = p.getPlayerX();
         this.playerY = p.getPlayerY();
-        //rebuildMap();
+        rebuildMap();
         //Pastikan tidak ada yang crash
     }
 
