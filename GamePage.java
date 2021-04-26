@@ -14,6 +14,7 @@ public class GamePage extends JFrame implements ActionListener{
     private JButton battle;
     private JLabel player;
     private JButton engimons;
+    private ArrayList<JLabel> wildEngimons;
     private JButton skills;
     private JLayeredPane layeredPane;
 
@@ -27,10 +28,15 @@ public class GamePage extends JFrame implements ActionListener{
     //Game Components
     private KoleksiSpecies allSpecies;
     private Player gamePlayer;
+    private Peta gameMap;
 
     public void initGamestate(String filePath){
         Elemental.loadElementals("files/elementals.txt");
         this.allSpecies = new KoleksiSpecies("files/species.txt");
+
+        //Inisialisasi Peta
+        gameMap = new Peta("files/peta.txt",10,allSpecies.getAllSpecies());
+
         if(filePath.equals("")){//New Game
             Engimon starter = new Engimon(this.allSpecies.getSpeciesbyName("Narutomon"), "starterMon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 1);
             this.gamePlayer = new Player(starter);
@@ -58,18 +64,23 @@ public class GamePage extends JFrame implements ActionListener{
         this.layeredPane = new JLayeredPane();
         this.layeredPane.setBounds(0,0,750,550);
 
-        this.peta = new JLabel[10][10];
-        for(int i=0; i<10; i++){
-            for(int j=0; j<10; j++){
+        this.peta = new JLabel[gameMap.getMapWidth()][gameMap.getMapHeight()];
+        System.out.println(gameMap.getMapHeight());
+        System.out.println(gameMap.getMapWidth());
+        for(int i=0; i<gameMap.getMapWidth(); i++){
+            for(int j=0; j<gameMap.getMapHeight(); j++){
+                Cell currcell = gameMap.searchMap(j, i);
                 this.peta[i][j] = new JLabel();
                 this.peta[i][j].setOpaque(true);
                 this.peta[i][j].setBounds(200 + 50*i, 50*j, 50, 50);
-                if((i+j)%4 == 0){
-                    this.peta[i][j].setBackground(Color.CYAN);
-                }else if((i+j)%4 == 1){
+                if(currcell.getCellType().equals(CellType.GRASSLAND)){
+                    this.peta[i][j].setBackground(Color.GREEN);
+                }else if(currcell.getCellType().equals(CellType.SEA)){
+                    this.peta[i][j].setBackground(Color.BLUE);
+                }else if(currcell.getCellType().equals(CellType.TUNDRA)){
                     this.peta[i][j].setBackground(Color.YELLOW);
-                }else if((i+j)%4 == 2){
-                    this.peta[i][j].setBackground(Color.RED);
+                }else if(currcell.getCellType().equals(CellType.MOUNTAIN)){
+                    this.peta[i][j].setBackground(Color.CYAN);
                 }else {
                     this.peta[i][j].setBackground(Color.BLACK);
                 }
@@ -77,7 +88,8 @@ public class GamePage extends JFrame implements ActionListener{
             }
         }
 
-        ImageIcon playerIcon = new ImageIcon("/player.png");
+        ImageIcon playerIcon = new ImageIcon("player.png");
+        this.wildEngimons = new ArrayList<>();
 
         this.player = new JLabel();
         this.player.setIcon(playerIcon);
@@ -174,24 +186,40 @@ public class GamePage extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == this.wButton){
-            for(int i=0; i<50; i++){
-                this.player.setLocation(this.player.getX(), this.player.getY()-1);
-            }
+            // for(int i=0; i<50; i++){
+            //     this.player.setLocation(this.player.getX(), this.player.getY()-1);
+            // }
+            gamePlayer.w();
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
+                refreshMap();
+            }else{gamePlayer.s();}
         }
         if(e.getSource() == this.aButton){
-            for(int i=0; i<50; i++){
-                this.player.setLocation(this.player.getX()-1, this.player.getY());
-            }
+            // for(int i=0; i<50; i++){
+            //     this.player.setLocation(this.player.getX()-1, this.player.getY());
+            // }
+            gamePlayer.a();
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
+                refreshMap();
+            }else{gamePlayer.d();}
         }
         if(e.getSource() == this.sButton){
-            for(int i=0; i<50; i++){
-                this.player.setLocation(this.player.getX(), this.player.getY()+1);
-            }
+            // for(int i=0; i<50; i++){
+            //     this.player.setLocation(this.player.getX(), this.player.getY()+1);
+            // }
+            gamePlayer.s();
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
+                refreshMap();
+            }else{gamePlayer.w();}
         }
         if(e.getSource() == this.dButton){
-            for(int i=0; i<50; i++){
-                this.player.setLocation(this.player.getX()+1, this.player.getY());
-            }
+            // for(int i=0; i<50; i++){
+            //     this.player.setLocation(this.player.getX()+1, this.player.getY());
+            // }
+            gamePlayer.d();
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
+                refreshMap();
+            }else{gamePlayer.a();}
         }
         if(e.getSource() == this.engimons){
             if(this.whichPopUp == 1){
@@ -222,6 +250,7 @@ public class GamePage extends JFrame implements ActionListener{
         }
 
     }
+    
     private void setPopUp(int ID){
         this.whichPopUp = ID;
         this.popUp.setVisible(ID>0);
@@ -258,6 +287,13 @@ public class GamePage extends JFrame implements ActionListener{
                 this.inventoryActions[i].setVisible(true);
                 this.inventoryActions[i].setText("Use");
             }
+        }
+    }
+
+    private void refreshMap(){
+        System.out.println(player.getX()+" - "+player.getY());
+        if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
+            this.player.setLocation(205+gamePlayer.getPlayerX()*50, 5+gamePlayer.getPlayerY()*50);
         }
     }
 }

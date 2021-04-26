@@ -21,8 +21,8 @@ public class Peta {
     public static char Grassland='3';
     public static char Mountain='4';
     private final String filename;
-    public Integer mapWidth = 0;
-    public Integer mapHeight = 0;
+    private Integer mapWidth = 0;
+    private Integer mapHeight = 0;
     private ArrayList<Cell> mapLayout;
     private ArrayList<Engimon> wildEngimons;
     private Integer playerX, playerY;
@@ -220,4 +220,7 @@ public class Peta {
             }
         });
     }
+
+    public Integer getMapHeight(){return this.mapHeight;}
+    public Integer getMapWidth(){return this.mapWidth;}
 }
