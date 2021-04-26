@@ -260,26 +260,16 @@ public class Engimon extends Species implements Move, InventoryItem{
     }
   }
   
-  public String printAllDetail(){
-    String toReturn = "";
-    System.out.println("Species "+getSpecies());
-    System.out.println("Nama "+this.name);
-    System.out.println("Life "+this.life+"/3");
-    for (int i=0; i<2; i++){
-      System.out.println("Parent "+(i+1));
-      System.out.println("Nama: "+this.parentNames.get(i));
-      System.out.println("Species "+this.parentSpecies.get(i));
-    }
-    int j=0;
+  public ArrayList<String> printAllDetail(){
+    ArrayList<String> toReturn = new ArrayList<String>();
+    toReturn.add("Umum: " + getSpecies() + "/" + this.name);
+    toReturn.add("Parents: " + this.parentNames.get(0) + "/" +this.parentSpecies.get(0) + ", " + " "+this.parentNames.get(1) + "/" +this.parentSpecies.get(1));
+    int j=1;
     for (Skill a : this.getSkills()){
-      System.out.print("Skill "+j+" ");
-      a.printDetail();
-      System.out.println();
+      toReturn.add("Skill "+Integer.toString(j)+" " + a.printDetail());
       j++;
     }
-    System.out.println("Level "+this.level);
-    System.out.println("Experience "+this.experience+"/100");
-    System.out.println("Cumulative Experience "+this.cumulativeExperience+"/5000");
+    toReturn.add("Life "+Integer.toString(this.life)+"/3, " + "Level "+Integer.toString(this.level) + ", " + "Experience "+Integer.toString(this.experience)+"/100" + ", ");
     return toReturn;
   }
 

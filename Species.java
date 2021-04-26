@@ -5,7 +5,7 @@ public class Species {
     public ArrayList<Skill> skills;
     public ArrayList<Elemental> elementals; 
     public String interaction;
-
+    
     public Species(){
         this.species = "Default";
         this.skills = new ArrayList<Skill>();
