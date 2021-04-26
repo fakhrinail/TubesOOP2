@@ -285,7 +285,13 @@ public class GamePage extends JFrame implements ActionListener{
             if(gameMap.searchMap(gamePlayer.getPlayerX()-1, gamePlayer.getPlayerY())==null){
                 //gamePlayer.s();
                 validMovement = false;
-            }else{gamePlayer.w();}
+            }else{
+                if(gameMap.searchMap(gamePlayer.getPlayerX()-1, gamePlayer.getPlayerY()).isEmpty()){
+                    gamePlayer.w();
+                }else{
+                    validMovement = false;
+                }
+            }
         }
         if(e.getSource() == this.aButton){
             // for(int i=0; i<50; i++){
@@ -295,7 +301,13 @@ public class GamePage extends JFrame implements ActionListener{
             if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY()-1)==null){
                 
                 validMovement = false;
-            }else{gamePlayer.a();}
+            }else{
+                if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY()-1).isEmpty()){
+                    gamePlayer.a();
+                }else{
+                    validMovement = false;
+                }
+            }
         }
         if(e.getSource() == this.sButton){
             // for(int i=0; i<50; i++){
@@ -304,24 +316,32 @@ public class GamePage extends JFrame implements ActionListener{
             
             if(gameMap.searchMap(gamePlayer.getPlayerX()+1, gamePlayer.getPlayerY())==null){    
                 validMovement = false;
-            }else{gamePlayer.s();}
+            }else{
+                if(gameMap.searchMap(gamePlayer.getPlayerX()+1, gamePlayer.getPlayerY()).isEmpty()){
+                    gamePlayer.s();
+                }else{
+                    validMovement = false;
+                }
+            }
         }
         if(e.getSource() == this.dButton){
-            // for(int i=0; i<50; i++){
-            //     this.player.setLocation(this.player.getX()+1, this.player.getY());
-            // }
-            
             if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY()+1)==null){
                 //gamePlayer.a();
                 validMovement = false;
-            }else{gamePlayer.d();}
+            }else{
+                if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY()+1).isEmpty()){
+                    gamePlayer.d();
+                }else{
+                    validMovement = false;
+                }
+            }
         }
 
         if(validMovement){
             Main.jumlahTurns++;
             gameMap.setPlayerPos(gamePlayer);
             if(Main.jumlahTurns%4==0){gameMap.generateEngimon();}
-            //if(Main.jumlahTurns%3==0&&Main.jumlahTurns>3){gameMap.randomEngimon();}
+            if(Main.jumlahTurns%8==0&&Main.jumlahTurns>3){gameMap.randomEngimon();}
             refreshMap();
         }
 
@@ -400,15 +420,23 @@ public class GamePage extends JFrame implements ActionListener{
             this.player.setLocation(205+gamePlayer.getPlayerY()*50, 5+gamePlayer.getPlayerX()*50);
         }
 
-        //COBA TAMPILIN RANDOM ENGIMON
-        for(int i =0 ;i<gameMap.getMapHeight(); i++){
-            for(int j=0; j <gameMap.getMapWidth(); j++){
-                this.peta[i][j].setText("");
-            }
-        }
+        // //COBA TAMPILIN RANDOM ENGIMON
+        // for(int i =0 ;i<gameMap.getMapHeight(); i++){
+        //     for(int j=0; j <gameMap.getMapWidth(); j++){
+        //         this.peta[i][j].setText("");
+        //     }
+        // }
 
-        this.gameMap.getWildEngimons().forEach(i -> {
-            this.peta[i.getEngimonX()][i.getEngimonY()].setText(i.getSpecies().substring(0, 2));
+        // this.gameMap.getWildEngimons().forEach(i -> {
+        //     this.peta[i.getEngimonX()][i.getEngimonY()].setText(i.getSpecies().substring(0, 2));
+        // });
+
+        gameMap.getMapLayout().forEach(i -> {
+            this.peta[i.getX()][i.getY()].setText("");
+            if(i.getEngimon()!=null){
+                Engimon e = i.getEngimon();
+                this.peta[e.getEngimonX()][e.getEngimonY()].setText(e.getSpecies().substring(0, 2));
+            }
         });
     }
 }
