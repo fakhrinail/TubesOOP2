@@ -260,7 +260,8 @@ public class Engimon extends Species implements Move, InventoryItem{
     }
   }
   
-  public void printAllDetail(){
+  public String printAllDetail(){
+    String toReturn = "";
     System.out.println("Species "+getSpecies());
     System.out.println("Nama "+this.name);
     System.out.println("Life "+this.life+"/3");
@@ -279,6 +280,7 @@ public class Engimon extends Species implements Move, InventoryItem{
     System.out.println("Level "+this.level);
     System.out.println("Experience "+this.experience+"/100");
     System.out.println("Cumulative Experience "+this.cumulativeExperience+"/5000");
+    return toReturn;
   }
 
   // Realisasi InventoryItem

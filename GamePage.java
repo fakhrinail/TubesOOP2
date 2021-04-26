@@ -25,6 +25,8 @@ public class GamePage extends JFrame implements ActionListener{
     private int whichPopUp;
     private JLabel[] inventoryInfos;
     private JButton[] inventoryActions;
+    private JLabel[] nearbyEngimons;
+    private JButton[] battleEngimons;
 
     //Game Components
     private KoleksiSpecies allSpecies;
@@ -133,8 +135,9 @@ public class GamePage extends JFrame implements ActionListener{
         this.layeredPane.add(this.dButton);
 
         this.battle = new JButton();
-        this.battle.setBounds(75, 350, 50, 50);
+        this.battle.setBounds(25, 25, 150, 50);
         this.battle.setText("Battle");
+        this.battle.addActionListener(this);
         this.battle.setFocusable(false);
         this.layeredPane.add(this.battle);
         
@@ -182,6 +185,22 @@ public class GamePage extends JFrame implements ActionListener{
             this.inventoryActions[i].setFocusable(false);
             this.layeredPane.add(this.inventoryActions[i], Integer.valueOf(3));
         }
+        this.nearbyEngimons = new JLabel[4];
+        this.battleEngimons = new JButton[4];
+        for(int i=0; i<4; i++){
+            this.nearbyEngimons[i] = new JLabel();
+            this.nearbyEngimons[i].setBounds(200, 100+100*i, 350, 100);
+            this.nearbyEngimons[i].setOpaque(true);
+            this.nearbyEngimons[i].setBackground(Color.GRAY);
+            this.layeredPane.add(this.nearbyEngimons[i], Integer.valueOf(3));
+
+            this.battleEngimons[i] = new JButton();
+            this.battleEngimons[i].setBounds(600, 135+100*i, 100, 30);
+            this.battleEngimons[i].addActionListener(this);
+            this.battleEngimons[i].setFocusable(false);
+            this.battleEngimons[i].setText("Battle");
+            this.layeredPane.add(this.battleEngimons[i], Integer.valueOf(3));
+        }
         this.setPopUp(0);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -194,6 +213,13 @@ public class GamePage extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if(e.getSource()==this.wButton || e.getSource()==this.aButton  || e.getSource()==this.sButton || e.getSource()==this.dButton){
             this.moveActionPerformed(e);
+        }
+        if(e.getSource() == this.battle){
+            if(this.whichPopUp == 3){
+                this.setPopUp(0);
+            }else{
+                this.setPopUp(3);
+            }
         }
 
         if(e.getSource() == this.engimons){
@@ -292,17 +318,17 @@ public class GamePage extends JFrame implements ActionListener{
             this.inventoryInfos[i].setVisible(false);
             this.inventoryActions[i].setVisible(false);
         }
-        if(ID == 1 || ID == 3){
+        for(int i=0; i<4; i++){
+            this.battleEngimons[i].setVisible(false);
+            this.nearbyEngimons[i].setVisible(false);
+        }
+        if(ID == 1){
             ArrayList<String> inventoryList = this.gamePlayer.getInventory(false);
             for(int i=0; i<inventoryList.size(); i++){
                 this.inventoryInfos[i].setVisible(true);
                 this.inventoryInfos[i].setText(inventoryList.get(i));
                 this.inventoryActions[i].setVisible(true);
-                if(ID == 1){
-                    this.inventoryActions[i].setText("Switch");
-                }else{
-                    this.inventoryActions[i].setText("Breed");
-                }
+                this.inventoryActions[i].setText("Switch");
             }
         }
         if(ID == 2){
@@ -314,6 +340,13 @@ public class GamePage extends JFrame implements ActionListener{
                 this.inventoryInfos[i].setText(inventoryList.get(i));
                 this.inventoryActions[i].setVisible(true);
                 this.inventoryActions[i].setText("Use");
+            }
+        }
+        if(ID == 3){
+            Battle battle = new Battle(this.gamePlayer, this.gameMap);
+            for(int i=0; i<4; i++){
+                this.battleEngimons[i].setVisible(true);
+                this.nearbyEngimons[i].setVisible(true);
             }
         }
     }
@@ -336,13 +369,6 @@ public class GamePage extends JFrame implements ActionListener{
 
         this.gameMap.getWildEngimons().forEach(i -> {
             this.peta[i.getEngimonY()][i.getEngimonX()].setText(i.getSpecies().substring(0, 2));
-        });
-
-        Battle bat = new Battle(gamePlayer,gameMap);
-        
-        System.out.println("player pos x :" + gamePlayer.getPlayerX() + " pos y: "+gamePlayer.getPlayerY());
-        bat.getAdjacentEngimons().forEach(i->{
-            System.out.println("nearest engimon pos x :" + i.getEngimonX() + " pos y: "+ i.getEngimonY() );
         });
     }
 }

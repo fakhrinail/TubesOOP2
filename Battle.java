@@ -17,16 +17,17 @@ public class Battle {
         return self.getActiveEngimon() != null;
     }
 
-    public ArrayList<Engimon> getAdjacentEngimons(){
+    public ArrayList<Integer> getAdjacentEngimons(){
         ArrayList<Engimon> wildEngimons = map.getWildEngimons();
-        ArrayList<Engimon> adjacentEngimons = new ArrayList<Engimon>();
+        ArrayList<Integer> adjacentEngimons = new ArrayList<Integer>();
         int playerX = self.getPlayerX();
         int playerY = self.getPlayerY();
-        for (Engimon wildEngimon : wildEngimons) { 
+        for (int i=0; i<wildEngimons.size(); i++) { 
+            Engimon wildEngimon = wildEngimons.get(i);
             int wildX = wildEngimon.getEngimonX();
             int wildY = wildEngimon.getEngimonY();
             if (Math.abs(wildX-playerX) + Math.abs(wildY-playerY) <= 1) {
-                adjacentEngimons.add(wildEngimon);
+                adjacentEngimons.add(i);
             }
         }
 
@@ -89,8 +90,7 @@ public class Battle {
 
     public void battle(){
         if (isEngimonActive()) {
-            ArrayList<Engimon> adjacentEngimons = getAdjacentEngimons();
-            this.opponent = chooseOpponent(adjacentEngimons);
+            this.opponent = map.getWildEngimons().get(getAdjacentEngimons().get(0));
             // tampilkan status lawan
             this.opponent.printDetail();
             double opponentPower = calculateSkillPower(this.opponent) + calculateElementalAdvantage(opponent, myEngimon)*opponent.getLevel();

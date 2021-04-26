@@ -9,10 +9,10 @@ public class Skill implements InventoryItem {
     public Skill(String info){
         String[] skillInfo = info.trim().split(",");
         this.name = skillInfo[0];
-        this.mastery = 1;
-        this.basePower = Integer.parseInt(skillInfo[1]);
+        this.mastery = Integer.parseInt(skillInfo[1]);
+        this.basePower = Integer.parseInt(skillInfo[2]);
         this.compatibles = new ArrayList<Elemental>();
-        for(int i=2; i<skillInfo.length; i++){
+        for(int i=3; i<skillInfo.length; i++){
             Elemental toAdd = new Elemental(skillInfo[i]);
             this.compatibles.add(toAdd);
         }
