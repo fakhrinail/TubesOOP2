@@ -111,9 +111,15 @@ public class Peta {
                 //tambah random engimon sesuai dengan tipe cell
                 Species spc = new Species();
                 if(ct.equals(CellType.GRASSLAND)){
-                    spc= this.listSpesies.stream()
-                    .filter(i-> i.getSpecies().equalsIgnoreCase("Groundmon") || i.getSpecies().equalsIgnoreCase("Electricmon"))
+                    if(this.wildEngimons.size()%2==0){
+                        spc= this.listSpesies.stream()
+                    .filter(i-> i.getSpecies().equalsIgnoreCase("Electricmon"))
                     .findFirst().get();
+                    }else{
+                        spc= this.listSpesies.stream()
+                    .filter(i-> i.getSpecies().equalsIgnoreCase("Groundmon"))
+                    .findFirst().get();
+                    }
                 }else  if(ct.equals(CellType.MOUNTAIN)){
                     spc= this.listSpesies.stream().filter(i-> i.getSpecies().equalsIgnoreCase("Firemon")).findFirst().get();
                 }else if(ct.equals(CellType.SEA)){  
@@ -121,7 +127,9 @@ public class Peta {
                 }else if(ct.equals(CellType.TUNDRA)){
                     spc= this.listSpesies.stream().filter(i-> i.getSpecies().equalsIgnoreCase("Icemon")).findFirst().get();
                 }
-                Engimon eng = new Engimon(spc, "Randommon","","","","",3,1+(maxWildEngimon/3)%10);
+           
+
+                Engimon eng = new Engimon(spc, "Randommon","","","","",1,Math.abs(random.nextInt())%15);
                 eng.setPos(cl.getX(), cl.getY());
                 this.wildEngimons.add(eng);
             }
@@ -132,15 +140,15 @@ public class Peta {
     public void randomEngimon(){
         this.wildEngimons.forEach(i->{
             Random r = new Random();
-            Integer nextX = i.getEngimonX()+r.nextInt()%3-1;
-            Integer nextY = i.getEngimonY()+r.nextInt()%3-1;
+            Integer nextX = i.getEngimonX() + Math.abs(r.nextInt())%3-1;
+            Integer nextY = i.getEngimonY() + Math.abs(r.nextInt())%3-1;
             Cell c = this.searchMap(nextX, nextY);
             Integer attemp = 0;
             //FIXME : tambahkan cek untuk Celltype sesuai degnan elemen engimoon
             //FIXME DONE
-            while((c==null || (nextX==0&&nextY==0) || c.checkPlace(nextX, nextY,i.getSpecies()))&& attemp<5){
-                nextX = i.getEngimonX()+r.nextInt()%3-1;
-                nextY = i.getEngimonY()+r.nextInt()%3-1;
+            while((c==null || (nextX==i.getEngimonX()&&nextY==i.getEngimonY()) || !c.isEmpty() || !c.checkPlace(nextX, nextY,i))&& attemp<5){
+                nextX = i.getEngimonX() + Math.abs(r.nextInt())%3-1;
+                nextY = i.getEngimonY() + Math.abs(r.nextInt())%3-1;
                 c = this.searchMap(nextX, nextY);
                 attemp++;
             }
@@ -153,36 +161,38 @@ public class Peta {
         this.rebuildMap();
     }
 
-    public void deleteEngimon(Engimon engimon){
-        if (this.wildEngimons.contains(engimon)){
-            this.wildEngimons.remove(engimon);
-            this.rebuildMap();
+    public void deleteEngimon(Integer engimonAt){
+        if(engimonAt<this.wildEngimons.size()){
+            wildEngimons.remove(engimonAt);
         }
     }
 
     private void rebuildMap(){
-        this.mapLayout.forEach(i -> {
-            i.setEmpty();
-            if(i.checkPlace(playerX, playerY)){
-                i.setPlayer();
-            }
-        });
-        this.wildEngimons.forEach(i->{
-            int j =0;
-            boolean flag = false;
-            while(!flag && j<this.mapLayout.size()){
-                if(mapLayout.get(j).checkPlace(i.getEngimonX(), i.getEngimonY())){
-                    mapLayout.get(j).setEngimon(i); flag = true;
-                }
-                j++;
-            }
-        });
-
+        // this.mapLayout.forEach(i -> {
+        //     i.setEmpty();
+        //     if(i.checkPlace(playerX, playerY)){
+        //         i.setPlayer();
+        //     }
+        // });
+        // this.wildEngimons.forEach(i->{
+        //     int j =0;
+        //     boolean flag = false;
+        //     while(!flag && j<this.mapLayout.size()){
+        //         if(mapLayout.get(j).checkPlace(i.getEngimonX(), i.getEngimonY())){
+        //             mapLayout.get(j).setEngimon(i); flag = true;
+        //         }
+        //         j++;
+        //     }
+        // });
+        
+        //pastikan tidak ada yang crash
     }
 
     public void setPlayerPos(Player p){
         this.playerX = p.getPlayerX();
         this.playerY = p.getPlayerY();
+        //rebuildMap();
+        //Pastikan tidak ada yang crash
     }
 
     public Cell searchMap(int x, int y){

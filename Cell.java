@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Cell {
     private CellType cellType;
     private Integer xLoc;
@@ -62,18 +65,30 @@ public class Cell {
         return this.getX()==x && this.getY()==y;
     }
 
-    public Boolean checkPlace(int x,int y, String species){
+    public Boolean checkPlace(int x,int y, Engimon engimon){
         Boolean a = this.getX()==x && this.getY()==y;
-        Boolean b = 1==2;
-        if(this.cellType.equals(CellType.MOUNTAIN) && species.equalsIgnoreCase("mountains")){
-            b = true;
-        }else if(this.cellType.equals(CellType.SEA) && species.equalsIgnoreCase("sea")){
-            b = true;
-        }else if(this.cellType.equals(CellType.GRASSLAND) && species.equalsIgnoreCase("grassland")){
-            b = true;
-        }else if(this.cellType.equals(CellType.TUNDRA) && species.equalsIgnoreCase("tundra")){
-            b = true;
+        Boolean b = false;
+        ArrayList<Elemental> arl = engimon.getElementals();
+        if(this.cellType.equals(CellType.MOUNTAIN)){
+            for(Elemental e: arl){
+                b = e.equals(new Elemental("Fire")) || b;
+            }
+        }else if(this.cellType.equals(CellType.SEA) ){
+            for(Elemental e: arl){
+                b = e.equals(new Elemental("Water")) || b;
+            }
+        }else if(this.cellType.equals(CellType.GRASSLAND) ){
+            for(Elemental e: arl){
+                b = e.equals(new Elemental("Electric")) || e.equals(new Elemental("Ground")) || b;
+            }
+        }else if(this.cellType.equals(CellType.TUNDRA) ){
+            for(Elemental e: arl){
+                b = e.equals(new Elemental("Ice")) || b;
+            }
         }
+        
+
+        
         return a&&b;
     }
 
