@@ -76,17 +76,16 @@ public class Player {
         if (this.activeEngimon != null){
             this.activeEngimon.setPos(this.playerX, this.playerY);
         }
-        if(this.playerY>0){
-            this.playerY--;
-        }
+        this.playerX--;
     }
     public void a(){
         if (this.activeEngimon != null){
             this.activeEngimon.setPos(this.playerX, this.playerY);
         }
         if(this.playerX>0){
-            this.playerX--;
+            
         }
+        this.playerY--;
     }
     public void s(){
         if (this.activeEngimon != null){
@@ -94,16 +93,18 @@ public class Player {
         }
         this.activeEngimon.setPos(this.playerX, this.playerY);
         if(this.playerY>=0){
-            this.playerY++;
+            
         }
+        this.playerX++;
     }
     public void d(){
         if (this.activeEngimon != null){
             this.activeEngimon.setPos(this.playerX, this.playerY);
         }
         if(this.playerX>=0){
-            this.playerX++;
+            
         }
+        this.playerY++;
     }
 
     public void removeActiveEngimon(){

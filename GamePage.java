@@ -68,15 +68,15 @@ public class GamePage extends JFrame implements ActionListener{
         this.layeredPane = new JLayeredPane();
         this.layeredPane.setBounds(0,0,750,550);
 
-        this.peta = new JLabel[gameMap.getMapWidth()][gameMap.getMapHeight()];
+        this.peta = new JLabel[gameMap.getMapHeight()][gameMap.getMapWidth()];
         System.out.println(gameMap.getMapHeight());
         System.out.println(gameMap.getMapWidth());
-        for(int i=0; i<gameMap.getMapWidth(); i++){
-            for(int j=0; j<gameMap.getMapHeight(); j++){
-                Cell currcell = gameMap.searchMap(j, i);
+        for(int i=0; i<gameMap.getMapHeight(); i++){
+            for(int j=0; j<gameMap.getMapWidth(); j++){
+                Cell currcell = gameMap.searchMap(i, j);
                 this.peta[i][j] = new JLabel();
                 this.peta[i][j].setOpaque(true);
-                this.peta[i][j].setBounds(200 + 50*i, 50*j, 48, 48);
+                this.peta[i][j].setBounds(200 + 50*j, 50*i, 48, 48);
                 if(currcell.getCellType().equals(CellType.GRASSLAND)){
                     this.peta[i][j].setBackground(Color.GREEN);
                 }else if(currcell.getCellType().equals(CellType.SEA)){
@@ -265,7 +265,7 @@ public class GamePage extends JFrame implements ActionListener{
             // }
             
 
-            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY()-1)==null){
+            if(gameMap.searchMap(gamePlayer.getPlayerX()-1, gamePlayer.getPlayerY())==null){
                 //gamePlayer.s();
                 validMovement = false;
             }else{gamePlayer.w();}
@@ -275,9 +275,9 @@ public class GamePage extends JFrame implements ActionListener{
             //     this.player.setLocation(this.player.getX()-1, this.player.getY());
             // }
             
-            if(gameMap.searchMap(gamePlayer.getPlayerX()-1, gamePlayer.getPlayerY())==null){
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY()-1)==null){
                 
-                validMovement = 1==2;
+                validMovement = false;
             }else{gamePlayer.a();}
         }
         if(e.getSource() == this.sButton){
@@ -285,8 +285,8 @@ public class GamePage extends JFrame implements ActionListener{
             //     this.player.setLocation(this.player.getX(), this.player.getY()+1);
             // }
             
-            if(gameMap.searchMap(gamePlayer.getPlayerX()+1, gamePlayer.getPlayerY()+1)==null){    
-                validMovement = 1==2;
+            if(gameMap.searchMap(gamePlayer.getPlayerX()+1, gamePlayer.getPlayerY())==null){    
+                validMovement = false;
             }else{gamePlayer.s();}
         }
         if(e.getSource() == this.dButton){
@@ -294,9 +294,9 @@ public class GamePage extends JFrame implements ActionListener{
             //     this.player.setLocation(this.player.getX()+1, this.player.getY());
             // }
             
-            if(gameMap.searchMap(gamePlayer.getPlayerX()+1, gamePlayer.getPlayerY())==null){
+            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY()+1)==null){
                 //gamePlayer.a();
-                validMovement = 1==2;
+                validMovement = false;
             }else{gamePlayer.d();}
         }
 
@@ -304,7 +304,7 @@ public class GamePage extends JFrame implements ActionListener{
             Main.jumlahTurns++;
             gameMap.setPlayerPos(gamePlayer);
             if(Main.jumlahTurns%4==0){gameMap.generateEngimon();}
-            if(Main.jumlahTurns%3==0&&Main.jumlahTurns>3){gameMap.randomEngimon();}
+            //if(Main.jumlahTurns%3==0&&Main.jumlahTurns>3){gameMap.randomEngimon();}
             refreshMap();
         }
 
@@ -374,18 +374,18 @@ public class GamePage extends JFrame implements ActionListener{
         
     
         if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())!=null){
-            this.player.setLocation(205+gamePlayer.getPlayerX()*50, 5+gamePlayer.getPlayerY()*50);
+            this.player.setLocation(205+gamePlayer.getPlayerY()*50, 5+gamePlayer.getPlayerX()*50);
         }
 
         //COBA TAMPILIN RANDOM ENGIMON
-        for(int i =0 ;i<gameMap.getMapWidth(); i++){
-            for(int j=0; j <gameMap.getMapHeight(); j++){
+        for(int i =0 ;i<gameMap.getMapHeight(); i++){
+            for(int j=0; j <gameMap.getMapWidth(); j++){
                 this.peta[i][j].setText("");
             }
         }
 
         this.gameMap.getWildEngimons().forEach(i -> {
-            this.peta[i.getEngimonY()][i.getEngimonX()].setText(i.getSpecies().substring(0, 2));
+            this.peta[i.getEngimonX()][i.getEngimonY()].setText(i.getSpecies().substring(0, 2));
         });
     }
 }
