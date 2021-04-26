@@ -328,6 +328,13 @@ public class Player {
             return this.InventoryE.printAll(withAmount);
         }
     }
+    public void discard(boolean isEngimon, int idx){
+        if(isEngimon){
+            this.InventoryE.discard(idx,1);
+        }else{
+            this.InventoryS.discard(idx,1);
+        }
+    }
 
     public int getPlayerX(){
         return this.playerX;

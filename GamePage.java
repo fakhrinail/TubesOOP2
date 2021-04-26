@@ -26,6 +26,7 @@ public class GamePage extends JFrame implements ActionListener{
     private int whichPopUp;
     private JLabel[] inventoryInfos;
     private JButton[] inventoryActions;
+    private JButton[] discard;
     private JLabel[][] nearbyEngimons;
     private JButton[] battleEngimons;
 
@@ -168,7 +169,7 @@ public class GamePage extends JFrame implements ActionListener{
         //Popup Items
         this.whichPopUp = 0;
         this.popUp = new JLabel();
-        this.popUp.setBounds(200, 0, 500, 700);
+        this.popUp.setBounds(200, 0, 700, 700);
         this.popUp.setBackground(Color.GRAY);
         this.popUp.setOpaque(true);
         this.layeredPane.add(this.popUp, Integer.valueOf(2));
@@ -184,6 +185,7 @@ public class GamePage extends JFrame implements ActionListener{
 
         this.inventoryInfos = new JLabel[maxInventoryItem];
         this.inventoryActions = new JButton[maxInventoryItem];
+        this.discard = new JButton[maxInventoryItem];
         for(int i=0; i<maxInventoryItem; i++){
             this.inventoryInfos[i] = new JLabel();
             this.inventoryInfos[i].setBounds(200, 200+25*i, 350, 25);
@@ -196,6 +198,13 @@ public class GamePage extends JFrame implements ActionListener{
             this.inventoryActions[i].addActionListener(this);
             this.inventoryActions[i].setFocusable(false);
             this.layeredPane.add(this.inventoryActions[i], Integer.valueOf(3));
+
+            this.discard[i] = new JButton();
+            this.discard[i].setBounds(700, 200+25*i, 100, 25);
+            this.discard[i].addActionListener(this);
+            this.discard[i].setFocusable(false);
+            this.discard[i].setText("Discard");
+            this.layeredPane.add(this.discard[i], Integer.valueOf(3));
         }
         this.nearbyEngimons = new JLabel[4][4];
         this.battleEngimons = new JButton[4];
@@ -218,7 +227,7 @@ public class GamePage extends JFrame implements ActionListener{
         this.setPopUp(0);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(750,750);
+        this.setSize(1000,750);
         this.add(this.layeredPane);
         this.setVisible(true);
     }
@@ -262,6 +271,10 @@ public class GamePage extends JFrame implements ActionListener{
                 }else if(this.whichPopUp == 2){
                     this.gamePlayer.useSkill(i);
                 }
+                this.setPopUp(this.whichPopUp);
+            }
+            if(e.getSource() == this.discard[i]){
+                this.gamePlayer.discard(this.whichPopUp == 1,i);
                 this.setPopUp(this.whichPopUp);
             }
         }
@@ -369,6 +382,7 @@ public class GamePage extends JFrame implements ActionListener{
         for(int i=0; i<maxInventoryItem; i++){
             this.inventoryInfos[i].setVisible(false);
             this.inventoryActions[i].setVisible(false);
+            this.discard[i].setVisible(false);
         }
         for(int i=0; i<4; i++){
             this.battleEngimons[i].setVisible(false);
@@ -383,6 +397,7 @@ public class GamePage extends JFrame implements ActionListener{
                 this.inventoryInfos[i].setText(inventoryList.get(i));
                 this.inventoryActions[i].setVisible(true);
                 this.inventoryActions[i].setText("Switch");
+                this.discard[i].setVisible(true);
             }
         }
         if(ID == 2){
@@ -394,6 +409,7 @@ public class GamePage extends JFrame implements ActionListener{
                 this.inventoryInfos[i].setText(inventoryList.get(i));
                 this.inventoryActions[i].setVisible(true);
                 this.inventoryActions[i].setText("Use");
+                this.discard[i].setVisible(true);
             }
         }
         if(ID == 3){
