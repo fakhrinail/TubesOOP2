@@ -18,7 +18,7 @@ public class Inventory <T extends InventoryItem> {
         }else{
             totalItem++;
             int idx = this.items.size();
-            while(idx>0 && toPut.compareTo(this.items.get(idx-1)) > 0 && !toPut.equals(this.items.get(idx-1))){
+            while(idx>0 && toPut.compareInventory(this.items.get(idx-1)) > 0 && !toPut.equals(this.items.get(idx-1))){
                 idx--;
             }
             if(idx > 0 && toPut.equals(this.items.get(idx-1))){

@@ -306,7 +306,7 @@ public class Engimon extends Species implements Move, InventoryItem{
   public int getComparator2(){
     return this.level;
   }
-  public int compareTo(InventoryItem other){
+  public int compareInventory(InventoryItem other){
     if(this.getComparator1() == other.getComparator1()){
       return this.getComparator2() - other.getComparator2();
     }else{

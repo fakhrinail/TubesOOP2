@@ -68,7 +68,7 @@ public class Skill implements InventoryItem {
     public int getComparator2(){
         return 0;
     }
-    public int compareTo(InventoryItem other){
+    public int compareInventory(InventoryItem other){
         if(this.getComparator1() == other.getComparator1()){
             return this.getComparator2() - other.getComparator2();
         }else{

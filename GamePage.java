@@ -339,7 +339,6 @@ public class GamePage extends JFrame implements ActionListener{
         });
 
         Battle bat = new Battle(gamePlayer,gameMap);
-        bat.chooseOpponent(gameMap.getWildEngimons());
         
         System.out.println("player pos x :" + gamePlayer.getPlayerX() + " pos y: "+gamePlayer.getPlayerY());
         bat.getAdjacentEngimons().forEach(i->{
