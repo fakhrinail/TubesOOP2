@@ -1,4 +1,4 @@
-Firemon;1;Fireball,1,150,Fire;Fire;Ready to burn down the forest, bos?
+Firemon;1;Fireball,1,90,Fire;Fire;Ready to burn down the forest, bos?
 Watermon;1;Waterbom,1,120,Water;Water;Even the atlantis drowned.
 Electricmon;1;Chidori,1,120,Electric;Electric;I'm the core of everything.
 Groundmon;1;Pakubumi,1,130,Ground;Ground;Rule no.1: you make mistake, you grounded.

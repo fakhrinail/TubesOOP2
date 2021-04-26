@@ -32,6 +32,7 @@ public class GamePage extends JFrame implements ActionListener{
     private KoleksiSpecies allSpecies;
     private Player gamePlayer;
     private Peta gameMap;
+    private Battle toBattle;
     
 
     public void initGamestate(String filePath){
@@ -45,7 +46,7 @@ public class GamePage extends JFrame implements ActionListener{
             Engimon starter = new Engimon(this.allSpecies.getSpeciesbyName("Narutomon"), "starterMon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 1);
             this.gamePlayer = new Player(starter);
             //Testing inventory dlu
-            starter = new Engimon(this.allSpecies.getSpeciesbyName("Firemon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 15);
+            starter = new Engimon(this.allSpecies.getSpeciesbyName("Firemon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 1);
             this.gamePlayer.addEngimon(starter);
             this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
             starter = new Engimon(this.allSpecies.getSpeciesbyName("Watermon"), "Randomon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 15);
@@ -254,7 +255,13 @@ public class GamePage extends JFrame implements ActionListener{
                 this.setPopUp(this.whichPopUp);
             }
         }
-
+        for(int i=0; i<4; i++){
+            if(e.getSource() == this.battleEngimons[i]){
+                this.toBattle.battle(i);
+                this.refreshMap();
+                this.setPopUp(this.whichPopUp);
+            }
+        }
     }
 
     private void moveActionPerformed(ActionEvent e){
@@ -333,12 +340,17 @@ public class GamePage extends JFrame implements ActionListener{
     private void setPopUp(int ID){
         this.whichPopUp = ID;
         this.popUp.setVisible(ID>0);
-        ArrayList<String> activeInfo = this.gamePlayer.getActiveEngimon().printAllDetail();
         for(int i=0; i<7; i++){
             this.popUpTitle[i].setVisible(ID>0);
+            this.popUpTitle[i].setText("");
         }
-        for(int i=0; i<activeInfo.size(); i++){
-            this.popUpTitle[i].setText(activeInfo.get(i));
+        if(this.gamePlayer.getActiveEngimon()!=null){
+            ArrayList<String> activeInfo = this.gamePlayer.getActiveEngimon().printAllDetail();
+            for(int i=0; i<activeInfo.size(); i++){
+                this.popUpTitle[i].setText(activeInfo.get(i));
+            }
+        }else{
+            this.popUpTitle[3].setText("Tidak ada engimon aktif");
         }
         this.wButton.setEnabled(ID==0);
         this.aButton.setEnabled(ID==0);
@@ -375,10 +387,11 @@ public class GamePage extends JFrame implements ActionListener{
             }
         }
         if(ID == 3){
-            Battle toBattle = new Battle(this.gamePlayer, this.gameMap);
+            this.toBattle = new Battle(this.gamePlayer, this.gameMap);
             ArrayList<Integer> toBattleIdx = toBattle.getAdjacentEngimons();
             for(int i=0; i<toBattleIdx.size(); i++){
                 this.battleEngimons[i].setVisible(true);
+                this.battleEngimons[i].setEnabled(this.gamePlayer.getActiveEngimon()!=null);
                 ArrayList<String> nearbyInfo = this.gameMap.getWildEngimons().get(toBattleIdx.get(i)).printAllDetail();
                 for(int j=0; j<4; j++){
                     this.nearbyEngimons[i][j].setText(nearbyInfo.get(j));

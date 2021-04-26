@@ -169,7 +169,7 @@ public class Peta {
         this.rebuildMap();
     }
 
-    public void deleteEngimon(Integer engimonAt){
+    public void deleteEngimon(int engimonAt){
         if(engimonAt<this.wildEngimons.size()){
             wildEngimons.remove(engimonAt);
         }

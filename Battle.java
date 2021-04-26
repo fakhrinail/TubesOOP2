@@ -42,7 +42,7 @@ public class Battle {
         for (int i = 0; i < myElementCount; i++) {
             for (int j = 0; j < oppElementCount; j++) {
                 e1 = sourceEngimon.getElementals().get(i);
-                e2 = comparedEngimon.getElementals().get(i);
+                e2 = comparedEngimon.getElementals().get(j);
                 advantage = Math.max(advantage, e1.getAdv(e2));
             }
         }
@@ -60,76 +60,61 @@ public class Battle {
         return skillPower;
     }
 
-    public Engimon chooseOpponent(ArrayList<Engimon> adjacentEngimons) {
-        if (adjacentEngimons.size() == 0) {
-            System.out.println("No adjacent Engimon");
-            return null;
+    // public Engimon chooseOpponent(ArrayList<Engimon> adjacentEngimons) {
+    //     if (adjacentEngimons.size() == 0) {
+    //         System.out.println("No adjacent Engimon");
+    //         return null;
+    //     }
+    //     else if (adjacentEngimons.size() == 1) {
+    //         return adjacentEngimons.get(0);
+    //     }
+    //     else {
+    //         System.out.println("There are multiple Engimons near you");
+    //         System.out.print("Choose one you want to battle with");
+    //         for (int i = 0; i < adjacentEngimons.size(); i++) {
+    //             System.out.println((i+1) + adjacentEngimons.get(i).getName());
+    //         }
+
+    //         Scanner scanner = new Scanner(System.in);
+    //         int input = scanner.nextInt();
+    //         if (input < 1 || input > adjacentEngimons.size()) {
+    //             System.out.println("Invalid input");
+    //             scanner.close();
+    //             return null;
+    //         } else {
+    //             scanner.close();
+    //             return adjacentEngimons.get(input-1);
+    //         }
+    //     }
+    // }
+
+    public void battle(int idx){
+        this.opponent = map.getWildEngimons().get(getAdjacentEngimons().get(idx));
+        // tampilkan status lawan
+        this.opponent.printDetail();
+        double opponentPower = calculateSkillPower(this.opponent) + calculateElementalAdvantage(opponent, myEngimon)*opponent.getLevel();
+        double myEngimonPower = calculateSkillPower(this.myEngimon) + calculateElementalAdvantage(myEngimon, opponent)*myEngimon.getLevel();
+        // tampilkan total power
+        System.out.println("Your Engimon total power is" + myEngimonPower);
+        System.out.println("Your opponent total power is" + opponentPower);
+        
+        // case kalah
+        if (myEngimonPower < opponentPower) {
+            int engimonLife = myEngimon.getLife();
+            myEngimon.setLife(engimonLife-1); // tiap set life cek 0 atau ga
+            if (myEngimon.getLife() == 0) {
+                myEngimon.death();
+                self.removeActiveEngimon();
+            }
         }
-        else if (adjacentEngimons.size() == 1) {
-            return adjacentEngimons.get(0);
-        }
+        // case menang
         else {
-            System.out.println("There are multiple Engimons near you");
-            System.out.print("Choose one you want to battle with");
-            for (int i = 0; i < adjacentEngimons.size(); i++) {
-                System.out.println((i+1) + adjacentEngimons.get(i).getName());
-            }
-
-            Scanner scanner = new Scanner(System.in);
-            int input = scanner.nextInt();
-            if (input < 1 || input > adjacentEngimons.size()) {
-                System.out.println("Invalid input");
-                scanner.close();
-                return null;
-            } else {
-                scanner.close();
-                return adjacentEngimons.get(input-1);
-            }
-        }
-    }
-
-    public void battle(){
-        if (isEngimonActive()) {
-            this.opponent = map.getWildEngimons().get(getAdjacentEngimons().get(0));
-            // tampilkan status lawan
-            this.opponent.printDetail();
-            double opponentPower = calculateSkillPower(this.opponent) + calculateElementalAdvantage(opponent, myEngimon)*opponent.getLevel();
-            double myEngimonPower = calculateSkillPower(this.myEngimon) + calculateElementalAdvantage(myEngimon, opponent)*myEngimon.getLevel();
-            // tampilkan total power
-            System.out.println("Your Engimon total power is" + myEngimonPower);
-            System.out.println("Your opponent total power is" + opponentPower);
-            // kasih opsi lanjut/ga
-            System.out.println("Do you want to continue? input 1 if yes, 0 if no");
-            Scanner sc = new Scanner(System.in);
-            int input = sc.nextInt();
-            sc.close();
-            if (input == 1) {
-                // case kalah
-                if (myEngimonPower < opponentPower) {
-                    int engimonLife = myEngimon.getLife();
-                    myEngimon.setLife(engimonLife-1); // tiap set life cek 0 atau ga
-                    if (myEngimon.getLife() == 0) {
-                        myEngimon.death();
-                        self.removeActiveEngimon();
-                    } 
-                    // nanti throw exception mungkin?
-                    // hilang 1 life
-                    // life 0 = mati, lanjut command
-                }
-                // case menang
-                else {
-                    int exp = opponent.getLevel()*100/myEngimon.getLevel();
-                    myEngimon.addExperience(exp);
-                    Skill rewardSkill = new Skill(opponent.getSkills().get(0));
-                    self.addSkillItem(rewardSkill);
-                    self.addEngimon(opponent);
-                    //map.deleteEngimon(opponent);
-                }
-            } else {
-                System.out.println("Battle is cancelled!");
-            }
-        } else {
-            System.out.println("No active Engimon detected! Battle is cancelled");
+            int exp = opponent.getLevel()*100/myEngimon.getLevel();
+            myEngimon.addExperience(exp);
+            Skill rewardSkill = new Skill(opponent.getSkills().get(0));
+            self.addSkillItem(rewardSkill);
+            self.addEngimon(opponent);
+            map.deleteEngimon(getAdjacentEngimons().get(idx));
         }
     }
 }
