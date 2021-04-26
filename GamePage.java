@@ -73,15 +73,15 @@ public class GamePage extends JFrame implements ActionListener{
                 Cell currcell = gameMap.searchMap(j, i);
                 this.peta[i][j] = new JLabel();
                 this.peta[i][j].setOpaque(true);
-                this.peta[i][j].setBounds(200 + 50*i, 50*j, 50, 50);
+                this.peta[i][j].setBounds(200 + 50*i, 50*j, 48, 48);
                 if(currcell.getCellType().equals(CellType.GRASSLAND)){
                     this.peta[i][j].setBackground(Color.GREEN);
                 }else if(currcell.getCellType().equals(CellType.SEA)){
-                    this.peta[i][j].setBackground(Color.BLUE);
+                    this.peta[i][j].setBackground(Color.CYAN);
                 }else if(currcell.getCellType().equals(CellType.TUNDRA)){
                     this.peta[i][j].setBackground(Color.YELLOW);
                 }else if(currcell.getCellType().equals(CellType.MOUNTAIN)){
-                    this.peta[i][j].setBackground(Color.CYAN);
+                    this.peta[i][j].setBackground(new Color(133,60,0));
                 }else {
                     this.peta[i][j].setBackground(Color.BLACK);
                 }
@@ -227,49 +227,47 @@ public class GamePage extends JFrame implements ActionListener{
 
     private void moveActionPerformed(ActionEvent e){
         Boolean validMovement = true;
-        Integer prevX = gamePlayer.getPlayerX();
-        Integer prevY = gamePlayer.getPlayerY();
         if(e.getSource() == this.wButton){
             // for(int i=0; i<50; i++){
             //     this.player.setLocation(this.player.getX(), this.player.getY()-1);
             // }
-            gamePlayer.w();
+            
 
             if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
-                gamePlayer.s();
-                validMovement = 1==2;
-            }
+                //gamePlayer.s();
+                validMovement = false;
+            }else{gamePlayer.w();}
         }
         if(e.getSource() == this.aButton){
             // for(int i=0; i<50; i++){
             //     this.player.setLocation(this.player.getX()-1, this.player.getY());
             // }
-            gamePlayer.a();
+            
             if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
-                gamePlayer.d();
+                
                 validMovement = 1==2;
-            }
+            }else{gamePlayer.a();}
         }
         if(e.getSource() == this.sButton){
             // for(int i=0; i<50; i++){
             //     this.player.setLocation(this.player.getX(), this.player.getY()+1);
             // }
-            gamePlayer.s();
-            if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
-                gamePlayer.w();
+            
+            if(gameMap.searchMap(gamePlayer.getPlayerX()+1, gamePlayer.getPlayerY())==null){    
                 validMovement = 1==2;
-            }
+            }else{gamePlayer.s();}
         }
         if(e.getSource() == this.dButton){
             // for(int i=0; i<50; i++){
             //     this.player.setLocation(this.player.getX()+1, this.player.getY());
             // }
-            gamePlayer.d();
+            
             if(gameMap.searchMap(gamePlayer.getPlayerX(), gamePlayer.getPlayerY())==null){
-                gamePlayer.a();
+                //gamePlayer.a();
                 validMovement = 1==2;
-            }
+            }else{gamePlayer.d();}
         }
+
         if(validMovement){
             Main.jumlahTurns++;
             gameMap.setPlayerPos(gamePlayer);
@@ -333,7 +331,7 @@ public class GamePage extends JFrame implements ActionListener{
         }
 
         this.gameMap.getWildEngimons().forEach(i -> {
-            this.peta[i.getEngimonY()][i.getEngimonX()].setText("Eg");
+            this.peta[i.getEngimonY()][i.getEngimonX()].setText(i.getSpecies().substring(0, 2));
         });
     }
 }
