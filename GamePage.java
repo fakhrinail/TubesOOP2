@@ -44,9 +44,10 @@ public class GamePage extends JFrame implements ActionListener{
 
         //Inisialisasi Peta
         //gameMap = new Peta("files/peta.txt",10,allSpecies.getAllSpecies());
-        gameMap = new Peta("files/ASDF.txt");
+        //gameMap = new Peta("files/ASDF.txt");
 
         if(filePath.equals("")){//New Game
+            gameMap = new Peta("files/peta.txt",10,allSpecies.getAllSpecies());
             Engimon starter = new Engimon(this.allSpecies.getSpeciesbyName("Narutomon"), "starterMon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 10);
             this.gamePlayer = new Player(starter);
             //Testing inventory dlu
@@ -64,6 +65,7 @@ public class GamePage extends JFrame implements ActionListener{
             // this.gamePlayer.addSkillItem(new Skill(starter.getSkills().get(0)));
             
         }else{//Load Game
+            gameMap = new Peta("files/map.txt");
             this.gamePlayer = new Player("files/player.txt");
         }
     }
@@ -262,7 +264,6 @@ public class GamePage extends JFrame implements ActionListener{
             }
         }
         if(e.getSource() == this.skills){
-            //this.gameMap.saveMap("ASDF");
             if(this.whichPopUp == 2){
                 this.setPopUp(0);
             }else{
@@ -272,6 +273,7 @@ public class GamePage extends JFrame implements ActionListener{
 
         if(e.getSource() == this.save){
             this.gamePlayer.savePlayer("player");
+            this.gameMap.saveMap("map");
         }
         
         for(int i=0; i<maxInventoryItem; i++){

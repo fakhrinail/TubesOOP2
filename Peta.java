@@ -67,7 +67,7 @@ public class Peta {
             //System.out.println("loc x = "+Integer.parseInt(playerloc[0]));
             //System.out.println("loc y = "+playerloc[1]);
             Cell c = searchMap(Integer.parseInt(playerloc[0]),Integer.parseInt(playerloc[1]));
-            if(c==null){//System.out.println("error null");}
+            if(c==null){System.out.println("error null");}
             else{
                 c.setPlayer();
                 editCellInMap(c);
