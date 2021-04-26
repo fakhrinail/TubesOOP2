@@ -21,11 +21,11 @@ public class GamePage extends JFrame implements ActionListener{
 
     private static final int maxInventoryItem = 20;
     private JLabel popUp;
-    private JLabel popUpTitle;
+    private JLabel[] popUpTitle;
     private int whichPopUp;
     private JLabel[] inventoryInfos;
     private JButton[] inventoryActions;
-    private JLabel[] nearbyEngimons;
+    private JLabel[][] nearbyEngimons;
     private JButton[] battleEngimons;
 
     //Game Components
@@ -163,39 +163,44 @@ public class GamePage extends JFrame implements ActionListener{
         this.popUp.setBackground(Color.GRAY);
         this.popUp.setOpaque(true);
         this.layeredPane.add(this.popUp, Integer.valueOf(2));
-
-        this.popUpTitle = new JLabel();
-        this.popUpTitle.setBounds(200, 0, 500, 100);
-        this.popUpTitle.setBackground(Color.GRAY);
-        this.popUpTitle.setOpaque(true);
-        this.layeredPane.add(this.popUpTitle, Integer.valueOf(3));
+        
+        this.popUpTitle = new JLabel[7];
+        for(int i=0; i<7; i++){
+            this.popUpTitle[i] = new JLabel();
+            this.popUpTitle[i].setBounds(200, 25*i, 500, 25);
+            this.popUpTitle[i].setBackground(Color.GRAY);
+            this.popUpTitle[i].setOpaque(true);
+            this.layeredPane.add(this.popUpTitle[i], Integer.valueOf(3));
+        }
 
         this.inventoryInfos = new JLabel[maxInventoryItem];
         this.inventoryActions = new JButton[maxInventoryItem];
         for(int i=0; i<maxInventoryItem; i++){
             this.inventoryInfos[i] = new JLabel();
-            this.inventoryInfos[i].setBounds(200, 100+25*i, 350, 25);
+            this.inventoryInfos[i].setBounds(200, 200+25*i, 350, 25);
             this.inventoryInfos[i].setOpaque(true);
             this.inventoryInfos[i].setBackground(Color.GRAY);
             this.layeredPane.add(this.inventoryInfos[i], Integer.valueOf(3));
 
             this.inventoryActions[i] = new JButton();
-            this.inventoryActions[i].setBounds(600, 100+25*i, 100, 25);
+            this.inventoryActions[i].setBounds(600, 200+25*i, 100, 25);
             this.inventoryActions[i].addActionListener(this);
             this.inventoryActions[i].setFocusable(false);
             this.layeredPane.add(this.inventoryActions[i], Integer.valueOf(3));
         }
-        this.nearbyEngimons = new JLabel[4];
+        this.nearbyEngimons = new JLabel[4][4];
         this.battleEngimons = new JButton[4];
         for(int i=0; i<4; i++){
-            this.nearbyEngimons[i] = new JLabel();
-            this.nearbyEngimons[i].setBounds(200, 100+100*i, 350, 100);
-            this.nearbyEngimons[i].setOpaque(true);
-            this.nearbyEngimons[i].setBackground(Color.GRAY);
-            this.layeredPane.add(this.nearbyEngimons[i], Integer.valueOf(3));
+            for(int j=0; j<4; j++){
+                this.nearbyEngimons[i][j] = new JLabel();
+                this.nearbyEngimons[i][j].setBounds(200, 200+100*i+20*j, 350, 20);
+                this.nearbyEngimons[i][j].setOpaque(true);
+                this.nearbyEngimons[i][j].setBackground(Color.GRAY);
+                this.layeredPane.add(this.nearbyEngimons[i][j], Integer.valueOf(3));
+            }
 
             this.battleEngimons[i] = new JButton();
-            this.battleEngimons[i].setBounds(600, 135+100*i, 100, 30);
+            this.battleEngimons[i].setBounds(600, 225+100*i, 100, 30);
             this.battleEngimons[i].addActionListener(this);
             this.battleEngimons[i].setFocusable(false);
             this.battleEngimons[i].setText("Battle");
@@ -308,8 +313,13 @@ public class GamePage extends JFrame implements ActionListener{
     private void setPopUp(int ID){
         this.whichPopUp = ID;
         this.popUp.setVisible(ID>0);
-        this.popUpTitle.setVisible(ID>0);
-        this.popUpTitle.setText(this.gamePlayer.getActiveEngimon().printDetail());
+        ArrayList<String> activeInfo = this.gamePlayer.getActiveEngimon().printAllDetail();
+        for(int i=0; i<7; i++){
+            this.popUpTitle[i].setVisible(ID>0);
+        }
+        for(int i=0; i<activeInfo.size(); i++){
+            this.popUpTitle[i].setText(activeInfo.get(i));
+        }
         this.wButton.setEnabled(ID==0);
         this.aButton.setEnabled(ID==0);
         this.sButton.setEnabled(ID==0);
@@ -320,7 +330,9 @@ public class GamePage extends JFrame implements ActionListener{
         }
         for(int i=0; i<4; i++){
             this.battleEngimons[i].setVisible(false);
-            this.nearbyEngimons[i].setVisible(false);
+            for(int j=0; j<4; j++){
+                this.nearbyEngimons[i][j].setVisible(false);
+            }
         }
         if(ID == 1){
             ArrayList<String> inventoryList = this.gamePlayer.getInventory(false);
@@ -343,10 +355,15 @@ public class GamePage extends JFrame implements ActionListener{
             }
         }
         if(ID == 3){
-            Battle battle = new Battle(this.gamePlayer, this.gameMap);
-            for(int i=0; i<4; i++){
+            Battle toBattle = new Battle(this.gamePlayer, this.gameMap);
+            ArrayList<Integer> toBattleIdx = toBattle.getAdjacentEngimons();
+            for(int i=0; i<toBattleIdx.size(); i++){
                 this.battleEngimons[i].setVisible(true);
-                this.nearbyEngimons[i].setVisible(true);
+                ArrayList<String> nearbyInfo = this.gameMap.getWildEngimons().get(toBattleIdx.get(i)).printAllDetail();
+                for(int j=0; j<4; j++){
+                    this.nearbyEngimons[i][j].setText(nearbyInfo.get(j));
+                    this.nearbyEngimons[i][j].setVisible(true);
+                }
             }
         }
     }
