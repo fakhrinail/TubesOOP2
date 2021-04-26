@@ -27,6 +27,7 @@ public class GamePage extends JFrame implements ActionListener{
     private JLabel[] inventoryInfos;
     private JButton[] inventoryActions;
     private JButton[] discard;
+    private JButton[] breeding;
     private JLabel[][] nearbyEngimons;
     private JButton[] battleEngimons;
 
@@ -186,6 +187,7 @@ public class GamePage extends JFrame implements ActionListener{
         this.inventoryInfos = new JLabel[maxInventoryItem];
         this.inventoryActions = new JButton[maxInventoryItem];
         this.discard = new JButton[maxInventoryItem];
+        this.breeding = new JButton[maxInventoryItem];
         for(int i=0; i<maxInventoryItem; i++){
             this.inventoryInfos[i] = new JLabel();
             this.inventoryInfos[i].setBounds(200, 200+25*i, 350, 25);
@@ -205,6 +207,12 @@ public class GamePage extends JFrame implements ActionListener{
             this.discard[i].setFocusable(false);
             this.discard[i].setText("Discard");
             this.layeredPane.add(this.discard[i], Integer.valueOf(3));
+            this.breeding[i] = new JButton();
+            this.breeding[i].setBounds(800, 200+25*i, 100, 25);
+            this.breeding[i].addActionListener(this);
+            this.breeding[i].setFocusable(false);
+            this.breeding[i].setText("Breed");
+            this.layeredPane.add(this.breeding[i], Integer.valueOf(3));
         }
         this.nearbyEngimons = new JLabel[4][4];
         this.battleEngimons = new JButton[4];
@@ -383,6 +391,7 @@ public class GamePage extends JFrame implements ActionListener{
             this.inventoryInfos[i].setVisible(false);
             this.inventoryActions[i].setVisible(false);
             this.discard[i].setVisible(false);
+            this.breeding[i].setVisible(false);
         }
         for(int i=0; i<4; i++){
             this.battleEngimons[i].setVisible(false);
@@ -398,6 +407,7 @@ public class GamePage extends JFrame implements ActionListener{
                 this.inventoryActions[i].setVisible(true);
                 this.inventoryActions[i].setText("Switch");
                 this.discard[i].setVisible(true);
+                this.breeding[i].setVisible(true);
             }
         }
         if(ID == 2){
