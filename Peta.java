@@ -25,7 +25,7 @@ public class Peta {
     private Integer mapHeight = 0;
     private ArrayList<Cell> mapLayout;
     private ArrayList<Engimon> wildEngimons;
-    private Integer playerX, playerY;
+    private Player currPlayer;
     private Integer maxWildEngimon;
     private ArrayList<Species> listSpesies = new ArrayList<>();
 
@@ -34,7 +34,7 @@ public class Peta {
         this.filename = filename;
         this.loadMap();
         this.wildEngimons = new ArrayList<>();
-        this.playerX = 0; this.playerY=0;
+        this.currPlayer = null;
         this.maxWildEngimon = maxWildEngimon;
     }
 
@@ -43,7 +43,7 @@ public class Peta {
         this.filename = filename;
         this.loadMap();
         this.wildEngimons = new ArrayList<>();
-        this.playerX = 0; this.playerY=0;
+        this.currPlayer = null;
         this.maxWildEngimon = maxWildEngimon;
         this.listSpesies = listSpesies;
     }
@@ -131,10 +131,11 @@ public class Peta {
 
                 Engimon eng = new Engimon(spc, "Randommon","","","","",1,Math.abs(random.nextInt())%15);
                 eng.setPos(cl.getX(), cl.getY());
+                cl.setEngimon(eng);
                 this.wildEngimons.add(eng);
+                editCellInMap(cl);
             }
         }
-        this.rebuildMap();
     }
 
     public void randomEngimon(){
@@ -154,7 +155,14 @@ public class Peta {
             }
             editCellInMap(c);
             if(attemp<5){
+                c = searchMap(i.getEngimonX(), i.getEngimonY());
+                c.setEmpty();
+                editCellInMap(c);
+
                 i.setPos(nextX, nextY);
+                c = this.searchMap(nextX, nextY);
+                c.setEngimon(i);
+                editCellInMap(c);
             }
         });
         
@@ -189,9 +197,16 @@ public class Peta {
     }
 
     public void setPlayerPos(Player p){
-        this.playerX = p.getPlayerX();
-        this.playerY = p.getPlayerY();
-        rebuildMap();
+        Cell c; 
+        if(this.currPlayer!=null){
+            c = searchMap(currPlayer.getPlayerX(), currPlayer.getPlayerY());
+            c.setEmpty();
+            editCellInMap(c);
+        }
+        this.currPlayer = p;
+        c = searchMap(p.getPlayerX(), p.getPlayerY());
+        c.setPlayer();
+        editCellInMap(c);
         //Pastikan tidak ada yang crash
     }
 
@@ -236,4 +251,6 @@ public class Peta {
 
     public Integer getMapHeight(){return this.mapHeight;}
     public Integer getMapWidth(){return this.mapWidth;}
+
+    public ArrayList<Cell> getMapLayout(){return this.mapLayout;}
 }
