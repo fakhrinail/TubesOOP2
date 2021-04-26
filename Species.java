@@ -101,6 +101,10 @@ public class Species {
     }
     
     //Method lain
+    public void interact(){
+        System.out.println(getInteraction());
+    }
+
     public void printSpeciesDetail(){
         System.out.println(this.species);
         this.skills.get(0).printDetail();
