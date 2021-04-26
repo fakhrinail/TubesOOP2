@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.*;
 import java.util.Collection;
 import java.util.Random;
+import javax.swing.*;
 
 public class Engimon extends Species implements Move, InventoryItem{
   private String name;
@@ -181,7 +182,10 @@ public class Engimon extends Species implements Move, InventoryItem{
         inherSkills.remove(0);
       }
     }
-    String nama = "Bambank";//BUAT INPUTNYA
+    JDialog inputF = new JDialog();
+    
+    String nama = JOptionPane.showInputDialog(inputF, "Beri nama Engimon-mu");//BUAT INPUTNYA
+    inputF.dispose();
     
     if (this.getElementals().equals(other.getElementals()) && this.getElementals().size() == 1) {
       //Species SpeciesChild = new Species(this.getSpecies(), inherSkills, this.getElementals(), this.getInteraction());
@@ -219,8 +223,7 @@ public class Engimon extends Species implements Move, InventoryItem{
       } else {numElmt2 = 0;}
       Elemental thisElmt = this.getElementals().get(numElmt1);
       Elemental otherElmt = other.getElementals().get(numElmt2);
-      System.out.println(thisElmt.getAdv(otherElmt)+" "+otherElmt.getAdv(thisElmt));
-      System.out.println(thisElmt.getName()+" "+otherElmt.getName());
+      
       if (thisElmt.getAdv(otherElmt) > otherElmt.getAdv(thisElmt)) {
         //ambil this
         //Species SpeciesChild = new Species(this.getSpecies(), inherSkills, this.getElementals(), this.getInteraction());
