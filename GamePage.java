@@ -43,7 +43,8 @@ public class GamePage extends JFrame implements ActionListener{
         this.allSpecies = new KoleksiSpecies("files/species.txt");
 
         //Inisialisasi Peta
-        gameMap = new Peta("files/peta.txt",10,allSpecies.getAllSpecies());
+        //gameMap = new Peta("files/peta.txt",10,allSpecies.getAllSpecies());
+        gameMap = new Peta("files/ASDF.txt");
 
         if(filePath.equals("")){//New Game
             Engimon starter = new Engimon(this.allSpecies.getSpeciesbyName("Narutomon"), "starterMon", "Cowok", "Bapak", "Cewek", "Ibu", 3, 10);
@@ -261,6 +262,7 @@ public class GamePage extends JFrame implements ActionListener{
             }
         }
         if(e.getSource() == this.skills){
+            //this.gameMap.saveMap("ASDF");
             if(this.whichPopUp == 2){
                 this.setPopUp(0);
             }else{
