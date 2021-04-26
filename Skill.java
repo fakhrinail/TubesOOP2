@@ -87,4 +87,13 @@ public class Skill implements InventoryItem {
         return this.mastery-compareLevel;
     }
     */
+    public String skillToString(){
+        String output = this.name;
+        output.concat("," + Integer.toString(this.mastery));
+        output.concat("," + Integer.toString(this.basePower));
+        for (int i = 0; i < this.compatibles.size() - 1; i++){
+            output.concat("," + this.compatibles.get(i).getName());
+        }
+        return output;
+    }
 }

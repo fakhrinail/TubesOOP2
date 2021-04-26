@@ -69,6 +69,10 @@ public class Inventory <T extends InventoryItem> {
         return this.amounts.get(idx);
     }
 
+    public int getSize(){
+        return this.items.size();
+    }
+
     public ArrayList<String> printAll(boolean withAmount){
         ArrayList<String> toReturn = new ArrayList<String>();
         for(int i=0; i<this.items.size(); i++){

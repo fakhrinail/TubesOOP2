@@ -318,4 +318,39 @@ public class Engimon extends Species implements Move, InventoryItem{
   public boolean equals(InventoryItem other){
     return false;
   }
+
+  public Engimon(String input){
+    super(input.substring(input.indexOf(" ") + 1, input.length()));
+    String engimonInfo[] = input.substring(0, input.indexOf(" ")).trim().split(";");
+    this.name = engimonInfo[0];
+    this.parentNames = new ArrayList<String>(2);
+    this.parentNames.add(engimonInfo[1]); this.parentNames.add(engimonInfo[2]);
+    this.parentSpecies = new ArrayList<String>(2);
+    this.parentSpecies.add(engimonInfo[3]); this.parentSpecies.add(engimonInfo[4]);
+    this.life = Integer.parseInt(engimonInfo[5]); this.level = Integer.parseInt(engimonInfo[6]);
+    this.experience = Integer.parseInt(engimonInfo[7]); this.cumulativeExperience = Integer.parseInt(engimonInfo[8]);
+    this.engimonX = -1; this.engimonY = -1;
+  }
+
+  public String engimonToString(){
+    String output = this.name;
+    output.concat(";" + this.parentNames.get(0));
+    output.concat(";" + this.parentNames.get(1));
+    output.concat(";" + this.parentSpecies.get(0));
+    output.concat(";" + this.parentSpecies.get(1));
+    output.concat(";" + Integer.toString(this.life));
+    output.concat(";" + Integer.toString(this.level));
+    output.concat(";" + Integer.toString(this.experience));
+    output.concat(";" + Integer.toString(this.cumulativeExperience));
+    output.concat(" " + this.species);
+    output.concat(";" + Integer.toString(this.skills.size()));
+    for (int i = 0; i < this.skills.size(); i++){
+      output.concat(";" + this.skills.get(i).skillToString());
+    }
+    for (int i = 0; i < this.elementals.size(); i++){
+      output.concat(";" + this.elementals.get(i).getName());
+    }
+    output.concat(";" + this.interaction);
+    return output;
+  }
 }
